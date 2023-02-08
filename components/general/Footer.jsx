@@ -62,13 +62,11 @@ const Footer = () => {
               <input
                 type="email"
                 placeholder="Email address"
-                className="flex-1 h-[50px] rounded-l-[6px] bg-[#FFF] outline-none pl-2 text-[#333]"
+                className="flex-1 h-[50px] rounded-l-[6px] bg-[#FFF] outline-none pl-4 pr-2 text-[#333]"
               />
-              <div className="bg-[#0081FE] h-[50px] w-[50px] flex items-center p-2 rounded-r-[6px] justify-center">
-                <button>
-                  <FaArrowRight />
-                </button>
-              </div>
+              <button className="bg-[#0081FE] h-[50px] w-[50px] flex items-center p-2 rounded-r-[6px] justify-center">
+                <FaArrowRight />
+              </button>
             </div>
             <span className="text-[12px]">
               Hello, we are Lift Media. Our goal is to translate the positive
