@@ -1,23 +1,26 @@
 import React, { useState } from "react";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai"
+import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 
 const MobileNavbar = () => {
   const [showMenu, setShowMenu] = useState(false);
 
   return (
     <>
-      {!showMenu ? (
-        <div className="flex flex-row items-center px-8 py-8 justify-between bg-[#fff] text-[#000] z-10">
-          <h2 className="font-semibold text-[20px]">Reh-A</h2>
-          <AiOutlineMenu
-            className="text-[24px] cursor-pointer"
-            onClick={() => setShowMenu(true)}
-          />
-        </div>
-      ) : (
-        <div className="fixed top-0 left-0 right-0 bottom-0 w-full overflow-hidden z-50">
+      <div className="flex flex-row items-center px-8 py-8 justify-between bg-[#fff] text-[#000] z-10">
+        <h2 className="font-semibold text-[20px]">Reh-A</h2>
+        <AiOutlineMenu
+          className="text-[24px] cursor-pointer"
+          onClick={() => setShowMenu(true)}
+        />
+      </div>
+      {showMenu && (
+        <>
           <div
-            className={` flex flex-col absolute transition ease-in-out w-full h-[100vh] duration-3000 bg-[#FFF] text-[#000] z-50 w-[65%]`}
+            className="fixed bg-[#000] opacity-60 top-0 right-0 left-0 bottom-0 w-full z-20"
+            onClick={() => setShowMenu(false)}
+          ></div>
+          <div
+            className={`flex flex-col fixed top-0 transition ease-in-out w-full h-[100vh] duration-3000 bg-[#FFF] text-[#000] z-50 w-[65%]`}
           >
             <div className="flex flex-row items-center px-8 py-8 justify-between bg-[#fff] text-[#000]">
               <h2 className="font-semibold text-[20px]">Reh-A</h2>
@@ -65,7 +68,7 @@ const MobileNavbar = () => {
               </li>
             </ul>
           </div>
-        </div>
+        </>
       )}
     </>
   );
