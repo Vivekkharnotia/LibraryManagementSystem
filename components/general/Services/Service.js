@@ -4,9 +4,9 @@ export default function Service({image, name}){
     return (
         <>
             <div className={services.service}>
-                <img src={image} alt='NA' className={services.image}/>
+                <Image src={image} alt='NA' className={services.image}/>
                 <div className={services.name}>{name}</div>
-            </div>
+            </div> 
         </>
     );
 }
