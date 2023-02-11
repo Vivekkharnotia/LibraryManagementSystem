@@ -5,7 +5,6 @@ import Navbar from "./Navbar";
 const Hero = () => {
   const [activeImage, setActiveImage] = useState(1);
   const { isMobile } = useDevice();
-  console.log(activeImage);
 
   const changeBackgroundImage = () => {
     setTimeout(() => {
@@ -18,7 +17,9 @@ const Hero = () => {
   }, [activeImage]);
 
   return (
-    <div className={`relative background-image-${activeImage} w-full`}>
+    <div
+      className={`relative background-image-${activeImage} w-full text-[#FFF]`}
+    >
       <div
         className={`relative h-[650px] max-w-[1440px] m-auto ${
           isMobile ? "bg-[#262525]" : ""
