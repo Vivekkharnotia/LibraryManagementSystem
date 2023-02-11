@@ -11,8 +11,8 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <SignIn />
       <Services />
+      <SignIn />
       <Footer />
     </>
   );
