@@ -6,7 +6,7 @@ export default function Service({image, name}){
             <div className={services.service}>
                 <img src={image} alt='NA' className={services.image}/>
                 <div className={services.name}>{name}</div>
-            </div>
+            </div> 
         </>
     );
 }
