@@ -14,6 +14,7 @@
     flex-direction: column;
 }
 .row1, .row2{
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -21,6 +22,7 @@
 
 
 .row3, .row4, .row5{
+    width: 100%;
     display: none;
 }
 
@@ -29,6 +31,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
+    
 }
 .service:hover{
     scale: 1.05;

@@ -88,7 +88,7 @@ function SignIn() {
     <>
       <div className={classes.container}>
         <ThemeProvider theme={theme}>
-          <Paper className={classes.card} elevation={9}>
+          <Paper className={classes.card} elevation={0}>
             <div className={classes.innerBox} id="innerbox">
               <div className={classes.cardFront}>
                 <div className={classes.title} >Login</div>
