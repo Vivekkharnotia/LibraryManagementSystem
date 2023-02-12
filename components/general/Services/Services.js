@@ -11,36 +11,15 @@ import Service from "./Service";
 function Services() {
   return (
     <>
-      <div className={services.title}>Services</div>
       <div className={services.container}>
-        <div className={services.row1}>
+      <div className={services.title}>Services</div>
+        <div className={services.grid}>
           <Service image="/secure.png" name="Secured" />
-          <Service
-            image="/online_consultancy.png"
-            name="Online Consultancy"
-          />
-          <Service image="/video.png" name="Video Illustrations" />
-        </div>
-        <div className={services.row2}>
+          <Service image="/online_consultancy.png" name="Online&nbsp;Consultancy" />
+          <Service image="/video.png" name="Video&nbsp;Illustrations" />
           <Service image="/blogs.png" name="Blogs" />
-          <Service image="/experts.png" name="Experts" />
-          <Service image="/easy.png" name="Easy to use" />
-        </div>
-
-        <div className={services.row3}>
-          <Service image="/secure.png" name="Secured" />
-          <Service
-            image="/online_consultancy.png"
-            name="Online Consultancy"
-          />
-        </div>
-        <div className={services.row4}>
-          <Service image="/video.png" name="Video Illustrations" />
-          <Service image="/blogs.png" name="Blogs" />
-        </div>
-        <div className={services.row5}>
-          <Service image="/experts.png" name="Experts" />
-          <Service image="/easy.png" name="Easy to use" />
+          <Service image="/experts.png" name="&nbsp;&nbsp;&nbsp;Experts" />
+          <Service image="/easy.png" name="Easy&nbsp;to&nbsp;use" />
         </div>
       </div>
     </>

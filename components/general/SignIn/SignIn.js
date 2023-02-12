@@ -100,6 +100,7 @@ function SignIn() {
                   type="email"
                   fullWidth
                   id="email"
+                  sx={{borderRadius: "10px"}}
                 />
 
                 <TextField
