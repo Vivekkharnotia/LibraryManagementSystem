@@ -20,6 +20,7 @@ import PhoneIcon from "@mui/icons-material/Phone"; //call
 import MenuIcon from "@mui/icons-material/Menu"; // menu
 import sidebar from "./Sidebar.module.css";
 import { Button, Typography } from "@mui/material";
+import Appointments from "../Appointments"
 
 const drawerWidth = 240;
 
@@ -97,7 +98,6 @@ export default function MiniDrawer() {
   const handleDrawerOpen = () => {
     let drawerBtn = document.getElementById('drawerBtn');
     drawerBtn.style.rotate = '180deg';
-    console.log('open');
     drawerBtn.style.transition = '0.5s ease';
     setOpen(true);
   };
@@ -105,7 +105,6 @@ export default function MiniDrawer() {
   const handleDrawerClose = () => {
     let drawerBtn = document.getElementById('drawerBtn');
     drawerBtn.style.rotate = '0deg';
-    console.log('close');
     drawerBtn.style.transition = '0.5s ease';
     setOpen(false);
   };
@@ -247,11 +246,13 @@ export default function MiniDrawer() {
         <DrawerHeader />
 
         {/* --------------------------------- Elements outside the sidebar and navbar-------------------------- */}
-        <Typography>
+        {/* <Typography>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, error
           unde recusandae quia voluptate maxime consectetur? Tenetur fugit
           cumque nesciunt!
-        </Typography>
+        </Typography> */}
+
+        <Appointments />
         
       </Box>
     </Box>
