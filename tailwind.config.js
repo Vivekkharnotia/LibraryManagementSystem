@@ -5,7 +5,7 @@ module.exports = {
     extend: {},
     screens: {
       'mobile': {'max': '768px'},
-      'hero-break': {'max': '1200px'},
+      'hero-break': {'max': '1120px'},
       'sm': '576px',
       'md': '960px',
       'lg': '1440px',

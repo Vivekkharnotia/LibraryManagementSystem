@@ -30,7 +30,7 @@ const Hero = () => {
           </div>
         <div className="flex flex-col h-full z-20 relative">
           <Navbar />
-          <div className="flex flex-col gap-8 h-full px-8 md:px-16 justify-center md:-mt-16">
+          <div className="flex flex-col gap-8 h-full hero-break:px-8 px-16 justify-center hero-break:mt-0 -mt-16">
             <h1 className="text-[48px] leading-[58px]">
               <span>Online</span>
               <br />
