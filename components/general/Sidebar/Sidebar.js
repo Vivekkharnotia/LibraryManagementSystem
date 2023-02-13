@@ -8,10 +8,8 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -20,9 +18,8 @@ import ImportContactsIcon from "@mui/icons-material/ImportContacts"; //blog
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"; //appoinment
 import PhoneIcon from "@mui/icons-material/Phone"; //call
 import MenuIcon from "@mui/icons-material/Menu"; // menu
-
 import sidebar from "./Sidebar.module.css";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -95,22 +92,32 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [current, setCurrent] = useState(0);
+  const [current2, setCurrent2] = useState(2);
+
   const handleDrawerOpen = () => {
+    let drawerBtn = document.getElementById('drawerBtn');
+    drawerBtn.style.rotate = '180deg';
+    console.log('open');
+    drawerBtn.style.transition = '0.5s ease';
     setOpen(true);
   };
 
   const handleDrawerClose = () => {
+    let drawerBtn = document.getElementById('drawerBtn');
+    drawerBtn.style.rotate = '0deg';
+    console.log('close');
+    drawerBtn.style.transition = '0.5s ease';
     setOpen(false);
   };
 
   const activeElement = (ind) => {
     let bar = document.getElementById("bar");
     let tp = 0;
-    if (ind == 0) tp = 26;
-    else if (ind == 1) tp = 110;
-    else if (ind == 2) tp = 190;
-    else if (ind == 3) tp = 270;
-    else tp = 350;
+    if (ind == 0) tp = 100;
+    else if (ind == 1) tp = 181;
+    else if (ind == 2) tp = 261;
+    else if (ind == 3) tp = 344;
+    else tp = 425;
     document.getElementById(`item${current}`).style.color = "black";
     document.getElementById(`icon${current}`).style.color = "black";
     setCurrent(ind);
@@ -119,23 +126,21 @@ export default function MiniDrawer() {
     document.getElementById(`icon${ind}`).style.color = "white";
   };
 
+  const view2activeElement = (ind) => {
+    let view2Bar = document.getElementById('view2Bar');
+    view2Bar.style.left = `${ind*20}vw`;
+    document.getElementById(`view2Item${current2}`).style.color = 'black';
+    setCurrent2(ind);
+    document.getElementById(`view2Item${ind}`).style.color = 'white';
+  }
+
   return (
-    <Box sx={{ display: "flex" }}>
+    <>
+    <Box sx={{ display: "flex" }} className={sidebar.view1}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} sx={{ backgroundColor: "white" }}>
+      <AppBar position="fixed" open={open} sx={{ backgroundColor: "white" }} elevation={1}>
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: "none" }),
-            }}
-          >
-            <ChevronRightIcon sx={{ color: "black" }} />
-          </IconButton>
+          
           <Typography sx={{ color: "black" }}>Navbar content</Typography>
           {/*--------------------------------------Navbar content -------------------------------------  */}
         </Toolbar>
@@ -143,14 +148,41 @@ export default function MiniDrawer() {
 
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+          {/* <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
-          </IconButton>
+          </IconButton> */}
+          <Typography className={sidebar.drawerHead} variant="h5">Reh-A</Typography>
         </DrawerHeader>
         <Divider />
 
         <List>
+          {/* <div className={sidebar.sidebarBtn}> */}
+          <ListItemButton
+            sx={{
+              height: "auto",
+              justifyContent: open ? "initial" : "center",
+              px: 2.5,
+              paddingX: "20px",
+              paddingY: "25px",
+            }}
+            className = {sidebar.sidebarBtn}
+            onClick={!open ? handleDrawerOpen : handleDrawerClose}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: 0,
+                mr: open ? 3 : "auto",
+                justifyContent: "center",
+              }}
+              className = {sidebar.sidebarIcn}
+              id='drawerBtn'
+            >
+              <ArrowForwardOutlinedIcon fontSize="medium" color="action"/>
+            </ListItemIcon>
+            </ListItemButton>
+
           <div className={sidebar.bar} id="bar"></div>
+
           {["Blogs", "My appoinments", "Talk with us", "Profile", "More"].map(
             (text, index) => (
               <ListItem
@@ -223,5 +255,46 @@ export default function MiniDrawer() {
         
       </Box>
     </Box>
+
+    {/* media query 768px (tablet view)  */}
+    <div className={sidebar.view2}>
+
+      {/* ---------------------------------------------- Content of the bage ----------------------- */}
+
+      <div className={sidebar.bottomNav}>
+          <div className={sidebar.view2Bar} id = 'view2Bar'></div>
+          <Button className={sidebar.view2Item} onClick = {() => view2activeElement(0)}>
+            <ImportContactsIcon id = {`view2Item${0}`} className={sidebar.view2Icn}/>
+          </Button>
+          <Button className={sidebar.view2Item} onClick = {() => view2activeElement(1)}>
+            <PhoneIcon id = {`view2Item${1}`} className={sidebar.view2Icn}/>
+          </Button>
+          <Button className={sidebar.view2Item} onClick = {() => view2activeElement(2)}>
+            <CalendarMonthIcon id = {`view2Item${2}`} sx={{color : 'white'}} className={sidebar.view2Icn}/>
+          </Button>
+          <Button className={sidebar.view2Item} onClick = {() => view2activeElement(3)}>
+            <PermIdentityIcon id = {`view2Item${3}`} className={sidebar.view2Icn}/>
+          </Button>
+          <Button className={sidebar.view2Item} onClick = {() => view2activeElement(4)}>
+            <MenuIcon id = {`view2Item${4}`} className={sidebar.view2Icn}/>
+          </Button>
+      </div>
+      
+    </div>
+    </>
   );
 }
+
+{/* <IconButton
+            id = 'drawerBtn'
+            color="inherit"
+            aria-label="open drawer"
+            onClick={!open ? handleDrawerOpen : handleDrawerClose}
+            edge="start"
+            sx={{
+              marginRight: 5,
+              ...(open),
+            }}
+          >
+            <ArrowRightAltIcon fontSize="large" sx={{ color: "black" }} />
+          </IconButton> */}

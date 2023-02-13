@@ -12,7 +12,7 @@ import {
   validateName,
   validatePassword,
   handleClear,
-  handleClear2,
+  handleClear2
 } from "./SigninFunctions.js";
 import classes from "./SignIn.module.css";
 
@@ -21,14 +21,14 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#1565c0",
+      main: '#1565c0',
     },
     secondary: {
-      main: "#2e7d32",
+      main: '#2e7d32',
     },
-    warning: {
-      main: "#e65100",
-    },
+    warning:{
+      main : '#e65100',
+    }
   },
 });
 
@@ -91,7 +91,7 @@ function SignIn() {
           <Paper className={classes.card} elevation={0}>
             <div className={classes.innerBox} id="innerbox">
               <div className={classes.cardFront}>
-                <div className={classes.title}>Login</div>
+                <div className={classes.title} >Login</div>
                 <TextField
                   label="Email ID"
                   error={false}
@@ -114,7 +114,7 @@ function SignIn() {
                 />
 
                 <div className={classes.forgotPswd}>
-                  <Button color="primary">Forgot Password?</Button>
+                  <Button color='primary'>Forgot Password?</Button>
                 </div>
                 <div className={classes.remember}>
                   <FormControlLabel
@@ -122,20 +122,10 @@ function SignIn() {
                     label="Remember me for a month"
                   />
                 </div>
-                <Button
-                  id="button-login"
-                  fullWidth
-                  variant="contained"
-                  className={classes.buttonBlue}
-                >
+                <Button fullWidth variant="contained">
                   Login
                 </Button>
-                <Button
-                  fullWidth
-                  color="warning"
-                  variant="outlined"
-                  onClick={handleClear}
-                >
+                <Button fullWidth color="warning" variant="outlined" onClick={handleClear}>
                   Clear
                 </Button>
                 <div className={classes.switchForm1}>
@@ -186,11 +176,7 @@ function SignIn() {
                   required
                   label="Password"
                   error={err.password_err}
-                  helperText={
-                    err.password_err
-                      ? "Password should have atleast 8 characters with atleast one lowercase letter and special character"
-                      : ""
-                  }
+                  helperText={err.password_err ? "Password should have atleast 8 characters with atleast one lowercase letter and special character" : ''}
                   color="primary"
                   variant="outlined"
                   type="password"
@@ -214,16 +200,10 @@ function SignIn() {
                   fullWidth
                   variant="contained"
                   onClick={handleCreateAccount}
-                  className={classes.buttonBlue}
                 >
                   Create Account
                 </Button>
-                <Button
-                  fullWidth
-                  color="warning"
-                  variant="outlined"
-                  onClick={() => handleClear2(setErr)}
-                >
+                <Button fullWidth color="warning" variant="outlined" onClick={() => handleClear2(setErr)}>
                   Clear
                 </Button>
                 <div className={classes.switchForm2}>
