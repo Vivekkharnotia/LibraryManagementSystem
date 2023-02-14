@@ -19,19 +19,19 @@ const Hero = () => {
       className={`relative background-image-${activeImage} w-full text-[#FFF]`}
     >
       <div
-        className={`relative h-[650px] max-w-[1440px] m-auto hero-break:bg-[#262525]`}
+        className={`relative h-[650px] max-w-[1440px] m-auto bg-[#262525]`}
       >
         <div>
           <img
               src={`/bg-hero-${activeImage}.png`}
               alt="Hero background"
-              className="absolute z-0 object-cover object-right w-[100%] h-[650px] hero-break:hidden"
+              className="absolute z-0 object-cover object-right w-[100%] h-[650px] hidden hero-break:block"
             />
         </div>
         <div className="flex flex-col h-full z-20 relative">
           <Navbar />
-          <div className="flex flex-col gap-8 h-full px-8 md:px-16 justify-center md:-mt-16">
-            <h1 className="text-[48px] leading-[58px]">
+          <div className="flex flex-col gap-8 h-full px-8 hero-break:px-16 justify-center mt-0 hero-break:-mt-16">
+            <h1 className="text-[48px] leading-[58px] w-full hero-break:w-[50%]">
               <span>Online</span>
               <br />
               <span className="font-serif">Physiotherapy</span>{" "}
