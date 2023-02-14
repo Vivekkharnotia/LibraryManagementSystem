@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      {/* <Main /> */}
+      <Main />
       <Services />
       <SignIn />
       <Footer />
