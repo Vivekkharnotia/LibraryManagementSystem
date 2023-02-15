@@ -15,7 +15,7 @@ const AppointmentCard = ({ number, name, time, date }) => {
   return (
     <>
       <div
-        className="flex flex-col w-[240px] h-[180px] border-[1px] border-[#000] rounded-[15px] cursor-pointer px-5 py-5 relative justify-self-center w-full md:justify-self-auto"
+        className="flex flex-col w-[240px] h-[180px] border-[1px] border-[#000] rounded-[15px] cursor-pointer px-5 py-5 relative justify-self-center md:justify-self-auto"
         onClick={handleOpen}
       >
         <div>
