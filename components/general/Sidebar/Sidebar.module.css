@@ -1,3 +1,15 @@
+.allNavContent{
+    display: flex;
+    align-items: center;
+}
+.navBarContent{
+    margin-left: 40px;
+    transition: 0.6s ease;
+}
+.navLogo{
+    transition: 1s ease;
+}
+
 .bar{
     top: 100px;
     left: 10px;

@@ -93,10 +93,14 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [current, setCurrent] = useState(0);
-  const [current2, setCurrent2] = useState(2);
 
   const handleDrawerOpen = () => {
     let drawerBtn = document.getElementById("drawerBtn");
+    let navItm = document.getElementById('NavTitle');
+    let navLogo = document.getElementById('NavLogo');
+    navLogo.style.left = '-10px';
+    navLogo.style.opacity = 0;
+    navItm.style.marginLeft = '0px';
     drawerBtn.style.rotate = "180deg";
     drawerBtn.style.transition = "0.5s ease";
     setOpen(true);
@@ -104,6 +108,11 @@ export default function MiniDrawer() {
 
   const handleDrawerClose = () => {
     let drawerBtn = document.getElementById("drawerBtn");
+    let navItm = document.getElementById('NavTitle');
+    let navLogo = document.getElementById('NavLogo');
+    navLogo.style.opacity = 1;
+    navLogo.style.left = '0px';
+    navItm.style.marginLeft = '40px';
     drawerBtn.style.rotate = "0deg";
     drawerBtn.style.transition = "0.5s ease";
     setOpen(false);
@@ -117,20 +126,26 @@ export default function MiniDrawer() {
     else if (ind == 2) tp = 261;
     else if (ind == 3) tp = 344;
     else tp = 425;
+
+    let view2Bar = document.getElementById("view2Bar");
+
+    if(ind == 0) view2Bar.style.left = `40vw`;
+    else if(ind == 1) view2Bar.style.left = `0vw`;
+    else if(ind == 2) view2Bar.style.left = `20vw`;
+    else if(ind == 3) view2Bar.style.left = `60vw`;
+    else view2Bar.style.left = `80vw`;
+
     document.getElementById(`item${current}`).style.color = "black";
     document.getElementById(`icon${current}`).style.color = "black";
+
+    document.getElementById(`view2Item${current}`).style.color = "black";
+    document.getElementById(`view2Item${ind}`).style.color = "white";
+
     setCurrent(ind);
+
     bar.style.top = `${tp}px`;
     document.getElementById(`item${ind}`).style.color = "white";
     document.getElementById(`icon${ind}`).style.color = "white";
-  };
-
-  const view2activeElement = (ind) => {
-    let view2Bar = document.getElementById("view2Bar");
-    view2Bar.style.left = `${ind * 20}vw`;
-    document.getElementById(`view2Item${current2}`).style.color = "black";
-    setCurrent2(ind);
-    document.getElementById(`view2Item${ind}`).style.color = "white";
   };
 
   return (
@@ -144,7 +159,10 @@ export default function MiniDrawer() {
           elevation={1}
         >
           <Toolbar>
-            <Typography sx={{ color: "black" }}>Navbar content</Typography>
+            <div className={sidebar.allNavContent}>
+              <Typography variant='h6' id='NavLogo' className={sidebar.navLogo} sx = {{color : 'black', position : 'relative'}}>R</Typography>
+              <Typography sx={{ color: "black" }} id='NavTitle' className = {sidebar.navBarContent}>Navbar content</Typography>
+            </div>
             {/*--------------------------------------Navbar content -------------------------------------  */}
           </Toolbar>
         </AppBar>
@@ -188,7 +206,7 @@ export default function MiniDrawer() {
 
             <div className={sidebar.bar} id="bar"></div>
 
-            {["Blogs", "My appoinments", "Talk with us", "Profile", "More"].map(
+            {["My appoinments", "Blogs", "Talk with us", "Profile", "More"].map(
               (text, index) => (
                 <ListItem
                   key={text}
@@ -218,13 +236,13 @@ export default function MiniDrawer() {
                       }}
                     >
                       {index == 0 ? (
-                        <ImportContactsIcon
+                        <CalendarMonthIcon
                           id={`icon${index}`}
                           sx={{ color: "white" }}
                         />
                       ) : null}
                       {index == 1 ? (
-                        <CalendarMonthIcon
+                        <ImportContactsIcon
                           id={`icon${index}`}
                           sx={{ color: "black" }}
                         />
@@ -280,32 +298,32 @@ export default function MiniDrawer() {
           <div className={sidebar.view2Bar} id="view2Bar"></div>
           <Button
             className={sidebar.view2Item}
-            onClick={() => view2activeElement(0)}
+            onClick={() => activeElement(1)}
           >
             <ImportContactsIcon
-              id={`view2Item${0}`}
+              id={`view2Item${1}`}
               className={sidebar.view2Icn}
             />
           </Button>
           <Button
             className={sidebar.view2Item}
-            onClick={() => view2activeElement(1)}
+            onClick={() => activeElement(2)}
           >
-            <PhoneIcon id={`view2Item${1}`} className={sidebar.view2Icn} />
+            <PhoneIcon id={`view2Item${2}`} className={sidebar.view2Icn} />
           </Button>
           <Button
             className={sidebar.view2Item}
-            onClick={() => view2activeElement(2)}
+            onClick={() => activeElement(0)}
           >
             <CalendarMonthIcon
-              id={`view2Item${2}`}
+              id={`view2Item${0}`}
               sx={{ color: "white" }}
               className={sidebar.view2Icn}
             />
           </Button>
           <Button
             className={sidebar.view2Item}
-            onClick={() => view2activeElement(3)}
+            onClick={() => activeElement(3)}
           >
             <PermIdentityIcon
               id={`view2Item${3}`}
@@ -314,7 +332,7 @@ export default function MiniDrawer() {
           </Button>
           <Button
             className={sidebar.view2Item}
-            onClick={() => view2activeElement(4)}
+            onClick={() => activeElement(4)}
           >
             <MenuIcon id={`view2Item${4}`} className={sidebar.view2Icn} />
           </Button>
