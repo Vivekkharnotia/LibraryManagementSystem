@@ -140,8 +140,8 @@ export default function MiniDrawer() {
         <AppBar
           position="fixed"
           open={open}
-          sx={{ backgroundColor: "white" }}
-          elevation={1}
+          sx={{ backgroundColor: "white", borderBottom: "1px solid #0000001f"}}
+          elevation={0}
         >
           <Toolbar>
             <Typography sx={{ color: "black" }}>Navbar content</Typography>

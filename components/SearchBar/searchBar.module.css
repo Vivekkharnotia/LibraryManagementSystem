@@ -1,0 +1,24 @@
+
+
+.searchBar{
+    display: flex;
+}
+.searchBar_input{
+    flex-grow: 1;
+    max-width: 424px;
+}
+.searchBar_input>input{
+    width: 100%;
+    height: 100%;
+    padding-left: 1rem;
+    border: 2px solid black;
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+.searchBar_input>input:focus{
+    outline: none;
+}
+.searchBar_icon{
+    padding: 0.6rem 1rem;
+    background-color: black;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
