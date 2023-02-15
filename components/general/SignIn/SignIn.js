@@ -122,7 +122,7 @@ function SignIn() {
                     label="Remember me for a month"
                   />
                 </div>
-                <Button fullWidth variant="contained">
+                <Button sx={{backgroundColor: '#1565c0!important'}} fullWidth variant="contained">
                   Login
                 </Button>
                 <Button fullWidth color="warning" variant="outlined" onClick={handleClear}>
@@ -197,6 +197,7 @@ function SignIn() {
                   id="cpswd"
                 />
                 <Button
+                  sx={{backgroundColor: '#1565c0!important'}}
                   fullWidth
                   variant="contained"
                   onClick={handleCreateAccount}
