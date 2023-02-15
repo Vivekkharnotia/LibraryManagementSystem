@@ -91,7 +91,7 @@ const Drawer = styled(MuiDrawer, {
 
 export default function MiniDrawer() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const [current, setCurrent] = useState(0);
 
   const handleDrawerOpen = () => {
@@ -101,7 +101,7 @@ export default function MiniDrawer() {
     navLogo.style.left = '-10px';
     navLogo.style.opacity = 0;
     navItm.style.marginLeft = '0px';
-    drawerBtn.style.rotate = "180deg";
+    drawerBtn.style.rotate = "0deg";
     drawerBtn.style.transition = "0.5s ease";
     setOpen(true);
   };
@@ -113,7 +113,7 @@ export default function MiniDrawer() {
     navLogo.style.opacity = 1;
     navLogo.style.left = '0px';
     navItm.style.marginLeft = '40px';
-    drawerBtn.style.rotate = "0deg";
+    drawerBtn.style.rotate = "180deg";
     drawerBtn.style.transition = "0.5s ease";
     setOpen(false);
   };
@@ -200,7 +200,7 @@ export default function MiniDrawer() {
                 className={sidebar.sidebarIcn}
                 id="drawerBtn"
               >
-                <ArrowForwardOutlinedIcon fontSize="medium" color="action" />
+                <ArrowForwardOutlinedIcon sx={{transform: 'rotate(180deg)'}} fontSize="medium" color="action" />
               </ListItemIcon>
             </ListItemButton>
 

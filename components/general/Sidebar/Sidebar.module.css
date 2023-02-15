@@ -3,11 +3,12 @@
     align-items: center;
 }
 .navBarContent{
-    margin-left: 40px;
+    margin-left: 0px;
     transition: 0.6s ease;
 }
 .navLogo{
-    transition: 1s ease;
+    opacity: 0;
+    transition: 300ms ease;
 }
 
 .bar{
