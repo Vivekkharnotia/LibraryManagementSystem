@@ -2,15 +2,24 @@ import Image from "next/image";
 import trustGIF from "./../../../public/trust.gif";
 import consultancyGIF from "./../../../public/consultancy.gif";
 import videoGIF from "./../../../public/video.gif";
-import {useVisibility} from "../../../utils/isVisible";
+import { useVisibility } from "../../../utils/isVisible";
 import Testimonial from "../Testimonial/Testimonial";
 
 export default function Main() {
   var offset: number = 1040;
-  
-  const [isFirstSliceVisible, firstSlice] = useVisibility<HTMLDivElement>(650, 1);
-  const [isSecondSliceVisible, secondSlice] = useVisibility<HTMLDivElement>(offset, 0);
-  const [isThirdSliceVisible, thirdSlice] = useVisibility<HTMLDivElement>(710, 0);
+
+  const [isFirstSliceVisible, firstSlice] = useVisibility<HTMLDivElement>(
+    650,
+    1
+  );
+  const [isSecondSliceVisible, secondSlice] = useVisibility<HTMLDivElement>(
+    offset,
+    0
+  );
+  const [isThirdSliceVisible, thirdSlice] = useVisibility<HTMLDivElement>(
+    710,
+    0
+  );
 
   return (
     <>
@@ -27,9 +36,9 @@ export default function Main() {
               <div className="content-text">
                 <div className="content-hero-text">Quality and Trust!</div>
                 <div className="content-info-text">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Integer posuere diam risus, non interdum tellus eleifend sed.
-                  Fusce lacinia nisl eu hendrerit laoreet.
+                  Quality and trust are the foundation of our online
+                  physiotherapy services, and we are dedicated to helping you
+                  achieve your health and wellness goals with confidence.
                 </div>
               </div>
 
@@ -41,7 +50,6 @@ export default function Main() {
         </section>
 
         <section className="slice-container slice--inverted">
-          
           <div className="slice slice--image slice--inverted-image text-c">
             <span style={{ opacity: isSecondSliceVisible != true ? "0" : "1" }}>
               <Image src={consultancyGIF} alt="gif of trust and worthyness" />
@@ -51,11 +59,11 @@ export default function Main() {
           <div className="slice" ref={secondSlice}>
             <div className="content-container">
               <div className="content-text">
-                <div className="content-hero-text">Quality and Trust!</div>
+                <div className="content-hero-text">Virtual Physiotherapy!</div>
                 <div className="content-info-text">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Integer posuere diam risus, non interdum tellus eleifend sed.
-                  Fusce lacinia nisl eu hendrerit laoreet.
+                  With secure video consultations and messaging, our online
+                  physiotherapy consultancy lets you connect with experienced
+                  physiotherapists from home, saving you time and hassle.
                 </div>
               </div>
 
@@ -64,7 +72,6 @@ export default function Main() {
               <div className="spacer"></div>
             </div>
           </div>
-
         </section>
 
         <section className="slice-container">
@@ -77,11 +84,11 @@ export default function Main() {
           <div className="slice slice--content" ref={thirdSlice}>
             <div className="content-container">
               <div className="content-text">
-                <div className="content-hero-text">Quality and Trust!</div>
+                <div className="content-hero-text">Clear and Concise Videos!</div>
                 <div className="content-info-text">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Integer posuere diam risus, non interdum tellus eleifend sed.
-                  Fusce lacinia nisl eu hendrerit laoreet.
+                  From injury prevention to post-operative rehabilitation, our
+                  video illustrations provide the guidance you need to achieve
+                  your physiotherapy goals.
                 </div>
               </div>
 
