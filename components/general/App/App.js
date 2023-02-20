@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import Appointments from "../Appointments";
+import Appointments from "../Appointments/Appointments";
 import AppStructure from "../AppStructure/AppStructure.js"
 
 

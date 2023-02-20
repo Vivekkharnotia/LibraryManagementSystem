@@ -3,7 +3,8 @@ import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import sidebar from "./AppNavBar.module.css";
 import { Typography } from "@mui/material";
-import SearchBar from "components/SearchBar/SearchBar";
+import SearchBar from "../SearchBar/SearchBar";
+import Avatar from "../Avatar/Avatar";
 
 const drawerWidth = 270;
 
@@ -25,6 +26,9 @@ const AppBar = styled(MuiAppBar, {
     }),
   }),
 }));
+
+
+
 export default function AppNavbar({ open }) {
   return (
     <>
@@ -51,6 +55,7 @@ export default function AppNavbar({ open }) {
               className={sidebar.navBarContent}
             >
               <SearchBar />
+              <Avatar />
             </div>
           </div>
           {/*--------------------------------------Navbar content -------------------------------------  */}

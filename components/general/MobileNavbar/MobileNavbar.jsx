@@ -20,7 +20,7 @@ const MobileNavbar = () => {
             onClick={() => setShowMenu(false)}
           ></div>
           <div
-            className={`flex flex-col fixed top-0 transition ease-in-out w-full h-[100vh] duration-3000 bg-[#FFF] text-[#000] z-50 w-[65%]`}
+            className={`flex flex-col fixed top-0 transition ease-in-out h-[100vh] duration-3000 bg-[#FFF] text-[#000] z-50 w-[65%]`}
           >
             <div className="flex flex-row items-center px-8 py-8 justify-between bg-[#fff] text-[#000]">
               <h2 className="font-semibold text-[20px]">Reh-A</h2>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar/Navbar";
 
 const Hero = () => {
   const [activeImage, setActiveImage] = useState(1);
