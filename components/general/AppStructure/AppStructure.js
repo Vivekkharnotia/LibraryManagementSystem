@@ -16,6 +16,7 @@ import MenuIcon from "@mui/icons-material/Menu"; // menu
 import sidebar from "./Sidebar.module.css";
 import { Button, Typography } from "@mui/material";
 import AppNavbar from "../AppNavBar/AppNavbar";
+import Link from "next/link";
 
 const drawerWidth = 270;
 
@@ -70,30 +71,30 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = useState(true);
   const [current, setCurrent] = useState(0);
-  
-    const handleDrawerOpen = () => {
-      let drawerBtn = document.getElementById("drawerBtn");
-      let navLogo = document.getElementById("NavLogo");
-      let navItm = document.getElementById("NavTitle");
 
-      navLogo.style = "opacity: 0; left: -10px";
-      navItm.style = "margin-left: 0px";
-      drawerBtn.style.rotate = "0deg";
-      drawerBtn.style.transition = "0.5s ease";
-      setOpen(true);
-    };
-  
-    const handleDrawerClose = () => {
-      let drawerBtn = document.getElementById("drawerBtn");
-      let navItm = document.getElementById("NavTitle");
-      let navLogo = document.getElementById("NavLogo");
+  const handleDrawerOpen = () => {
+    let drawerBtn = document.getElementById("drawerBtn");
+    let navLogo = document.getElementById("NavLogo");
+    let navItm = document.getElementById("NavTitle");
 
-      navLogo.style = "opacity: 1; left: 0px";
-      navItm.style = "margin-left: 70px"
-      drawerBtn.style.rotate = "180deg";
-      drawerBtn.style.transition = "0.5s ease";
-      setOpen(false);
-    };
+    navLogo.style = "opacity: 0; left: -10px";
+    navItm.style = "margin-left: 0px";
+    drawerBtn.style.rotate = "0deg";
+    drawerBtn.style.transition = "0.5s ease";
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    let drawerBtn = document.getElementById("drawerBtn");
+    let navItm = document.getElementById("NavTitle");
+    let navLogo = document.getElementById("NavLogo");
+
+    navLogo.style = "opacity: 1; left: 0px";
+    navItm.style = "margin-left: 70px";
+    drawerBtn.style.rotate = "180deg";
+    drawerBtn.style.transition = "0.5s ease";
+    setOpen(false);
+  };
 
   const activeElement = (ind) => {
     let bar = document.getElementById("bar");
@@ -124,7 +125,6 @@ export default function MiniDrawer() {
     document.getElementById(`item${ind}`).style.color = "white";
     document.getElementById(`icon${ind}`).style.color = "white";
   };
-
 
   return (
     <>
@@ -171,62 +171,70 @@ export default function MiniDrawer() {
 
           {["My appoinments", "Blogs", "Talk with us", "Profile", "More"].map(
             (text, index) => (
-              <ListItem
-                key={index}
-                disablePadding
-                sx={{
-                  display: "block",
-                  color: index == 0 ? "white" : "black",
-                }}
-                id={`item${index}`}
-                className={sidebar.elements}
-              >
-                <ListItemButton
+              <Link href="/app/blogs">
+                <ListItem
+                  key={index}
+                  disablePadding
                   sx={{
-                    height: "auto",
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                    paddingX: "20px",
-                    paddingY: "25px",
+                    display: "block",
+                    color: index == 0 ? "white" : "black",
                   }}
-                  onClick={() => activeElement(index)}
+                  id={`item${index}`}
+                  className={sidebar.elements}
                 >
-                  <ListItemIcon
+                  <ListItemButton
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
+                      height: "auto",
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                      paddingX: "20px",
+                      paddingY: "25px",
                     }}
+                    onClick={() => activeElement(index)}
                   >
-                    {index == 0 ? (
-                      <CalendarMonthIcon
-                        id={`icon${index}`}
-                        sx={{ color: "white" }}
-                      />
-                    ) : null}
-                    {index == 1 ? (
-                      <ImportContactsIcon
-                        id={`icon${index}`}
-                        sx={{ color: "black" }}
-                      />
-                    ) : null}
-                    {index == 2 ? (
-                      <PhoneIcon id={`icon${index}`} sx={{ color: "black" }} />
-                    ) : null}
-                    {index == 3 ? (
-                      <PermIdentityIcon
-                        id={`icon${index}`}
-                        sx={{ color: "black" }}
-                      />
-                    ) : null}
-                    {index == 4 ? (
-                      <MenuIcon id={`icon${index}`} sx={{ color: "black" }} />
-                    ) : null}
-                  </ListItemIcon>
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {index == 0 ? (
+                        <CalendarMonthIcon
+                          id={`icon${index}`}
+                          sx={{ color: "white" }}
+                        />
+                      ) : null}
+                      {index == 1 ? (
+                        <ImportContactsIcon
+                          id={`icon${index}`}
+                          sx={{ color: "black" }}
+                        />
+                      ) : null}
+                      {index == 2 ? (
+                        <PhoneIcon
+                          id={`icon${index}`}
+                          sx={{ color: "black" }}
+                        />
+                      ) : null}
+                      {index == 3 ? (
+                        <PermIdentityIcon
+                          id={`icon${index}`}
+                          sx={{ color: "black" }}
+                        />
+                      ) : null}
+                      {index == 4 ? (
+                        <MenuIcon id={`icon${index}`} sx={{ color: "black" }} />
+                      ) : null}
+                    </ListItemIcon>
 
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
+                    <ListItemText
+                      primary={text}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
             )
           )}
         </List>

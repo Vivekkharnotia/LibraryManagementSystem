@@ -1,6 +1,4 @@
 import styles from "./searchBar.module.css";
-import searchIcon from "../../../public/searchIcon.svg";
-import Image from "next/image";
 
 function SearchBar() {
   return (
