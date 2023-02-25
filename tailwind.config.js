@@ -6,9 +6,11 @@ module.exports = {
     screens: {
       'mobile': {'max': '768px'},
       'hero-break': '880px',
-      'sm': '576px',
-      'md': '960px',
-      'lg': '1440px',
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
     }
   },
   plugins: [],

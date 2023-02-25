@@ -15,7 +15,7 @@ const app = () => {
         <Sidebar />
         {/* <VisitBlog data = {data}/> */}
     </>
-  )
-}
+  );
+};
 
-export default app
+export default app;

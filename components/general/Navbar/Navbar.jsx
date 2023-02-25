@@ -1,6 +1,6 @@
 import React from "react";
-import MobileNavbar from "./MobileNavbar"
-import useDevice from "../../utils/useDevice";
+import MobileNavbar from "../MobileNavbar/MobileNavbar"
+import useDevice from "../../../utils/useDevice";
 
 const Navbar = () => {
   const { isMobile } = useDevice();
