@@ -1,5 +1,7 @@
 main {
-  padding-inline: 1.5rem;
+  padding-inline: 0!important;
+  padding-block: 16px;
+  /* padding-inline: 1.5rem; */
 }
 .slice {
   width: 100%;
@@ -78,7 +80,7 @@ main {
 @media only screen and (min-width: 768px) {
   main {
     padding: 0;
-    padding-inline: 5rem;
+    padding: 24px!important;
   }
   .content-hero-text {
     margin: 0;
