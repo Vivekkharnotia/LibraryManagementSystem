@@ -1,10 +1,7 @@
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import Appointments from "../Appointments/Appointments";
-import BlogsGrid from "./BlogsGrid/BlogsGrid";
-import AppStructure from "../AppStructure/AppStructure.js"
-
+import AppStructure from "../../components/general/AppStructure/AppStructure";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -15,10 +12,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-
-
-export default function MiniDrawer() {
-
+export default function Layout(props: any) {
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -26,17 +20,12 @@ export default function MiniDrawer() {
 
         <AppStructure />
 
-
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <DrawerHeader />
 
-            <Appointments />
-            <BlogsGrid />
-
-            
+          {props.children}
         </Box>
       </Box>
-
     </>
   );
 }

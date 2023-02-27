@@ -1,9 +1,9 @@
-import App from "../../../../components/general/App/App";
+import BlogsGrid from "components/general/App/BlogsGrid/BlogsGrid";
 
 const app = () => {
   return (
     <>
-      <App />
+      <BlogsGrid />
     </>
   );
 };

@@ -4,7 +4,7 @@ import React from 'react'
 const app = () => {
   return (
     <>
-      <Appointments />
+      Talk to us
   </>
   );
 };

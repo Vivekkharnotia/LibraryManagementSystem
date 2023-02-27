@@ -17,6 +17,7 @@ import sidebar from "./Sidebar.module.css";
 import { Button, Typography } from "@mui/material";
 import AppNavbar from "../AppNavBar/AppNavbar";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const drawerWidth = 270;
 
@@ -68,9 +69,23 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function MiniDrawer() {
-  const theme = useTheme();
   const [open, setOpen] = useState(true);
   const [current, setCurrent] = useState(0);
+  const router = useRouter();
+
+  const menuItems = [
+    { id: 0, label: "Home", link: "/app" },
+    { id: 1, label: "Manage Posts", link: "/app/blogs" },
+    { id: 2, label: "Manage Posts", link: "/app/talk" },
+    { id: 3, label: "Manage Posts", link: "/app/profile" },
+    { id: 4, label: "Manage Posts", link: "/app/more" }
+  ];
+
+  useEffect(()=>{
+    const activeMenu  = menuItems.find((menu) => menu.link === router.pathname)
+    activeElement(activeMenu.id)
+  }, [router.pathname])
+
 
   const handleDrawerOpen = () => {
     let drawerBtn = document.getElementById("drawerBtn");
@@ -171,7 +186,7 @@ export default function MiniDrawer() {
 
           {["My appoinments", "Blogs", "Talk with us", "Profile", "More"].map(
             (text, index) => (
-              <Link href="/app/blogs">
+              <Link key={index} href={menuItems[index].link}>
                 <ListItem
                   key={index}
                   disablePadding
@@ -190,7 +205,7 @@ export default function MiniDrawer() {
                       paddingX: "20px",
                       paddingY: "25px",
                     }}
-                    onClick={() => activeElement(index)}
+                    // onClick={() => activeElement(index)}
                   >
                     <ListItemIcon
                       sx={{
