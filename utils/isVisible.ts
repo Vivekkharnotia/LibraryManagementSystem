@@ -1,4 +1,3 @@
-import { off } from "process";
 import { useRef, useState, useEffect, RefObject } from "react";
 
 export function useVisibility<T>(offset: number, indicator: number): [boolean, RefObject<HTMLDivElement>] {
