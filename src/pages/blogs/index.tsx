@@ -1,7 +1,5 @@
 import Blogs from "components/general/Blogs/Blogs";
-import React, { FC } from "react";
-
-
+import React from "react";
 
 const index = () => {
   return (
