@@ -17,23 +17,3 @@ export function validateConfirmPassword(pswd, cpswd){
     if(pswd === cpswd) return true;
     return false;
 }
-
-export function handleClear(){
-    document.getElementById('pswd').value = '';
-    document.getElementById('email').value = '';
-}
-
-export function handleClear2(setErr){
-    document.getElementById('fname').value = '';
-    document.getElementById('lname').value = '';
-    document.getElementById('mail').value = '';
-    document.getElementById('pswrd').value = '';
-    document.getElementById('cpswd').value = '';
-    setErr({
-        email_err: false,
-        fname_err: false,
-        lname_err: false,
-        password_err: false,
-        cPassword_err: false,
-      });
-}

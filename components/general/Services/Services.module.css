@@ -29,6 +29,8 @@
     font-weight: 600;
     padding-top: 8rem;
     padding-left: 2rem;
+    text-align: center;
+    color: rgb(12, 12, 102);;
 }
 
 @media only screen and (max-width : 1200px){
