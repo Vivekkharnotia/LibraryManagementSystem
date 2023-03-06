@@ -5,116 +5,218 @@ import {
   Switch,
   FormControlLabel,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import FormHelperText from '@mui/material/FormHelperText';
+
+import OutlinedInput from '@mui/material/OutlinedInput';
 import {
   validateConfirmPassword,
   validateEmail,
   validateName,
-  validatePassword,
-  handleClear,
-  handleClear2
+  validatePassword
 } from "./SigninFunctions.js";
 import classes from "./SignIn.module.css";
-
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase-config.js';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1565c0',
+      main: "#1565c0",
     },
     secondary: {
-      main: '#2e7d32',
+      main: "#2e7d32",
     },
-    warning:{
-      main : '#e65100',
-    }
+    warning: {
+      main: "#e65100",
+    },
   },
 });
+const initialLoginData = { email: "", password: "" };
+const initialCreateAccData = {
+  fname: "",
+  lname: "",
+  email: "",
+  password: "",
+  cPassword: "",
+};
 
 function SignIn() {
-  const iniErrState = {
+  const iniErrCreateUserState = {
     email_err: false,
     fname_err: false,
     lname_err: false,
     password_err: false,
     cPassword_err: false,
   };
-  const [err, setErr] = useState(iniErrState);
-  function handleLogin() {
+
+  const [loginData, setLoginData] = useState(initialLoginData);
+  const [createAccData, setCreateAccData] = useState(initialCreateAccData);
+  const [loginEmailErr, setLoginEmailErr] = useState(false);
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
+  const [showCPassword, setShowCPassword] = useState(false);
+
+  const [err, setErr] = useState(iniErrCreateUserState);
+  function handleLoginPage() {
     let inBox = document.getElementById("innerbox");
     inBox.style.transform = "rotateY(-180deg)";
     inBox.style.transformStyle = "preserve-3d";
   }
-  function handleSignUp() {
+  function handleSignUpPage() {
     let inBox = document.getElementById("innerbox");
     inBox.style.transform = "rotateY(0deg)";
     inBox.style.transformStyle = "preserve-3d";
   }
-  function handleCreateAccount() {
-    const res_fname = validateName(document.getElementById("fname").value);
+  function handleClear() {
+    setLoginData(initialLoginData);
+  }
+  function handleClear2() {
+    setCreateAccData(initialCreateAccData);
+    setErr({
+      email_err: false,
+      fname_err: false,
+      lname_err: false,
+      password_err: false,
+      cPassword_err: false,
+    });
+  }
+  const handleCreateAccount = async () => {
+    let validCred = true;
+    const res_fname = validateName(createAccData.fname);
+    if (!res_fname) validCred = false;
     setErr((currState) => {
       return { ...currState, fname_err: !res_fname };
     });
 
-    const res_lname = validateName(document.getElementById("lname").value);
+    const res_lname = validateName(createAccData.lname);
+    if (!res_lname) validCred = false;
     setErr((currState) => {
       return { ...currState, lname_err: !res_lname };
     });
 
-    const res_mail = validateEmail(document.getElementById("mail").value);
+    const res_mail = validateEmail(createAccData.email);
+    if (!res_mail) validCred = false;
     setErr((currState) => {
       return { ...currState, email_err: !res_mail };
     });
 
     const res_password = validatePassword(
-      document.getElementById("pswrd").value
+      createAccData.password
     );
-    console.log(document.getElementById("pswrd").value, "here we go");
+    if (!res_password) validCred = false;
     setErr((currState) => {
       return { ...currState, password_err: !res_password };
     });
 
     const res_cPassword = validateConfirmPassword(
-      document.getElementById("pswrd").value,
-      document.getElementById("cpswd").value
+      createAccData.password,
+      createAccData.cPassword
     );
+    if (!res_cPassword) validCred = false;
     setErr((currState) => {
       return { ...currState, cPassword_err: !res_cPassword };
     });
+
+    if (validCred) {
+      console.log("Valid cred .....");
+      const user = await createUserWithEmailAndPassword(auth, createAccData.email, createAccData.password);
+      const userId = user.user.uid;
+      await setDoc(doc(db, "Userdata", createAccData.email), {
+        fname: createAccData.fname,
+        lname: createAccData.lname,
+        password: createAccData.password,
+        email: createAccData.email,
+        uid: userId
+      });
+      setCreateAccData(initialCreateAccData);
+    }
   }
+  const handleLogin = async () => {
+    const res_email = validateEmail(loginData.email);
+    setLoginEmailErr(!res_email);
+    if (res_email == true) {
+      try {
+        await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
+        setLoginData(initialLoginData);
+      } catch (error) {
+        // console.log(error);
+        alert("Incorrect Credentials!!!")
+      }
+    }
+  }
+
+  const [loggedInUser, setLoggedInUser] = useState("");
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentuser) => {
+      setLoggedInUser(currentuser?.email);
+    })
+    console.log(loggedInUser);
+  }, [])
+
 
   return (
     <>
       <div className={classes.container}>
         <ThemeProvider theme={theme}>
           <Paper className={classes.card} elevation={0}>
+            {/* <div>{loggedInUser}</div> */}
             <div className={classes.innerBox} id="innerbox">
               <div className={classes.cardFront}>
-                <div className={classes.title} >Login</div>
+                <div className={classes.title}>Login</div>
                 <TextField
                   label="Email ID"
-                  error={false}
+                  error={loginEmailErr}
+                  helperText={loginEmailErr && 'Invalid Email!'}
                   color="primary"
                   variant="outlined"
                   type="email"
                   fullWidth
                   id="email"
-                  sx={{borderRadius: "10px"}}
+                  sx={{ borderRadius: "10px" }}
+                  value={loginData.email}
+                  onChange={(e) =>
+                    setLoginData({ ...loginData, email: e.target.value })
+                  }
                 />
 
-                <TextField
-                  label="Password"
-                  error={false}
-                  color="primary"
-                  variant="outlined"
-                  type="password"
-                  fullWidth
-                  id="pswd"
-                />
+                <FormControl variant="outlined" fullWidth>
+                  <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                  <OutlinedInput
+                    type={showLoginPassword ? 'text' : 'password'}
+                    id="pswd"
+                    value={loginData.password}
+                    onChange={(e) =>
+                      setLoginData({ ...loginData, password: e.target.value })
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowLoginPassword((prev) => !prev)}
+                          edge="end"
+                        >
+                          {showLoginPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                    fullWidth
+                  />
+                </FormControl>
+
+                
 
                 <div className={classes.forgotPswd}>
-                  <Button color='primary'>Forgot Password?</Button>
+                  <Button color="primary">Forgot Password?</Button>
                 </div>
                 <div className={classes.remember}>
                   <FormControlLabel
@@ -122,19 +224,31 @@ function SignIn() {
                     label="Remember me for a month"
                   />
                 </div>
-                <Button sx={{backgroundColor: '#1565c0!important'}} fullWidth variant="contained">
+                <Button
+                  sx={{ backgroundColor: "#1565c0!important" }}
+                  fullWidth
+                  variant="contained"
+                  onClick={handleLogin}
+                >
                   Login
                 </Button>
-                <Button fullWidth color="warning" variant="outlined" onClick={handleClear}>
+                <Button
+                  fullWidth
+                  color="warning"
+                  variant="outlined"
+                  onClick={handleClear}
+                >
                   Clear
                 </Button>
                 <div className={classes.switchForm1}>
                   <div>Don't Have an account yet?</div>
-                  <Button color="primary" onClick={handleLogin}>
+                  <Button color="primary" onClick={handleLoginPage}>
                     Create Account
                   </Button>
                 </div>
               </div>
+
+              {/* Create New account */}
               <div className={classes.cardBack}>
                 <div className={classes.title}>New User</div>
                 <div className={classes.name}>
@@ -148,6 +262,13 @@ function SignIn() {
                     type="text"
                     sx={{ width: "47%" }}
                     id="fname"
+                    value={createAccData.fname}
+                    onChange={(e) =>
+                      setCreateAccData({
+                        ...createAccData,
+                        fname: e.target.value,
+                      })
+                    }
                   />
                   <TextField
                     required
@@ -159,6 +280,13 @@ function SignIn() {
                     type="text"
                     sx={{ width: "47%" }}
                     id="lname"
+                    value={createAccData.lname}
+                    onChange={(e) =>
+                      setCreateAccData({
+                        ...createAccData,
+                        lname: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <TextField
@@ -171,45 +299,95 @@ function SignIn() {
                   type="email"
                   fullWidth
                   id="mail"
-                />
-                <TextField
-                  required
-                  label="Password"
-                  error={err.password_err}
-                  helperText={err.password_err ? "Password should have atleast 8 characters with atleast one lowercase letter and special character" : ''}
-                  color="primary"
-                  variant="outlined"
-                  type="password"
-                  fullWidth
-                  id="pswrd"
-                />
-                <TextField
-                  required
-                  label="Confirm Password"
-                  error={err.cPassword_err}
-                  helperText={
-                    err.cPassword_err ? "Passwords are not matching" : ""
+                  value={createAccData.email}
+                  onChange={(e) =>
+                    setCreateAccData({
+                      ...createAccData,
+                      email: e.target.value,
+                    })
                   }
-                  color="primary"
-                  variant="outlined"
-                  type="password"
-                  fullWidth
-                  id="cpswd"
                 />
+      
+                <FormControl variant="outlined" fullWidth>
+                  <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                  <OutlinedInput
+                    error={err.password_err}
+                    type={showRegisterPassword ? 'text' : 'password'}
+                    id="pswrd"
+                    value={createAccData.password}
+                    onChange={(e) =>
+                      setCreateAccData({
+                        ...createAccData,
+                        password: e.target.value,
+                      })
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowRegisterPassword((prev) => !prev)}
+                          edge="end"
+                        >
+                          {showRegisterPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                    fullWidth
+                    
+                  />
+                  {err.password_err && <FormHelperText id="outlined-weight-helper-text" error>Password should have atleast 8 characters with atleast one lowercase letter and special character</FormHelperText>}
+                </FormControl>
+                
+                <FormControl variant="outlined" fullWidth>
+                  <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
+                  <OutlinedInput
+                    error={err.cPassword_err}
+                    type={showCPassword ? 'text' : 'password'}
+                    id="cpswd"
+                    value={createAccData.cPassword}
+                    onChange={(e) =>
+                      setCreateAccData({
+                        ...createAccData,
+                        cPassword: e.target.value,
+                      })
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowCPassword((prev) => !prev)}
+                          edge="end"
+                        >
+                          {showCPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Confirm Password"
+                    fullWidth
+                    
+                  />
+                  {err.password_err && <FormHelperText id="outlined-weight-helper-text" error>Password should have atleast 8 characters with atleast one lowercase letter and special character</FormHelperText>}
+                </FormControl>
                 <Button
-                  sx={{backgroundColor: '#1565c0!important'}}
+                  sx={{ backgroundColor: "#1565c0!important" }}
                   fullWidth
                   variant="contained"
                   onClick={handleCreateAccount}
                 >
                   Create Account
                 </Button>
-                <Button fullWidth color="warning" variant="outlined" onClick={() => handleClear2(setErr)}>
+                <Button
+                  fullWidth
+                  color="warning"
+                  variant="outlined"
+                  onClick={() => handleClear2(setErr)}
+                >
                   Clear
                 </Button>
                 <div className={classes.switchForm2}>
                   <div> Already have an account?</div>
-                  <Button onClick={handleSignUp}>Login</Button>
+                  <Button onClick={handleSignUpPage}>Login</Button>
                 </div>
                 <div className={classes.terms}>
                   By clicking 'Create account', I agree to Reh-A's TOS and
