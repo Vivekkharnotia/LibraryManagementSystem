@@ -1,5 +1,5 @@
 import React from "react";
-import MobileNavbar from "../MobileNavbar/MobileNavbar";
+import MobileNavbar from "../MobileNavbar/MobileNavbar"
 import useDevice from "../../../utils/useDevice";
 
 const Navbar = () => {
