@@ -130,12 +130,10 @@ function SignIn() {
       console.log("Valid cred .....");
       const user = await createUserWithEmailAndPassword(auth, createAccData.email, createAccData.password);
       const userId = user.user.uid;
-      await setDoc(doc(db, "Userdata", createAccData.email), {
+      await setDoc(doc(db, "Userdata", userId), {
         fname: createAccData.fname,
         lname: createAccData.lname,
-        password: createAccData.password,
         email: createAccData.email,
-        uid: userId
       });
       setCreateAccData(initialCreateAccData);
     }
