@@ -127,15 +127,12 @@ function SignIn() {
     });
 
     if (validCred) {
-      console.log("Valid cred .....");
       const user = await createUserWithEmailAndPassword(auth, createAccData.email, createAccData.password);
       const userId = user.user.uid;
       await setDoc(doc(db, "Userdata", userId), {
         fname: createAccData.fname,
         lname: createAccData.lname,
-        password: createAccData.password,
         email: createAccData.email,
-        uid: userId
       });
       setCreateAccData(initialCreateAccData);
     }
@@ -148,18 +145,17 @@ function SignIn() {
         await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
         setLoginData(initialLoginData);
       } catch (error) {
-        // console.log(error);
-        alert("Incorrect Credentials!!!")
-      }
+          alert("Incorrect Credentials!!!")
+        }
     }
   }
 
   return (
     <>
       <div className={classes.container}>
+            <div>{loggedInUser}</div>
         <ThemeProvider theme={theme}>
           <Paper className={classes.card} elevation={0}>
-            {/* <div>{loggedInUser}</div> */}
             <div className={classes.innerBox} id="innerbox">
               <div className={classes.cardFront}>
                 <div className={classes.title}>Login</div>
