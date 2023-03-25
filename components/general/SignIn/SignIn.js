@@ -150,14 +150,6 @@ function SignIn() {
     }
   }
 
-  const [loggedInUser, setLoggedInUser] = useState("");
-  useEffect(() => {
-    onAuthStateChanged(auth, (currentuser) => {
-      setLoggedInUser(currentuser?.email);
-    })
-  }, [])
-
-
   return (
     <>
       <div className={classes.container}>
