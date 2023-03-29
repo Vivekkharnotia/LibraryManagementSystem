@@ -32,7 +32,7 @@
 }
 
 .drawerHead{
-    margin: auto;
+    margin: auto!important;
 }
 .sidebarBtn{
     display: flex;

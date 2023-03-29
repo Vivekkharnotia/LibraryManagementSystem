@@ -1,4 +1,4 @@
-import { Modal } from '@mui/material';
+import { Button, Modal } from '@mui/material';
 import React from 'react'
 import { BsPlus } from 'react-icons/bs';
 import useDevice from 'utils/useDevice';
@@ -8,6 +8,7 @@ const NewAppointmentCard = () => {
     const handleNewOpen = () => setNewOpen(true);
     const handleNewClose = () => setNewOpen(false);
     const { isMobile } = useDevice();
+    
   
     return (
       <>
@@ -32,7 +33,8 @@ const NewAppointmentCard = () => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] rounded-[15px] justify-center items-center h-[80vh] w-[80%] bg-[#fff] m-auto"></div>
+          <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] rounded-[15px] justify-center items-center h-[80vh] w-[80%] bg-[#fff] m-auto">
+          </div>
         </Modal>
       </>
     );
