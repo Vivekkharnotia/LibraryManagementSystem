@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+.head{
+    display: flex;
+    flex-direction: column;
+    max-width: 770px;
+    margin: auto;
+    align-items: center;
+}
+.title{
+    color: rgb(48, 48, 48);
+    width: 100%;
+    margin-top: 50px;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.author{
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+}
+.authorAvatar{
+    margin-right: 10px;
+    /* color: ; */
+}
+.image1{
+    margin-top: 70px;
+    width: 100%;
+    text-align: center;
+}
+.image1 > img{
+    width: 65%;
+    border-radius: 10px;
+}
+
+.container{
+    margin-top: 80px;
+    position: relative;
+}
+.anchors{
+    width: calc(14vw + 30px);
+    float: left;
+    position: sticky;
+    top: 20px;
+    left: 20px;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    color: #93A1B0;
+    font-weight: bold;
+}
+.anchors :hover{
+    color: #40464d;
+}
+.anchors > li{
+    margin-bottom: 30px;
+}
+.contact{
+    float: right;
+    position: sticky;
+    top: 20px;
+    right: 60px;
+}
+.contact > li{
+    margin-bottom: 25px;
+}
+.content{
+    margin: auto;
+    max-width: 760px;
+}
+/* .fb > a{
+    color: rgb(87, 84, 84);
+} */
+.fb{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.icn{
+    background-color: #40464d;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    height: 2.2rem;
+    width: 2.2rem;
+    padding: 0.3rem;
+}
+.fb :hover{
+    transition: all 250ms ease;
+    background-color: #1565c0;
+    cursor: pointer;
+}
+
+.fb>button{
+    font-size: 1rem;
+    aspect-ratio: 1;
+    background-color: #40464d;
+    border-radius: 50%;
+    color: white;
+}
+
+.fb>button:hover{
+    background-color: hsl(212, 9%, 40%);
+}
+
+@media only screen and (max-width : 1212px) {
+    .anchors, .contact{
+        display: none;
+    }
+    .image1 > img{
+        width: 80%;
+    }
+}
+@media only screen and (max-width : 768px) {
+    .title{
+        font-size: 35px;
+        width: 80%;
+    }
+}
+@media only screen and (max-width : 500px) {
+    .author{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .title{
+        margin-left: 0px;
+        margin-right: 0px;
+        font-size: 1.5rem;
+    }
+}

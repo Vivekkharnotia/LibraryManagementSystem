@@ -16,6 +16,28 @@
     padding: 0px 25px;
 }
 
+
+/* .bold{
+    position: relative;
+}
+.bold:after{
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 999;
+} */
+
+.text>p:focus>b{
+    outline: 2px solid red;
+    outline-offset: 2px;
+}
+
+/* .bold:after:focus{
+    outline: 2px solid #314351;
+    outline-offset: 2px;
+} */
+
+
 @media only screen and (max-width : 768px) {
     .title{
         font-size: 1.5rem;

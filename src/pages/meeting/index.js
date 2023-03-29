@@ -8,10 +8,6 @@ const MeetingAppContainer = dynamic(
   {
     ssr: false,
   }
-//   () => import("../src/containers/MeetingAppContainer"),
-//   {
-//     ssr: false,
-//   }
 );
 
 export default function Home() {
