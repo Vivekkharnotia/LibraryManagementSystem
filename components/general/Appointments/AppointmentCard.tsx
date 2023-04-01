@@ -60,7 +60,7 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
           severity="success"
           sx={{ width: "100%" }}
         >
-          This is a success message!
+          Copied to clipboard
         </Alert>
       </Snackbar>
       <div className="hover:border-[2px] transition ease-in-out flex flex-col w-[240px] h-[270px] border-[1px] border-[#000] rounded-[15px] cursor-pointer px-5 py-5 relative justify-items-start">
