@@ -20,7 +20,7 @@ function BlogsNav() {
         }}
       >
         <Link href="/blogs" className={styles.logo}>
-          Reh-a
+          R-A
         </Link>
 
         <div className={styles.container}>
