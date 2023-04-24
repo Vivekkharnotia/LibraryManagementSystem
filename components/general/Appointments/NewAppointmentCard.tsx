@@ -21,7 +21,7 @@ const NewAppointmentCard = () => {
           </div>
         ) : (
           <div
-            className="flex flex-row items-center justify-center max-w-[240px] h-[240px] border-[1px] border-dashed border-[#000] rounded-[15px] cursor-pointer justify-self-center w-full md:justify-self-auto"
+            className="hover:border-[2px] hover:border-solid flex flex-row items-center justify-center max-w-[240px] h-[240px] border-[1px] border-dashed border-[#000] rounded-[15px] cursor-pointer justify-self-center w-full md:justify-self-auto"
             onClick={handleNewOpen}
           >
             <BsPlus className="w-8 h-8" />
