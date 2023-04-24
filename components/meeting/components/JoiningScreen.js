@@ -461,7 +461,7 @@ export function JoiningScreen({
                         <Grid
                           container
                           alignItems="center"
-                          justify="center"
+                          justifyContent="center"
                           spacing={2}
                         >
                           <Grid item>

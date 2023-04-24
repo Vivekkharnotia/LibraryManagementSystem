@@ -1,5 +1,6 @@
 import { CheckIcon, ClipboardIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
+import { useMeeting } from "../../MeetingContext";
 import useResponsiveSize from "../utils/useResponsiveSize";
 
 export function MeetingDetailsScreen({
@@ -12,10 +13,11 @@ export function MeetingDetailsScreen({
   onClickStartMeeting,
 }) {
   const [meetingId, setMeetingId] = useState("");
+  const { meetingId: meetId, updateMeetingId } = useMeeting();
   const [meetingIdError, setMeetingIdError] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
-  const [iscreateMeetingClicked, setIscreateMeetingClicked] = useState(false);
+  const [iscreateMeetingClicked, setIscreateMeetingClicked] = useState(true);
   const [isJoinMeetingClicked, setIsJoinMeetingClicked] = useState(false);
   const padding = useResponsiveSize({
     xl: 6,
@@ -32,7 +34,7 @@ export function MeetingDetailsScreen({
         padding: padding,
       }}
     >
-      {iscreateMeetingClicked ? (
+      {/* {iscreateMeetingClicked ? (
         <div className="border border-solid border-gray-400 rounded-xl px-4 py-3  flex items-center justify-center">
           <p className="text-white text-base">Meeting code: {meetingId}</p>
           <button
@@ -66,7 +68,29 @@ export function MeetingDetailsScreen({
             <p className="text-xs text-red-600">Please enter valid meetingId</p>
           )}
         </>
-      ) : null}
+      ) : null} */}
+
+      {iscreateMeetingClicked && (
+        <div className="border border-solid border-gray-400 rounded-xl px-4 py-3  flex items-center justify-center">
+          <p className="text-white text-base">Meeting code: {meetId}</p>
+          <button
+            className="ml-2"
+            onClick={() => {
+              navigator.clipboard.writeText(meetId);
+              setIsCopied(true);
+              setTimeout(() => {
+                setIsCopied(false);
+              }, 3000);
+            }}
+          >
+            {isCopied ? (
+              <CheckIcon className="h-5 w-5 text-green-400" />
+            ) : (
+              <ClipboardIcon className="h-5 w-5 text-white" />
+            )}
+          </button>
+        </div>
+      )}
 
       {(iscreateMeetingClicked || isJoinMeetingClicked) && (
         <>
@@ -76,10 +100,6 @@ export function MeetingDetailsScreen({
             placeholder="Enter your name"
             className="px-4 py-3 mt-5 bg-gray-650 rounded-xl text-white w-full text-center"
           />
-
-          {/* <p className="text-xs text-white mt-1 text-center">
-            Your name will help everyone identify you in the meeting.
-          </p> */}
           <button
             disabled={participantName.length < 3}
             className={`w-full ${
@@ -104,13 +124,14 @@ export function MeetingDetailsScreen({
         </>
       )}
 
-      {!iscreateMeetingClicked && !isJoinMeetingClicked && (
+      {/* {!iscreateMeetingClicked && !isJoinMeetingClicked && (
         <div className="w-full md:mt-0 mt-4 flex items-center justify-center flex-col">
           <button
             className="w-full bg-purple-350 text-white px-2 py-3 rounded-xl"
             onClick={async (e) => {
               const meetingId = await onClickCreateMeeting();
               setMeetingId(meetingId);
+              updateMeetingId(meetingId);
               setIscreateMeetingClicked(true);
             }}
           >
@@ -125,7 +146,7 @@ export function MeetingDetailsScreen({
             Join a meeting
           </button>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
