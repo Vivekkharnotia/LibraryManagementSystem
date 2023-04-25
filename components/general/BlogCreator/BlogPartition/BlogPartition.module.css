@@ -1,42 +1,46 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap');
+
+
+.block{
+    position: relative;
+    margin-bottom: 3rem;
+    padding: 0px 25px;
+}
 .title{
     font-size: 1.8rem;
     font-weight: 600;
     margin-bottom: 2rem;
     color: #314351;
 }
+.title>p>b>span{
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 1.8rem!important;
+    font-weight: 600!important;
+    color: #314351!important;
+}
 .text{
-    font-family: 'Montserrat', sans-serif;
-    font-size: 17px;
-    line-height: 2rem;
-    color : #12181d
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 17px !important;
+    line-height: 2rem !important;
+    color : #12181d !important;
 }
-.block{
-    margin-bottom: 3rem;
-    padding: 0px 25px;
+.text>p>p{
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 17px !important;
+    line-height: 2rem !important;
+    color : #12181d !important;
 }
-
-
-/* .bold{
-    position: relative;
-}
-.bold:after{
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 999;
-} */
 
 .text>p:focus>b{
     outline: 2px solid red;
     outline-offset: 2px;
 }
 
-/* .bold:after:focus{
-    outline: 2px solid #314351;
-    outline-offset: 2px;
-} */
-
+.deleteIcon{
+    position: absolute;
+    right: -1rem;
+    top: 2px;
+}
 
 @media only screen and (max-width : 768px) {
     .title{
