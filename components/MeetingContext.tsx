@@ -22,8 +22,6 @@ export const MeetingProvider = ({ children }: MeetingProviderProps) => {
   const [token, setToken] = useState<string | null>("");
   const [meetingId, setMeetingId] = useState<string | null>("");
 
-  console.log(token, meetingId);
-
   const updateToken = (newToken: string | null) => {
     setToken(newToken);
   };

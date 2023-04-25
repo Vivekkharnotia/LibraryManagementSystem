@@ -1,4 +1,7 @@
+import { useRouter } from "next/router";
+
 export function LeaveScreen({ setIsMeetingLeft }) {
+  const router = useRouter();
   return (
     <div className="bg-gray-800 h-screen flex flex-col flex-1 items-center justify-center">
       <h1 className="text-white text-4xl">You left the meeting!</h1>
@@ -6,10 +9,10 @@ export function LeaveScreen({ setIsMeetingLeft }) {
         <button
           className="`w-full bg-purple-350 text-white px-16 py-3 rounded-lg text-sm"
           onClick={() => {
-            setIsMeetingLeft(false);
+            router.push("/app")
           }}
         >
-          Rejoin the Meeting
+          Back to Dashboard
         </button>
       </div>
     </div>
