@@ -156,6 +156,8 @@ function MeetingAppContainer() {
             setIsMeetingLeft={setIsMeetingLeft}
           />
         )
+      ) : isMeetingLeft ? (
+        <LeaveScreen setIsMeetingLeft={setIsMeetingLeft} />
       ) : (
         <div>Unauthorized</div>
       )}
