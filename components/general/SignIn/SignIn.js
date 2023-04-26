@@ -239,7 +239,7 @@ function SignIn() {
                   Clear
                 </Button>
                 <div className={classes.switchForm1}>
-                  <div>Don't Have an account yet?</div>
+                  <div>Don&apos;t Have an account yet?</div>
                   <Button color="primary" onClick={handleLoginPage}>
                     Create Account
                   </Button>
@@ -388,7 +388,7 @@ function SignIn() {
                   <Button onClick={handleSignUpPage}>Login</Button>
                 </div>
                 <div className={classes.terms}>
-                  By clicking 'Create account', I agree to Reh-A's TOS and
+                  By clicking &apos;Create account&apos;, I agree to Reh-A&apos;s TOS and
                   privacy policy.
                 </div>
               </div>
