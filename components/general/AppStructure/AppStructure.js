@@ -148,7 +148,7 @@ export default function MiniDrawer() {
       <Drawer variant="permanent" open={open} className={sidebar.view1}>
         <DrawerHeader>
           <Typography className={sidebar.drawerHead} variant="h5">
-            Reh-A
+            R-A
           </Typography>
         </DrawerHeader>
         <Divider />

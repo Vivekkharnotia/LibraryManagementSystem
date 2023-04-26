@@ -1,15 +1,43 @@
-import BlogsNav from 'components/general/Blogs/BlogsNav/BlogsNav'
-import Footer from 'components/general/Footer/Footer'
-import React from 'react'
+import { Box, CircularProgress } from "@mui/material";
+import { useUser } from "components/UserContext";
+import BlogsNav from "components/general/Blogs/BlogsNav/BlogsNav";
+import Footer from "components/general/Footer/Footer";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 
 function BlogsLayout(props: any) {
+  const { user, loading } = useUser();
+  const router = useRouter();
+
+  // useEffect(() => {
+  //   if (!user) router.push("/");
+  // }, [user]);
+
   return (
     <>
-        <BlogsNav />
-        {props.children}
-        <Footer /> 
+      {!loading ? (
+        <Box
+          sx={{
+            height: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+        >
+          Loading
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          <BlogsNav />
+          {props.children}
+          <Footer />
+        </>
+      )}
     </>
-  )
+  );
 }
 
-export default BlogsLayout
+export default BlogsLayout;

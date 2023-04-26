@@ -10,7 +10,7 @@ export default function BlogPartition({anchorId, handleDeleteClick}) {
   return (
     <div className={styles.block} id={anchorId}>
       <div className={styles.title} contentEditable='true' suppressContentEditableWarning={true}>
-        Click to edit title
+        Click to edit heading
       </div>
       <div className={styles.text}>
         <p contentEditable='true' suppressContentEditableWarning={true}>

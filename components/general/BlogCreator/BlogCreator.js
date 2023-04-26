@@ -3,19 +3,26 @@ import React, { useEffect, useRef, useState } from "react";
 import style from "./VisitBlog.module.css";
 import BlogPartition from "./BlogPartition/BlogPartition.js";
 import Avatar from "@mui/material/Avatar";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, Tooltip } from "@mui/material";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import EditIcon from '@mui/icons-material/Edit';
+import Zoom from '@mui/material/Zoom';
+import { useUser } from "components/UserContext";
 
 export default function BlogCreator({ data }) {
   const container = useRef(null);
   const [titles, setTitles] = useState([]);
+  const [tooltipTitle, setTooltipTitle] = useState("Edit Image");
   const blogImageInput = useRef(null);
+  const user = useUser();
+  const displayName = user.user? user.user.displayName : 'loading...';
+  const date = new Date();
+
 
   const handleDeleteClick = (anchorId) => {
     console.log('block', block)
     block.map((item, index) => {
-      console.log(item.props.anchorId, anchorId)
+      // console.log(item.props.anchorId, anchorId)
       // item.props.anchorId === anchorId && block.splice(index, 1);
     });
   };
@@ -75,15 +82,6 @@ export default function BlogCreator({ data }) {
         handleDeleteClick={handleDeleteClick}
       />,
     ]);
-
-
-    setBlock(prevState => {
-      const newState = prevState.map(obj => {
-        return {...obj, country: 'Denmark'};
-      });
-
-      return newState;
-    });
   };
 
   const handleAddImageClick = () => {
@@ -105,21 +103,15 @@ export default function BlogCreator({ data }) {
   useEffect(() => {
     const input = document.querySelector('#file');
     const preview = document.querySelector("#heroImage");
-    const fileName = document.querySelector('#fileName');
     input.addEventListener('change', updateImageDisplay);
 
     function updateImageDisplay() {
     
       const curFiles = input.files;
-      if (curFiles.length === 0) {
-        const para = document.createElement('p');
-        para.textContent = 'No files currently selected for upload';
-        preview.appendChild(para);
-      } else {
     
         for (const file of curFiles) {
           if (validFileType(file)) {
-            fileName.textContent = `File name ${file.name}, file size ${returnFileSize(file.size)}.`;
+            setTooltipTitle(`${file.name} (${returnFileSize(file.size)})`)
             preview.children[0].children[0].src = URL.createObjectURL(file);
     
           } else {
@@ -127,7 +119,6 @@ export default function BlogCreator({ data }) {
           }
     
         }
-      }
     }
 
     const fileTypes = [
@@ -156,8 +147,10 @@ export default function BlogCreator({ data }) {
           variant="h3"
           sx={{ fontWeight: "bolder" }}
           className={style.title}
+          contentEditable="true"
+          suppressContentEditableWarning={true}
         >
-          Want to Reduce Support Volume? Follow These 5 Steps
+          Click to Edit Title
         </Typography>
         <div className={style.author}>
           <Avatar
@@ -166,30 +159,30 @@ export default function BlogCreator({ data }) {
             sx={{ backgroundColor: "#1565c0" }}
           ></Avatar>
           <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-            Written By Megan Kopalasingam &nbsp; &nbsp;
+            Written By {displayName} &nbsp; &nbsp;
           </Typography>
-          <Typography variant="body1">February 16, 2023</Typography>
+          <Typography variant="body1">{`${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`}</Typography>
         </div>
       </div>
 
       {/* -----------------------hero image --------------------------------------*/}
 
       <div className={style.image1} id="heroImage">
-        <span>
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMaJKOnh70m9VVMzrgdZY0jTGUfLSXFI01IQ&usqp=CAU"
-            alt=""
-          />
-        </span>
+        <div>
+          <Tooltip title={tooltipTitle} TransitionComponent={Zoom}>
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMaJKOnh70m9VVMzrgdZY0jTGUfLSXFI01IQ&usqp=CAU"
+              alt=""
+            />
+          </Tooltip>
+          <IconButton className={style.editIcon}>
+                <label htmlFor="file" className={style.addImage}>
+                    <input  type="file" name="" id="file" className={style.file} accept=".jpg, .jpeg, .png"/>
+                    <EditIcon style={{color: 'white'}} />
+                </label>
+          </IconButton>
+        </div>
 
-        <p className={style.fileName} id="fileName"></p>
-
-        <IconButton className={style.editIcon}>
-              <label htmlFor="file" className={style.addImage}>
-                  <input  type="file" name="" id="file" className={style.file} accept=".jpg, .jpeg, .png"/>
-                  <EditIcon />
-              </label>
-        </IconButton>
       </div>
 
 
