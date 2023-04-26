@@ -3,7 +3,6 @@ import styles from "./Avatar.module.css";
 import arrow_down from "../../../public/arrow_down.svg";
 import avatar from "../../../public/avatar.jpg";
 import Image from "next/image";
-import AvatarContainerClickHandler from "utils/outsideClickAlerter";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
