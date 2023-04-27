@@ -15,7 +15,7 @@ import PhoneIcon from "@mui/icons-material/Phone"; //call
 import MenuIcon from "@mui/icons-material/Menu"; // menu
 import sidebar from "./Sidebar.module.css";
 import { Button, Typography } from "@mui/material";
-import AppNavbar from "../AppNavBar/AppNavbar";
+import AppNavBar from "../AppNavBar/AppNavBar";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -143,12 +143,12 @@ export default function MiniDrawer() {
 
   return (
     <>
-      <AppNavbar open={open} />
+      <AppNavBar open={open} />
 
       <Drawer variant="permanent" open={open} className={sidebar.view1}>
         <DrawerHeader>
           <Typography className={sidebar.drawerHead} variant="h5">
-            Reh-A
+            R-A
           </Typography>
         </DrawerHeader>
         <Divider />

@@ -29,7 +29,7 @@ const AppBar = styled(MuiAppBar, {
 
 
 
-export default function AppNavbar({ open }) {
+export default function AppNavBar({ open }) {
   return (
     <>
       <AppBar

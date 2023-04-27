@@ -63,7 +63,7 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
           Copied to clipboard
         </Alert>
       </Snackbar>
-      <div className="hover:border-[2px] transition ease-in-out flex flex-col w-[240px] h-[270px] border-[1px] border-[#000] rounded-[15px] cursor-pointer px-5 py-5 relative justify-items-start">
+      <div className="hover:outline hover:outline-[1px] transition ease-in-out flex flex-col w-[240px] h-[270px] border-[1px] border-[#000] rounded-[15px] cursor-pointer px-5 py-5 relative justify-items-start">
         <div onClick={handleOpen} style={{position: "relative"}}>
           <div style={{marginBottom: "15px"}}>
             <span className="text-[24px] mr-2">{number}.</span>
@@ -104,7 +104,7 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
         aria-describedby="modal-modal-description"
       >
         <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] rounded-[15px] justify-center items-center h-[80vh] w-[95%] bg-[#fff] m-auto md:w-[80%]">
-          <CurrentCaseContent />
+          <CurrentCaseContent handleClose={handleClose} />
         </div>
       </Modal>
 

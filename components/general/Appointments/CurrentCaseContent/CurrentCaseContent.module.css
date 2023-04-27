@@ -1,7 +1,13 @@
 .container{
+    position: relative;
     display: flex;
     padding: 2rem;
     height: 100%;
+}
+.cancelButton{
+    position: absolute!important;
+    top: 0.5rem;
+    right: 0.5rem;
 }
 
 .left{

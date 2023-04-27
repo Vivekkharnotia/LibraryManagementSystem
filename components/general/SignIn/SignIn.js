@@ -23,9 +23,10 @@ import {
 } from "./SigninFunctions.js";
 import classes from "./SignIn.module.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase-config.js';
+import { useUser } from "components/UserContext.tsx";
 
 const theme = createTheme({
   palette: {
@@ -64,6 +65,7 @@ function SignIn() {
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
   const [showCPassword, setShowCPassword] = useState(false);
+  const {setLoggedIn} = useUser();
 
   const [err, setErr] = useState(iniErrCreateUserState);
   function handleLoginPage() {
@@ -129,6 +131,9 @@ function SignIn() {
     if (validCred) {
       try{
       const user = await createUserWithEmailAndPassword(auth, createAccData.email, createAccData.password);
+      await updateProfile(auth.currentUser, { displayName: `${createAccData.fname} ${createAccData.lname}` }).catch(
+        (err) => console.log(err)
+      );
       const userId = user.user.uid;
       await setDoc(doc(db, "Userdata", userId), {
         fname: createAccData.fname,
@@ -136,6 +141,7 @@ function SignIn() {
         email: createAccData.email,
       });
       setCreateAccData(initialCreateAccData);
+      setLoggedIn(true);
     } catch (error) {
       alert(error.message);
     }
@@ -148,6 +154,7 @@ function SignIn() {
       try {
         await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
         setLoginData(initialLoginData);
+        setLoggedIn(true);
       } catch (error) {
           alert("Incorrect Credentials!!!")
         }
@@ -232,7 +239,7 @@ function SignIn() {
                   Clear
                 </Button>
                 <div className={classes.switchForm1}>
-                  <div>Don't Have an account yet?</div>
+                  <div>Don&apos;t Have an account yet?</div>
                   <Button color="primary" onClick={handleLoginPage}>
                     Create Account
                   </Button>
@@ -381,7 +388,7 @@ function SignIn() {
                   <Button onClick={handleSignUpPage}>Login</Button>
                 </div>
                 <div className={classes.terms}>
-                  By clicking 'Create account', I agree to Reh-A's TOS and
+                  By clicking &apos;Create account&apos;, I agree to Reh-A&apos;s TOS and
                   privacy policy.
                 </div>
               </div>

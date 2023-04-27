@@ -1,20 +1,26 @@
 import React from "react";
 import styles from "./BlogPartition.module.css";
+import { IconButton } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function BlogPartition({anchorId, setBold, temp}) {
+export default function BlogPartition({anchorId, handleDeleteClick}) {
+
+ 
 
   return (
     <div className={styles.block} id={anchorId}>
-      <div className={styles.title} contentEditable="true">
-        Click to edit title
+      <div className={styles.title} contentEditable='true' suppressContentEditableWarning={true}>
+        Click to edit heading
       </div>
       <div className={styles.text}>
-        <p onClick={()=>setBold(document.getElementById(anchorId).children[1].children[0])} contentEditable="true">
+        <p contentEditable='true' suppressContentEditableWarning={true}>
           Click to edit content
-          {temp}
-          &nbsp;<b contentEditable="true" className={styles.bold}>important</b>&nbsp;
         </p>
       </div>
+
+      <IconButton className={styles.deleteIcon} onClick={() => handleDeleteClick(anchorId)}>
+        <DeleteIcon color="error" />
+      </IconButton>
     </div>
   );
 }

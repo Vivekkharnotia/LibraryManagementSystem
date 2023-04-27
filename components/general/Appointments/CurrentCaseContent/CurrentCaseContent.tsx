@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, CircularProgress, IconButton } from "@mui/material";
 import { db } from "components/general/firebase-config";
 import {
   diurnalOptions,
@@ -11,6 +11,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import style from "./CurrentCaseContent.module.css";
 import Session from "./Session/Session";
+import CloseIcon from '@mui/icons-material/Close';
 
 interface Profile {
   fname?: string;
@@ -34,10 +35,11 @@ interface Profile {
   slots?: string[];
 }
 
-function CurrentCaseContent() {
+function CurrentCaseContent({handleClose}: {handleClose: () => void}) {
   const [formData, setFormData] = useState<Profile | null>({});
   const [profileData, setProfileData] = useState<Profile | null>({});
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { user } = useUser();
 
   const onChangePainOptions = (newCheckedValues: string[]) => {
@@ -100,7 +102,13 @@ function CurrentCaseContent() {
 
   return (
     <>
+      {
+        loading ? <CircularProgress /> :
       <div className={style.container}>
+        <IconButton onClick={handleClose} className={style.cancelButton}>
+          <CloseIcon />
+        </IconButton>
+
         <div className={style.left}>
           <h3 className={style.mainHeading}>Case: myCase</h3>
           <div className={style.leftContent}>
@@ -150,7 +158,7 @@ function CurrentCaseContent() {
         </div>
         {isEditing && (
 
-          <div className="absolute bottom-[3rem] right-[3rem] flex gap-4">
+          <div className="sticky w-max md:absolute  md:bottom-[0.5rem] md:left-[auto] md:right-[2rem] bottom-[-3rem] left-[100rem] flex gap-4">
             <Button
               onClick={() => {
                 setIsEditing(false);
@@ -175,6 +183,7 @@ function CurrentCaseContent() {
           </div>
         )}
       </div>
+      }
     </>
   );
 }

@@ -4,14 +4,31 @@ import consultancyGIF from "./../../../public/consultancy.gif";
 import videoGIF from "./../../../public/video.gif";
 import { useVisibility } from "../../../utils/isVisible";
 import Testimonial from "../Testimonial/Testimonial";
+import useDevice from "utils/useDevice";
+import { useEffect, useState } from "react";
 
 export default function Main() {
   var offset: number = 1040;
+  const isMobile = useDevice();
+  const [specialOffset, setSpecialOffset] = useState(650);
+
+  useEffect(() => {
+    const width = window.innerWidth;
+    console.log(width);
+    if (width < 768) {
+      setSpecialOffset(100);
+    } else {
+      setSpecialOffset(650);
+    }
+  }, [])
+
+  // isMobile.isMobile ? specialOffset=100 : specialOffset=650;
 
   const [isFirstSliceVisible, firstSlice] = useVisibility<HTMLDivElement>(
     650,
     1
   );
+  
   const [isSecondSliceVisible, secondSlice] = useVisibility<HTMLDivElement>(
     offset,
     0
