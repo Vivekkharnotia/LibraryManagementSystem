@@ -27,9 +27,12 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
     useEffect(() => {
         onAuthStateChanged(auth, (currentUser) => {
-            setLoading(true)
-            setUser(currentUser)
-            setLoading(false)
+            setLoading(true);
+            console.log('Loading set to true');
+            setUser(currentUser);
+            console.log('Loading set to false');
+
+            setLoading(false);
         })
     }, [])
 
