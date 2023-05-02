@@ -8,10 +8,11 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import { auth } from "../firebase-config";
+import { useRouter } from "next/router";
 
 function Avatar() {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
+  const router = useRouter();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -26,7 +27,10 @@ function Avatar() {
   const handleLogOutClick = async () => {
     try {
       await auth.signOut();
-      
+      if(window){
+        window.localStorage.setItem('loggedIn', 'false');
+      }
+      router.push('/');
     } catch (e){
      console.log(e)
     } 

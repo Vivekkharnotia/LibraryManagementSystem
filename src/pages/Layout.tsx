@@ -4,7 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import AppStructure from "../../components/general/AppStructure/AppStructure";
 import { useUser } from "components/UserContext";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -17,20 +17,32 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function Layout(props: any) {
-  const { user, loading, loggedIn } = useUser();
+  const { loading } = useUser();
   const router = useRouter();
-
-  // useEffect(() => {
-  //   if(!loggedIn) router.push("/");
-  //   console.log(loggedIn)
-  // }, [loggedIn]);
+  
+  useEffect(() => {
+    if (window) {
+      if (window.localStorage.getItem("loggedIn") === "false") {
+        router.push("/");
+      }
+    }
+  }, []);
 
   return (
     <>
       {loading ? (
-        <Box sx={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1rem'  }}>
-            Loading
-            <CircularProgress />
+        <Box
+          sx={{
+            height: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+        >
+          Loading
+          <CircularProgress />
         </Box>
       ) : (
         <>
