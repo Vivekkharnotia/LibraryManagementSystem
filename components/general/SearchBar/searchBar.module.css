@@ -1,6 +1,7 @@
 .searchBar{
     display: flex;
     flex-grow: 1;
+    padding-block: 0.5rem;
 }
 .searchBar_input_container{
     flex-shrink: 0;

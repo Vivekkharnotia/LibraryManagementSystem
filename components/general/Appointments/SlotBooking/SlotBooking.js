@@ -83,15 +83,12 @@ export default function SlotBooking({
       setDate("");
       return;
     }
-    console.log(e);
     const currdate = `${e.$D}-${e.$M + 1}-${e.$y}`;
     setDate(currdate);
-    console.log(currdate);
     const refDoc = doc(db, "Slots", currdate);
     const findDoc = await getDoc(refDoc);
     if (findDoc.exists()) {
       const slots = findDoc.data();
-      console.log(slots.slots);
       setAllSlots(slots.slots);
       setLoading(false);
     } else {
