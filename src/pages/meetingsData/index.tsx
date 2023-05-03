@@ -13,44 +13,6 @@ interface MeetingsDataProps {
 }
 
 const MeetingsData = ({ meetingsData }: MeetingsDataProps) => {
-  // const [meetingsData, setMeetingsData] = useState<MeetingType[]>([]);
-
-  // const getMeetingsData = async () => {
-  //   const meetingCollectionRef = collection(db, "Meetings");
-  //   const querySnapshot = await getDocs(meetingCollectionRef);
-  //   setMeetingsData(querySnapshot.docs.map((doc) => doc.data() as MeetingType));
-  // };
-
-  // fetch the user info using meetingsData.userId from firebase and add that data to the meetingsData array
-  // const addUserDataInMeeting = async (meeting: MeetingType) => {
-  //   const docRef = doc(db, "Userdata", meeting?.userId);
-  //   const docSnap = await getDoc(docRef);
-  //   if (docSnap.exists()) {
-  //     const userData = docSnap.data();
-  //     const updatedMeeting = { ...meeting, userData };
-  //     return updatedMeeting;
-  //   } else {
-  //     console.log("No such document!");
-  //     return meeting;
-  //   }
-  // };
-
-  // const addUserDataInMeetings = async () => {
-  //   const updatedMeetings = await Promise.all(
-  //     meetingsData.map(addUserDataInMeeting)
-  //   );
-  //   setMeetingsData(updatedMeetings);
-  // };
-
-  // useEffect(() => {
-  //   getMeetingsData();
-
-  //   // fetch info about users and add to meetingsData
-  //   if (meetingsData.length > 0) {
-  //     addUserDataInMeetings();
-  //   }
-  // }, []);
-
   // get the user id from active and set its activeMeetingId field to null
   const handleMeetingSuccess = async (userId: string, meetingId: string) => {
     const docRef = doc(db, "Userdata", userId);

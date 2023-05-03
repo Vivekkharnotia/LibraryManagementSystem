@@ -53,8 +53,7 @@ function Session({ slot, index }: { slot: string; index: number }) {
     const _meetingId = await createMeeting({ token });
     updateToken(token);
     updateMeetingId(_meetingId);
-    // router.push("/meeting");
-    // router.push("/meeting", undefined, { target: "_blank" });
+    router.push("/meeting");
   };
 
   return (
