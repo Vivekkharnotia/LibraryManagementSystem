@@ -1,46 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
-.head{
-    display: flex;
-    flex-direction: column;
-    max-width: 770px;
-    margin: auto;
-    align-items: center;
-}
-.title{
-    color: rgb(48, 48, 48);
-    width: 100%;
-    margin-top: 50px;
-    font-family: 'Montserrat', sans-serif;
-    text-align: center;
-    margin-left: 50px;
-    margin-right: 50px;
-}
-.author{
-    margin-top: 30px;
-    display: flex;
-    align-items: center;
-}
-.authorAvatar{
-    margin-right: 10px;
-    /* color: ; */
-}
-.image1{
-    position: relative;
-    margin-top: 70px;
-    width: 100%;
-    text-align: center;
-}
-.image1 > div{
-    position: relative;
-    margin: auto;
-    width: 50vw;
-    resize: both;
-    overflow: auto;
-}
-.image1 > div > img{
-    width: 100%;
-    border-radius: 10px;
-}
+
 
 .container{
     margin-top: 80px;
@@ -110,45 +69,9 @@
 .fb>button:hover{
     background-color: hsl(212, 9%, 40%);
 }
-.addImage{
-    position: relative;
-}
-.addImage>button{
-    width: 3.8rem;
-    height: 3.8rem;
-}
-.editIcon{
-    position: absolute;
-    top: 0rem;
-    right: 0;
-    z-index: 999;
-    width: 3rem;
-    height: 3rem;
-    margin-left: 1rem;
-    cursor: pointer;
-    transition: 250ms ease-in-out;
-}
-.editIcon:hover{
-    background-color: black;
-    color: white;
-}
-.editIcon>label{
-    cursor: pointer;
-}
-.file{
-    position: absolute;
-    top: 0;
-    cursor: none;
-    pointer-events: none;
-    opacity: 0;
-    width: 0;
-}
 @media only screen and (max-width : 1212px) {
     .anchors, .contact{
         display: none;
-    }
-    .image1 > img{
-        width: 80%;
     }
 }
 @media only screen and (max-width : 768px) {

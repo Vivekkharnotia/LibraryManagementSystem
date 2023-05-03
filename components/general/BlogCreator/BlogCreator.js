@@ -1,19 +1,18 @@
-import Typography from "@mui/material/Typography";
 import React, { useEffect, useRef, useState } from "react";
 import style from "./VisitBlog.module.css";
 import BlogPartition from "./BlogPartition/BlogPartition.js";
-import Avatar from "@mui/material/Avatar";
-import { Button, IconButton, Tooltip } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import EditIcon from '@mui/icons-material/Edit';
-import Zoom from '@mui/material/Zoom';
 import { useUser } from "components/UserContext";
+import HeroImage from "./HeroImage/HeroImage";
+import HeadTitle from "./HeadTitle/HeadTitle";
 
 export default function BlogCreator({ data }) {
-  const container = useRef(null);
   const [titles, setTitles] = useState([]);
-  const [tooltipTitle, setTooltipTitle] = useState("Edit Image");
+  const container = useRef(null);
   const blogImageInput = useRef(null);
+  const [headTitle, setHeadTitle] = useState('Click to Edit Title');
+  const [heroImageSrc, setHeroImageSrc] = useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMaJKOnh70m9VVMzrgdZY0jTGUfLSXFI01IQ&usqp=CAU");
   const user = useUser();
   const displayName = user.user? user.user.displayName : 'loading...';
   const date = new Date();
@@ -97,99 +96,12 @@ export default function BlogCreator({ data }) {
     ]);
   };
 
-
-
-  // hero image change
-  useEffect(() => {
-    const input = document.querySelector('#file');
-    const preview = document.querySelector("#heroImage");
-    input.addEventListener('change', updateImageDisplay);
-
-    function updateImageDisplay() {
-    
-      const curFiles = input.files;
-    
-        for (const file of curFiles) {
-          if (validFileType(file)) {
-            setTooltipTitle(`${file.name} (${returnFileSize(file.size)})`)
-            preview.children[0].children[0].src = URL.createObjectURL(file);
-    
-          } else {
-            fileName.textContent = `File name ${file.name}: Not a valid file type. Update your selection.`;
-          }
-    
-        }
-    }
-
-    const fileTypes = [
-      "image/jpeg",
-      "image/png",
-    ];
-    
-    function validFileType(file) {
-      return fileTypes.includes(file.type);
-    }
-    function returnFileSize(number) {
-      if (number < 1024) {
-        return `${number} bytes`;
-      } else if (number >= 1024 && number < 1048576) {
-        return `${(number / 1024).toFixed(1)} KB`;
-      } else if (number >= 1048576) {
-        return `${(number / 1048576).toFixed(1)} MB`;
-      }
-    }
-  })
-
   return (
     <>
-      <div className={style.head}>
-        <Typography
-          variant="h3"
-          sx={{ fontWeight: "bolder" }}
-          className={style.title}
-          contentEditable="true"
-          suppressContentEditableWarning={true}
-        >
-          Click to Edit Title
-        </Typography>
-        <div className={style.author}>
-          <Avatar
-            className={style.authorAvatar}
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCQaD1mEh95w9y6o_8eVSErM9mnbbRQUiCgw&usqp=CAU"
-            sx={{ backgroundColor: "#1565c0" }}
-          ></Avatar>
-          <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-            Written By {displayName} &nbsp; &nbsp;
-          </Typography>
-          <Typography variant="body1">{`${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`}</Typography>
-        </div>
-      </div>
 
-      {/* -----------------------hero image --------------------------------------*/}
-
-      <div className={style.image1} id="heroImage">
-        <div>
-          <Tooltip title={tooltipTitle} TransitionComponent={Zoom}>
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMaJKOnh70m9VVMzrgdZY0jTGUfLSXFI01IQ&usqp=CAU"
-              alt=""
-            />
-          </Tooltip>
-          <IconButton className={style.editIcon}>
-                <label htmlFor="file" className={style.addImage}>
-                    <input  type="file" name="" id="file" className={style.file} accept=".jpg, .jpeg, .png"/>
-                    <EditIcon style={{color: 'white'}} />
-                </label>
-          </IconButton>
-        </div>
-
-      </div>
-
-
-
-
-
-
+      <HeadTitle displayName={displayName} date={date} headTitle={headTitle} setHeadTitle={setHeadTitle}/>
+      <HeroImage heroImageSrc={heroImageSrc} setHeroImageSrc={setHeroImageSrc} />
+      
 
       <div className={style.container}>
         <ul className={style.anchors} style={{ paddingLeft: "1.2rem" }}>

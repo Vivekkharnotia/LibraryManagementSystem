@@ -1,5 +1,5 @@
 import { db } from "components/general/firebase-config";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 
 const MeetingsData = () => {
@@ -16,15 +16,15 @@ const MeetingsData = () => {
   }, []);
 
   return (
-    <div>
-      {meetingsData.map((meeting) => {
-        return (
+    <>
+      {meetingsData.map((meeting) => 
+         (
           <div key={meeting}>
             <h1>{meeting.age}</h1>
           </div>
-        );
-      })}
-    </div>
+        )
+      )}
+    </>
   );
 };
 

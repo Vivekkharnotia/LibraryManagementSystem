@@ -1,0 +1,25 @@
+.head{
+    display: flex;
+    flex-direction: column;
+    max-width: 770px;
+    margin: auto;
+    align-items: center;
+}
+.title{
+    color: rgb(48, 48, 48);
+    width: 100%;
+    margin-top: 50px;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.author{
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+}
+.authorAvatar{
+    margin-right: 10px;
+    /* color: ; */
+}

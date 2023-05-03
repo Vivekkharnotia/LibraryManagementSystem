@@ -6,8 +6,9 @@ import {
   TableRow,
   TableSortLabel,
 } from "@mui/material";
+import { MouseEvent } from "react";
 import { Data, EnhancedTableProps, HeadCell } from "components/general/Table/Table.interface";
-import { visuallyHidden } from '@mui/utils'
+import { visuallyHidden } from '@mui/utils';
 
 const headCells: readonly HeadCell[] = [
   {
@@ -32,7 +33,7 @@ export default function EnhancedTableHead(props: EnhancedTableProps) {
   } = props;
 
   const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof Data) => (event: MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 

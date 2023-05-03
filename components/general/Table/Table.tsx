@@ -80,12 +80,13 @@ export default function UsersTable({ rows }: { rows: Data[] }) {
               onRequestSort={handleRequestSort}
             />
             <TableBody>
+              {/* @ts-ignore */}
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
 
                   return (
-                    <Row row={row} index={index}/>
+                    <Row key={`History-Table-${index}`} row={row} index={index}/>
                   );
                 })}
               {emptyRows > 0 && (
@@ -168,7 +169,7 @@ function Row({row, index}: { row: any, index: number }) {
                 <TableBody>
                   {row.payments.map((historyRow : string, index : number) => {
                     return(
-                    <HistoryTableRow historyRow={row.id + " " + historyRow} index={index} />
+                    <HistoryTableRow key={`History-Table-Row${index}`} historyRow={row.id + " " + historyRow} index={index} />
                   )})}
                 </TableBody>
               </Table>

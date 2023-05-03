@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, TableCell, TableRow, Typography, useTheme } from "@mui/material";
+import { Alert, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Link, Snackbar, TableCell, TableRow, Typography, useTheme } from "@mui/material";
 import DoneIcon from "@mui/icons-material/Done";
 import LaunchIcon from "@mui/icons-material/Launch";
 import EditIcon from "@mui/icons-material/Edit";
@@ -15,6 +15,7 @@ export default function HistoryTableRow({historyRow, index} : {historyRow: strin
     const [statusToBeChanged, setStatusToBeChanged] = useState(statusTemp);
     const [errorMessage, setErrorMessage] = useState("");
     const [errorOpen, setErrorOpen] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   
     const handleClickOpen = (value: string) => {
@@ -42,6 +43,7 @@ export default function HistoryTableRow({historyRow, index} : {historyRow: strin
           setStatus(value);
           setOpen(false);
           setLoading(false);
+          setSnackbarOpen(true);
         }
         catch(e){
           setOpen(false);
@@ -61,6 +63,10 @@ export default function HistoryTableRow({historyRow, index} : {historyRow: strin
 
     const handleErrorClose = () => {
       setErrorOpen(false);
+    };
+
+    const handleSnackbarClose = () => {
+      setSnackbarOpen(false);
     };
 
 
@@ -163,6 +169,12 @@ export default function HistoryTableRow({historyRow, index} : {historyRow: strin
           <Button onClick={handleErrorClose}>Okay</Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} variant="filled" severity="success" sx={{ width: '100%' }}>
+          Payment status updated successfully!
+        </Alert>
+      </Snackbar>
 
     </>
   );
