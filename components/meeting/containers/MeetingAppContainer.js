@@ -88,78 +88,72 @@ function MeetingAppContainer() {
 
   return (
     <>
-      {token ? (
-        isMeetingStarted ? (
-          <SnackbarProvider
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
+      {isMeetingStarted ? (
+        <SnackbarProvider
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          autoHideDuration={5000}
+          maxSnack={3}
+        >
+          <MeetingProvider
+            config={{
+              meetingId,
+              micEnabled: micOn,
+              webcamEnabled: webcamOn,
+              name: participantName ? participantName : "TestUser",
             }}
-            autoHideDuration={5000}
-            maxSnack={3}
+            token={token}
+            reinitialiseMeetingOnConfigChange={true}
+            joinWithoutUserInteraction={true}
           >
-            <MeetingProvider
-              config={{
-                meetingId,
-                micEnabled: micOn,
-                webcamEnabled: webcamOn,
-                name: participantName ? participantName : "TestUser",
+            <MeetingContainer
+              onMeetingLeave={() => {
+                // setToken("");
+                updateToken("");
+                // setMeetingId("");
+                updateMeetingId("");
+                setWebcamOn(false);
+                setMicOn(false);
+                setMeetingStarted(false);
               }}
-              token={token}
-              reinitialiseMeetingOnConfigChange={true}
-              joinWithoutUserInteraction={true}
-            >
-              <MeetingContainer
-                onMeetingLeave={() => {
-                  // setToken("");
-                  updateToken("");
-                  // setMeetingId("");
-                  updateMeetingId("");
-                  setWebcamOn(false);
-                  setMicOn(false);
-                  setMeetingStarted(false);
-                }}
-                setIsMeetingLeft={setIsMeetingLeft}
-                selectedMic={selectedMic}
-                selectedWebcam={selectedWebcam}
-                selectWebcamDeviceId={selectWebcamDeviceId}
-                setSelectWebcamDeviceId={setSelectWebcamDeviceId}
-                selectMicDeviceId={selectMicDeviceId}
-                setSelectMicDeviceId={setSelectMicDeviceId}
-                useRaisedHandParticipants={useRaisedHandParticipants}
-                raisedHandsParticipants={raisedHandsParticipants}
-                micEnabled={micOn}
-                webcamEnabled={webcamOn}
-              />
-            </MeetingProvider>
-          </SnackbarProvider>
-        ) : isMeetingLeft ? (
-          <LeaveScreen setIsMeetingLeft={setIsMeetingLeft} />
-        ) : (
-          <JoiningScreen
-            participantName={participantName}
-            setParticipantName={setParticipantName}
-            // setMeetingId={setMeetingId}
-            setMeetingId={updateMeetingId}
-            // setToken={setToken}
-            setToken={updateToken}
-            setMicOn={setMicOn}
-            micEnabled={micOn}
-            webcamEnabled={webcamOn}
-            setSelectedMic={setSelectedMic}
-            setSelectedWebcam={setSelectedWebcam}
-            setWebcamOn={setWebcamOn}
-            onClickStartMeeting={() => {
-              setMeetingStarted(true);
-            }}
-            startMeeting={isMeetingStarted}
-            setIsMeetingLeft={setIsMeetingLeft}
-          />
-        )
+              setIsMeetingLeft={setIsMeetingLeft}
+              selectedMic={selectedMic}
+              selectedWebcam={selectedWebcam}
+              selectWebcamDeviceId={selectWebcamDeviceId}
+              setSelectWebcamDeviceId={setSelectWebcamDeviceId}
+              selectMicDeviceId={selectMicDeviceId}
+              setSelectMicDeviceId={setSelectMicDeviceId}
+              useRaisedHandParticipants={useRaisedHandParticipants}
+              raisedHandsParticipants={raisedHandsParticipants}
+              micEnabled={micOn}
+              webcamEnabled={webcamOn}
+            />
+          </MeetingProvider>
+        </SnackbarProvider>
       ) : isMeetingLeft ? (
         <LeaveScreen setIsMeetingLeft={setIsMeetingLeft} />
       ) : (
-        <div>Unauthorized</div>
+        <JoiningScreen
+          participantName={participantName}
+          setParticipantName={setParticipantName}
+          // setMeetingId={setMeetingId}
+          setMeetingId={updateMeetingId}
+          // setToken={setToken}
+          setToken={updateToken}
+          setMicOn={setMicOn}
+          micEnabled={micOn}
+          webcamEnabled={webcamOn}
+          setSelectedMic={setSelectedMic}
+          setSelectedWebcam={setSelectedWebcam}
+          setWebcamOn={setWebcamOn}
+          onClickStartMeeting={() => {
+            setMeetingStarted(true);
+          }}
+          startMeeting={isMeetingStarted}
+          setIsMeetingLeft={setIsMeetingLeft}
+        />
       )}
     </>
   );
