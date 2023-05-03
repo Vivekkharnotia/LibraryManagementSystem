@@ -17,8 +17,8 @@ export function MeetingDetailsScreen({
   const [meetingIdError, setMeetingIdError] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
-  const [iscreateMeetingClicked, setIscreateMeetingClicked] = useState(true);
-  const [isJoinMeetingClicked, setIsJoinMeetingClicked] = useState(false);
+  const [iscreateMeetingClicked, setIscreateMeetingClicked] = useState(false);
+  const [isJoinMeetingClicked, setIsJoinMeetingClicked] = useState(true);
   const padding = useResponsiveSize({
     xl: 6,
     lg: 6,
@@ -34,9 +34,9 @@ export function MeetingDetailsScreen({
         padding: padding,
       }}
     >
-      {/* {iscreateMeetingClicked ? (
+      {iscreateMeetingClicked ? (
         <div className="border border-solid border-gray-400 rounded-xl px-4 py-3  flex items-center justify-center">
-          <p className="text-white text-base">Meeting code: {meetingId}</p>
+          <p className="text-white text-base">Meeting code: {meetId}</p>
           <button
             className="ml-2"
             onClick={() => {
@@ -68,9 +68,9 @@ export function MeetingDetailsScreen({
             <p className="text-xs text-red-600">Please enter valid meetingId</p>
           )}
         </>
-      ) : null} */}
+      ) : null}
 
-      {iscreateMeetingClicked && (
+      {/* {iscreateMeetingClicked && (
         <div className="border border-solid border-gray-400 rounded-xl px-4 py-3  flex items-center justify-center">
           <p className="text-white text-base">Meeting code: {meetId}</p>
           <button
@@ -90,7 +90,7 @@ export function MeetingDetailsScreen({
             )}
           </button>
         </div>
-      )}
+      )} */}
 
       {(iscreateMeetingClicked || isJoinMeetingClicked) && (
         <>
