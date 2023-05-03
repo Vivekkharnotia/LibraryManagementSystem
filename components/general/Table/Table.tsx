@@ -85,7 +85,7 @@ export default function UsersTable({ rows }: { rows: Data[] }) {
                 .map((row, index) => {
 
                   return (
-                    <Row row={row} index={index}/>
+                    <Row key={row.id} row={row} index={index}/>
                   );
                 })}
               {emptyRows > 0 && (
