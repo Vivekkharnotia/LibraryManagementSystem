@@ -39,26 +39,21 @@ export const MeetingProvider = ({ children }: MeetingProviderProps) => {
     const docRef = doc(db, "Userdata", user?.uid);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      // const userData = docSnap.data();
-
       // store the active meeting id in the user data
       await setDoc(docRef, { activeMeetingId: meetingId }, { merge: true });
-      
+
       // only storing the user id in the meeting document
       await setDoc(doc(db, "Meetings", meetingId), { userId: user?.uid });
     } else {
       console.log("No such document!");
     }
-
-    // await setDoc(docRef, formData, { merge: true });
-    
   };
 
-  useEffect(() => {
-    if (meetingId) {
-      updateMeetingsData();
-    }
-  }, [meetingId]);
+  // useEffect(() => {
+  //   if (meetingId) {
+  //     updateMeetingsData();
+  //   }
+  // }, [meetingId]);
 
   return (
     <MeetingContext.Provider

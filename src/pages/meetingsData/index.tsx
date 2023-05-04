@@ -1,5 +1,16 @@
+import { useMeeting } from "components/MeetingContext";
 import { db } from "components/general/firebase-config";
-import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { endMeeting, getToken } from "controllers/meeting";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  Timestamp,
+} from "firebase/firestore";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 interface MeetingType {
@@ -12,14 +23,37 @@ interface MeetingsDataProps {
   meetingsData: MeetingType[];
 }
 
+// use JSON.parse(meeting.userData) to get the userData object
+
 const MeetingsData = ({ meetingsData }: MeetingsDataProps) => {
+  const router = useRouter();
+  const { updateToken } = useMeeting();
+
   // get the user id from active and set its activeMeetingId field to null
   const handleMeetingSuccess = async (userId: string, meetingId: string) => {
     const docRef = doc(db, "Userdata", userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      await setDoc(docRef, { activeMeetingId: null }, { merge: true });
+      const docData = docSnap.data();
+      // if meetings field exists in docData append the cuurent timestamp in it if not create and append
+      await setDoc(
+        docRef,
+        {
+          meetings: docData.meetings
+            ? [...docData.meetings, Timestamp.now()]
+            : [Timestamp.now()],
+          activeMeetingId: null,
+        },
+        { merge: true }
+      );
+
+      // await setDoc(docRef, { activeMeetingId: null }, { merge: true });
       await deleteDoc(doc(db, "Meetings", meetingId));
+
+      // end the meeting
+      const token = await getToken();
+      const res = await endMeeting({ roomId: meetingId, token });
+      updateToken(token);
     } else {
       console.log("No such document!");
     }
@@ -27,7 +61,7 @@ const MeetingsData = ({ meetingsData }: MeetingsDataProps) => {
 
   return (
     <div>
-      {meetingsData.map((meeting) => {
+      {meetingsData?.map((meeting) => {
         return (
           <>
             <div
@@ -37,6 +71,17 @@ const MeetingsData = ({ meetingsData }: MeetingsDataProps) => {
               <h1>
                 {meeting.userId} - {meeting.meetingId}
               </h1>
+              <button
+                className="p-1 border-[1px] border-black rounded-lg"
+                onClick={() =>
+                  router.push({
+                    pathname: "/meeting",
+                    query: { meetId: meeting.meetingId },
+                  })
+                }
+              >
+                Join meeting
+              </button>
               <button
                 className="p-1 border-[1px] border-black rounded-lg"
                 onClick={() =>
@@ -68,7 +113,7 @@ export async function getStaticProps() {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const userData = docSnap.data();
-        return { ...meeting, userData };
+        return { ...meeting, userData: JSON.stringify(userData) };
       } else {
         console.log("No such document!");
         return meeting;
