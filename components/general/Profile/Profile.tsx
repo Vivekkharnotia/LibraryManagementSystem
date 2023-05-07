@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import FormCheckbox from "./FormCheckbox";
 import FormTextarea from "./FormTextarea";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -6,19 +6,25 @@ import { db } from "../firebase-config.js";
 import { useUser } from "components/UserContext";
 import FormRadio from "./FormRadio";
 import {
-  diurnalOptions,
   familyHistoryOptions,
   genderOptions,
   medicalHistoryOptions,
   occupationOptions,
   otherComplaintsOptions,
-  painOptions,
   personalHistoryOptions,
   referrerOptions,
   surgicalHistoryOptions,
 } from "./constants";
-import { Alert, Snackbar } from "@mui/material";
+import {
+  Alert,
+  Backdrop,
+  CircularProgress,
+  Snackbar,
+  Tooltip,
+} from "@mui/material";
 import Input from "./Input";
+import { AiOutlineCamera } from "react-icons/ai";
+import { uploadFileToFirebaseAndGetUrl } from "utils/ExtendedUtils";
 
 interface Profile {
   fname?: string;
@@ -39,6 +45,7 @@ interface Profile {
   surgicalHistory?: string[];
   whenBad?: string;
   whenBetter?: string;
+  profileImageUrl?: string;
 }
 
 const Profile = () => {
@@ -47,6 +54,18 @@ const Profile = () => {
   const [formData, setFormData] = useState<Profile | null>({});
   const [isEditing, setIsEditing] = useState(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+  const [isImageUploading, setIsImageUploading] = useState(false);
+
+  const onChangeProfileImage = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (e.target.files) {
+      console.log(e.target.files);
+      setProfileImageFile(e.target.files[0]);
+      setIsEditing(true);
+    }
+  };
 
   const onChangeGender = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
@@ -81,8 +100,6 @@ const Profile = () => {
     }));
     setIsEditing(true);
   };
-
-
 
   const onChangeOtherComplaints = (newCheckedValues: string[]) => {
     setFormData((prev) => ({
@@ -132,13 +149,34 @@ const Profile = () => {
     setIsEditing(true);
   };
 
+  // update the profile image in the database
+  const updateProfileImage = async () => {
+    if (profileImageFile) {
+      setIsImageUploading(true);
+      const profile = await uploadFileToFirebaseAndGetUrl(profileImageFile);
+      setFormData((prev) => ({
+        ...prev,
+        profileImageUrl: profile.uploadedToUrl,
+      }));
+      setIsImageUploading(false);
+    }
+  };
+
+  // update state every time image file changes
+  useEffect(() => {
+    const fetchProfileImage = async () => {
+      await updateProfileImage();
+    };
+
+    fetchProfileImage();
+  }, [profileImageFile]);
+
   // get the profile data from the database and set the profileData state and formData state
   const getProfileData = async () => {
     const docRef = doc(db, "Userdata", user?.uid);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log(docSnap.data());
       setProfileData(docSnap.data());
       setFormData(docSnap.data());
     } else {
@@ -180,6 +218,77 @@ const Profile = () => {
         <div className="mb-4">
           <h3 className="text-[20px] font-semibold mb-2">PERSONAL DETAILS</h3>
           <div className="flex flex-col gap-8 border-[2px] p-4">
+            <div
+              className={`flex relative ${
+                formData?.profileImageUrl ? "" : "border-2 border-p-border"
+              } h-24 w-24 sm:h-36 sm:w-36 rounded-full items-center justify-center bg-s-bg z-10 cursor-pointer`}
+            >
+              {formData?.profileImageUrl && (
+                <label htmlFor="profileImage">
+                  {" "}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className="absolute top-0 left-0 -z-10 rounded-full object-cover h-24 w-24 sm:h-36 sm:w-36 cursor-pointer"
+                    src={formData?.profileImageUrl}
+                    alt="PFP"
+                  />
+                </label>
+              )}
+              <div className="flex flex-row items-center space-x-3">
+                <Tooltip
+                  TransitionProps={{ timeout: 600 }}
+                  title="Change"
+                  arrow
+                >
+                  <label htmlFor="profileImage">
+                    <div className="bg-s-bg rounded-full p-1 cursor-pointer">
+                      <AiOutlineCamera className="h-6 w-6 " />
+                    </div>
+                  </label>
+                </Tooltip>
+
+                {/* {profileImageFile && (
+                  <Tooltip
+                    TransitionProps={{ timeout: 600 }}
+                    title="Clear"
+                    arrow
+                  >
+                    <div
+                      className="bg-s-bg rounded-full p-1 cursor-pointer"
+                      onClick={() => {
+                        profileImageInputRef.current.value = "";
+                        setProfileImageFile(null);
+                        // @ts-ignore
+                        // set to existing profile image
+                        setProfileImage(null);
+
+                        setFormData((prev) => ({
+                          ...prev,
+                          profileImageUrl: profileData?.profileImageUrl,
+                        }));
+                      }}
+                    >
+                      <MdOutlineClear className="h-6 w-6" />
+                    </div>
+                  </Tooltip>
+                )} */}
+              </div>
+            </div>
+            <Backdrop
+              sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open={isImageUploading}
+              className="flex flex-col gap-2"
+            >
+              <span>Uploading Image</span>
+              <CircularProgress color="inherit" />
+            </Backdrop>
+            <input
+              type="file"
+              id="profileImage"
+              placeholder="Profile Image"
+              onChange={onChangeProfileImage}
+              hidden
+            />
             <div className="grid justify-between align-start grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-8">
               <div className="flex items-center justify-between flex-wrap max-w-[600px]">
                 <div className="text-[18px] font-semibold text-[#333]">
@@ -255,9 +364,6 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        
-
-
 
         <div className="mb-4">
           <h3 className="text-[20px] font-semibold mb-2">HISTORY</h3>
@@ -336,7 +442,7 @@ const Profile = () => {
         onClose={() => setIsSnackbarOpen(false)}
       >
         <Alert
-        variant="filled"
+          variant="filled"
           onClose={() => setIsSnackbarOpen(false)}
           // onClose={handleClose}
           severity="success"

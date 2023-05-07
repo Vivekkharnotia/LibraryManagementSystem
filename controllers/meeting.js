@@ -47,5 +47,26 @@ export const validateMeeting = async ({ roomId, token }) => {
     .then((response) => response.json()) //result will have meeting id
     .catch((error) => console.error("error", error));
 
-  return result ? result.roomId === roomId : false;
+  return result
+    ? result.roomId === roomId && result?.disabled === false
+    : false;
+};
+
+export const endMeeting = async ({ roomId, token }) => {
+  const url = `${API_BASE_URL}/v2/rooms/deactivate`;
+
+  const options = {
+    method: "POST",
+    headers: {
+      Authorization: token,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ roomId: roomId }),
+  };
+
+  const result = await fetch(url, options)
+    .then((response) => response.json()) //result will have meeting id
+    .catch((error) => console.error("error", error));
+
+  return result;
 };

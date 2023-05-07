@@ -14,7 +14,6 @@ export default function Main() {
 
   useEffect(() => {
     const width = window.innerWidth;
-    console.log(width);
     if (width < 768) {
       setSpecialOffset(100);
     } else {

@@ -1,7 +1,8 @@
 import { CheckIcon, ClipboardIcon } from "@heroicons/react/outline";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMeeting } from "../../MeetingContext";
 import useResponsiveSize from "../utils/useResponsiveSize";
+import { useRouter } from "next/router";
 
 export function MeetingDetailsScreen({
   onClickJoin,
@@ -26,6 +27,20 @@ export function MeetingDetailsScreen({
     sm: 4,
     xs: 1.5,
   });
+
+  const router = useRouter();
+  const { meetId: roomId } = router.query;
+  // set the meetingId state to the roomId from the URL
+  useEffect(() => {
+    if (roomId) {
+      setMeetingId(roomId);
+      return
+    }
+    // set the meetingId state to the meetId from the MeetingContext
+    if (meetId) {
+      setMeetingId(meetId);
+    }
+  }, [meetId]);
 
   return (
     <div

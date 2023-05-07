@@ -9,7 +9,7 @@ import { useMeeting } from "components/MeetingContext";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { createMeeting, getToken } from "../../../../../controllers/meeting";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "components/general/firebase-config";
 import { useUser } from "components/UserContext";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -33,6 +33,7 @@ function Session({ slot, index }: { slot: string; index: number }) {
   const [loading, setLoading] = useState(false);
 
   const [activeMeetingId, setActiveMeetingId] = useState<string>("");
+  const [meetId, setMeetId] = useState<string>("");
 
   useEffect(() => {
     // get the activeMeetingId from firebase
@@ -55,9 +56,29 @@ function Session({ slot, index }: { slot: string; index: number }) {
     const _meetingId = await createMeeting({ token });
     updateToken(token);
     updateMeetingId(_meetingId);
+    setMeetId(_meetingId);
     router.push("/meeting");
   };
 
+  useEffect(() => {
+    if (meetId) {
+      updateMeetingsData();
+    }
+  }, [meetId]);
+
+  const updateMeetingsData = async () => {
+    // get the current user data and set as a field in the meeting document
+    const docRef = doc(db, "Userdata", user?.uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      // store the active meeting id in the user data
+      await setDoc(docRef, { activeMeetingId: meetingId }, { merge: true });
+
+      // only storing the user id in the meeting document
+      await setDoc(doc(db, "Meetings", meetingId), { userId: user?.uid });
+    } else {
+      console.log("No such document!");
+    }
   const handleCopy = () => {
     navigator.clipboard.writeText(activeMeetingId);
     setCopied(true);

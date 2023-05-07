@@ -1,18 +1,21 @@
 import { useRef, useState, useEffect, RefObject } from "react";
 import styles from "./Avatar.module.css";
 import arrow_down from "../../../public/arrow_down.svg";
-import avatar from "../../../public/avatar.jpg";
+import avatarImg from "../../../public/avatar.jpg";
 import Image from "next/image";
 import Popover from "@mui/material/Popover";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
-import { auth } from "../firebase-config";
+import { auth, db } from "../firebase-config";
 import { useRouter } from "next/router";
+import { doc, getDoc } from "firebase/firestore";
+import { useUser } from "components/UserContext";
 
 function Avatar() {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [avatar, setAvatar] = useState<string>("");
   const router = useRouter();
+  const { user } = useUser();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -27,15 +30,34 @@ function Avatar() {
   const handleLogOutClick = async () => {
     try {
       await auth.signOut();
-      if(window){
-        window.localStorage.setItem('loggedIn', 'false');
+      if (window) {
+        window.localStorage.setItem("loggedIn", "false");
       }
-      router.push('/');
-    } catch (e){
-     console.log(e)
-    } 
+      router.push("/");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
+  const getProfileImage = async () => {
+    const docRef = doc(db, "Userdata", user?.uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      if (data?.profileImageUrl) {
+        setAvatar(data.profileImageUrl);
+      }
+    }
+  };
+
+  useEffect(() => {
+    // update avatar if it exists in the database
+    const fetchProfile = async () => {
+      await getProfileImage();
+    };
+
+    fetchProfile();
+  }, [avatar]);
 
   return (
     <>
@@ -55,7 +77,11 @@ function Avatar() {
               marginLeft: "10px",
             }}
           >
-            <Image src={avatar} alt="v" />
+            {avatar ? (
+              <img src={avatar} alt="Avatar" />
+            ) : (
+              <Image src={avatarImg} alt="Avatar" />
+            )}
           </div>
         </Button>
 
@@ -74,8 +100,25 @@ function Avatar() {
           }}
           elevation={0}
         >
-          <Box sx={{ px: 4,py: 3, border: "1px solid black", borderRadius: '4px' }}>
-            <Button onClick={handleLogOutClick} variant="contained" disableElevation sx={{backgroundColor: "rgb(250 184 0)", ":hover": {backgroundColor: "rgb(233, 171, 2)"}}}>Logout</Button>
+          <Box
+            sx={{
+              px: 4,
+              py: 3,
+              border: "1px solid black",
+              borderRadius: "4px",
+            }}
+          >
+            <Button
+              onClick={handleLogOutClick}
+              variant="contained"
+              disableElevation
+              sx={{
+                backgroundColor: "rgb(250 184 0)",
+                ":hover": { backgroundColor: "rgb(233, 171, 2)" },
+              }}
+            >
+              Logout
+            </Button>
           </Box>
         </Popover>
       </div>
