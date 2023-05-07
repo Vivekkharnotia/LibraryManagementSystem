@@ -9,7 +9,7 @@ import { auth } from './general/firebase-config.js';
 
 interface ContextType {
     user: any,
-    loading: boolean,
+    userLoading: boolean,
     loggedIn: boolean,
     setLoggedIn: any
 }
@@ -18,26 +18,23 @@ interface UserProviderProps {
     children: React.ReactNode;
 }
 
-export const UserContext = createContext<ContextType>({user: null, loading: false, loggedIn: false, setLoggedIn: null})
+export const UserContext = createContext<ContextType>({user: null, userLoading: false, loggedIn: false, setLoggedIn: null})
 
 export const UserProvider = ({ children }: UserProviderProps) => {
     const [user, setUser] = useState<any>(null)
     const [loggedIn, setLoggedIn] = useState<boolean>(false)
-    const [loading, setLoading] = useState<boolean>(false)
+    const [userLoading, setUserLoading] = useState<boolean>(false)
 
     useEffect(() => {
-        onAuthStateChanged(auth, (currentUser) => {
-            setLoading(true);
-            console.log('Loading set to true');
-            setUser(currentUser);
-            console.log('Loading set to false');
-
-            setLoading(false);
-        })
+            onAuthStateChanged(auth, (currentUser) => {
+                setUserLoading(true);
+                setUser(currentUser);
+                if(currentUser) setUserLoading(false);   
+            })
     }, [])
 
     return (
-        <UserContext.Provider value={{ user, loading, loggedIn, setLoggedIn }}>
+        <UserContext.Provider value={{ user, userLoading, loggedIn, setLoggedIn }}>
           {children}
         </UserContext.Provider>
       

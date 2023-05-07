@@ -1,5 +1,5 @@
-import { Button, CircularProgress, IconButton } from "@mui/material";
-import { db } from "components/general/firebase-config";
+import { Box, Button, CircularProgress, IconButton } from "@mui/material";
+import { auth, db } from "components/general/firebase-config";
 import {
   diurnalOptions,
   painOptions,
@@ -40,7 +40,7 @@ function CurrentCaseContent({handleClose}: {handleClose: () => void}) {
   const [profileData, setProfileData] = useState<Profile | null>({});
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { user } = useUser();
+  const { user, userLoading } = useUser();
 
   const onChangePainOptions = (newCheckedValues: string[]) => {
     setFormData((prev) => ({
@@ -75,15 +75,19 @@ function CurrentCaseContent({handleClose}: {handleClose: () => void}) {
   };
 
   const getProfileData = async () => {
-    const docRef = doc(db, "Userdata", user?.uid);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      setProfileData(docSnap.data());
-      setFormData(docSnap.data());
-    } else {
-      console.log("No such document!");
-    }
+      setLoading(true);
+      console.log(userLoading, user)
+      if(!userLoading){
+        const docRef = doc(db, "Userdata", user?.uid);
+        const docSnap = await getDoc(docRef);
+        setLoading(false);
+        if (docSnap.exists()) {
+          setProfileData(docSnap.data());
+          setFormData(docSnap.data());
+        } else {
+          console.log("No such document!");
+        }
+      }
   };
 
   // load the data on page load
@@ -103,7 +107,7 @@ function CurrentCaseContent({handleClose}: {handleClose: () => void}) {
   return (
     <>
       {
-        loading ? <CircularProgress /> :
+        loading ? <Box sx={{width: '100%', height: '100%', display: 'grid', placeItems: 'center'}}><CircularProgress /></Box> :
       <div className={style.container}>
         <IconButton onClick={handleClose} className={style.cancelButton}>
           <CloseIcon />

@@ -5,7 +5,7 @@ import {
   Switch,
   FormControlLabel,
 } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import FormControl from "@mui/material/FormControl";
@@ -13,6 +13,7 @@ import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import FormHelperText from "@mui/material/FormHelperText";
+import { useRouter } from "next/router";
 
 import OutlinedInput from "@mui/material/OutlinedInput";
 import {
@@ -25,7 +26,6 @@ import classes from "./SignIn.module.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
@@ -71,8 +71,10 @@ function SignIn() {
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
   const [showCPassword, setShowCPassword] = useState(false);
   const { setLoggedIn } = useUser();
+  const router = useRouter();
 
   const [err, setErr] = useState(iniErrCreateUserState);
+
   function handleLoginPage() {
     let inBox = document.getElementById("innerbox");
     inBox.style.transform = "rotateY(-180deg)";
@@ -157,6 +159,7 @@ function SignIn() {
       }
     }
   };
+  
   const handleLogin = async () => {
     const res_email = validateEmail(loginData.email);
     setLoginEmailErr(!res_email);
@@ -172,6 +175,8 @@ function SignIn() {
         if (window) {
           window.localStorage.setItem("loggedIn", 'true');
         }
+        router.push('/app');
+        
       } catch (error) {
         alert("Incorrect Credentials!!!");
       }

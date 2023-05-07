@@ -1,6 +1,5 @@
 import { db } from "components/general/firebase-config";
 import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
 
 interface MeetingType {
   userId: string;
