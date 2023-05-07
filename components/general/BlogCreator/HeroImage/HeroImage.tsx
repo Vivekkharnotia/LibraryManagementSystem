@@ -1,7 +1,7 @@
 import { IconButton, Tooltip, Zoom } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import style from "./HeroImage.module.css";
+import style from "../VisitBlog.module.css";
 import { returnFileSize, validFileType} from "utils/ExtendedUtils";
 
 
@@ -50,7 +50,7 @@ export default function HeroImage({ heroImageSrc, setHeroImageSrc }: { heroImage
               className={style.file}
               accept=".jpg, .jpeg, .png"
             />
-            <EditIcon style={{ color: "white" }} />
+            <EditIcon style={{ color: "white"}} />
           </label>
         </IconButton>
       </div>

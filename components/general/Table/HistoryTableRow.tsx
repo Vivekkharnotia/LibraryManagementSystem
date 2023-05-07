@@ -31,6 +31,7 @@ export default function HistoryTableRow({historyRow, index} : {historyRow: strin
     const handleStatusChangeClick = async (value: string) => {
       const docRef = doc(db, "Userdata", id);
       setLoading(true);
+      setOpen(false);
       const findDoc = await getDoc(docRef);
       if (findDoc.exists()) {
         const user = findDoc.data();
@@ -41,19 +42,16 @@ export default function HistoryTableRow({historyRow, index} : {historyRow: strin
             payments: payments,
           });
           setStatus(value);
-          setOpen(false);
           setLoading(false);
           setSnackbarOpen(true);
         }
         catch(e){
-          setOpen(false);
           setLoading(false);
           setErrorMessage("Oops! Something went wrong. Please try again later.");
           setErrorOpen(true);
         }
 
       } else {
-        setOpen(false);
         setLoading(false);
         setErrorMessage("Oops! Something went wrong. Please try again later.");
         setErrorOpen(true);

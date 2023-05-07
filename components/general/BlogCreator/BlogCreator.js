@@ -6,6 +6,7 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { useUser } from "components/UserContext";
 import HeroImage from "./HeroImage/HeroImage";
 import HeadTitle from "./HeadTitle/HeadTitle";
+import EditIcon from "@mui/icons-material/Edit";
 
 export default function BlogCreator({ data }) {
   const [titles, setTitles] = useState([]);
@@ -19,16 +20,20 @@ export default function BlogCreator({ data }) {
 
 
   const handleDeleteClick = (anchorId) => {
-    console.log('block', block)
-    block.map((item, index) => {
-      // console.log(item.props.anchorId, anchorId)
-      // item.props.anchorId === anchorId && block.splice(index, 1);
-    });
+    // console.log(anchorId)
+    // delete blockTrial[anchorId]
+    // setBlockTrial((current)=>{
+    //   return {...current}
+    // }
+    // )
+    console.log(blockTrial[anchorId])
   };
 
   const [block, setBlock] = useState([
     <BlogPartition key={`partition0`} anchorId="anchor0" handleDeleteClick={handleDeleteClick}/>,
   ]);
+
+  const [blockTrial, setBlockTrial] = useState({});
 
 
 
@@ -57,31 +62,40 @@ export default function BlogCreator({ data }) {
     boldBtn.addEventListener("click", handleBoldClick);
   });
 
-  useEffect(() => {
-    const titles = block.map((item) => {
-      if (item.type.name === "BlogImage") return 'image';
-      return getTitle(item.props.anchorId);
-    });
+  // useEffect(() => {
+  //   const titles = block.map((item) => {
+  //     if (item.type.name === "BlogImage") return 'image';
+  //     return getTitle(item.props.anchorId);
+  //   });
 
-    setTitles(titles);
-  }, [block]);
+  //   setTitles(titles);
+  // }, [block]);
 
   const getTitle = (anchorId) => {
     const title = document.getElementById(`${anchorId}`);
     return title.children[0].innerText;
   };
 
-  const handleParaClick = () => {
-    const blockSize = block.length;
-    setBlock((current) => [
-      ...current,
-      <BlogPartition
-        key={`partition${blockSize}`}
-        anchorId={`anchor${blockSize}`}
-        handleDeleteClick={handleDeleteClick}
-      />,
-    ]);
-  };
+const handleParaClick = () => {
+  const blockSize = block.length;
+  setBlock((current) => [
+    ...current,
+    <BlogPartition
+      key={`partition${blockSize}`}
+      anchorId={`anchor${blockSize}`}
+      handleDeleteClick={handleDeleteClick}
+    />,
+  ]);
+
+    const key = 'anchor' + blockSize;
+    const temp = {}
+    temp[key] = <BlogPartition key={`partition${blockSize}`} anchorId={`anchor${blockSize}`} handleDeleteClick={handleDeleteClick}/> 
+
+    setBlockTrial((current)=>{
+      return {...current, ...temp}
+    }
+    )
+}
 
   const handleAddImageClick = () => {
     const blockSize = block.length;
@@ -105,14 +119,14 @@ export default function BlogCreator({ data }) {
 
       <div className={style.container}>
         <ul className={style.anchors} style={{ paddingLeft: "1.2rem" }}>
-          {titles.map((item, index) => {
+          {/* {titles.map((item, index) => {
             if(item === 'image') return
             return (
               <li key={index}>
                 <a href={"#" + block[index].props.anchorId}> ----{item} </a>
               </li>
             );
-          })}
+          })} */}
         </ul>
         <ul className={style.contact}>
           <li className={style.fb} onClick={handleParaClick}>
@@ -125,8 +139,12 @@ export default function BlogCreator({ data }) {
             <Button>I</Button>
           </li>
 
+          <li className={style.fb} id="addItalic" onClick={()=>console.log(blockTrial)}>
+            <Button>T</Button>
+          </li>
+
           <li className={style.fb}>
-            <Button>
+            <Button sx={{padding: '0'}}>
               <label htmlFor="addImage" className={style.addImage}>
                   <input ref={blogImageInput} onChange={handleAddImageClick} type="file" name="" id="addImage" className={style.file} accept=".jpg, .jpeg, .png"/>
                   <AddPhotoAlternateIcon />
@@ -136,7 +154,9 @@ export default function BlogCreator({ data }) {
         </ul>
 
         <div className={style.content} ref={container}>
-          {block}
+          {
+            Object.entries(blockTrial).map((t,k) => t[1])
+          }
         </div>
       </div>
     </>
@@ -151,7 +171,7 @@ function BlogImage(src) {
           <img src={src.src} alt="" />
         </span>
         <IconButton className={style.editIcon}>
-            <EditIcon />
+            <EditIcon sx={{color: 'white'}} />
         </IconButton>
       </div>
     </>

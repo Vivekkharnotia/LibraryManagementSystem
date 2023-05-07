@@ -36,11 +36,8 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
   const toggleSlot = () => setSlot((prev) => !prev);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText("sampelupiid@oksbi");
-  };
-
   const handleCopyButton = () => {
+    navigator.clipboard.writeText("sampelupiid@oksbi");
     setSnackbarOpen(true);
   };
 
@@ -133,7 +130,6 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
             <IconButton onClick={handleCopyButton}>
               <ContentCopyIcon
                 fontSize="small"
-                onClick={handleCopy}
                 sx={{ width: "max-content" }}
                 className={appoinmentcss.copyIcn}
               />

@@ -1,4 +1,10 @@
-import { Button, ButtonProps, styled } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Tooltip,
+  Typography,
+  styled,
+} from "@mui/material";
 import { useMeeting } from "components/MeetingContext";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -6,14 +12,8 @@ import { createMeeting, getToken } from "../../../../../controllers/meeting";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "components/general/firebase-config";
 import { useUser } from "components/UserContext";
-
-const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-  borderRadius: "10px",
-  backgroundColor: "hsl(44, 100%, 49%)",
-  "&:hover": {
-    backgroundColor: "hsl(44, 100%, 45%)",
-  },
-}));
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 
 const Container = styled("div")(({ theme }) => ({
   border: "1px solid #B4B4B4",
@@ -29,6 +29,8 @@ function Session({ slot, index }: { slot: string; index: number }) {
   const { token, meetingId, updateToken, updateMeetingId } = useMeeting();
   const router = useRouter();
   const { user } = useUser();
+  const [copied, setCopied] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [activeMeetingId, setActiveMeetingId] = useState<string>("");
   const [meetId, setMeetId] = useState<string>("");
@@ -77,28 +79,57 @@ function Session({ slot, index }: { slot: string; index: number }) {
     } else {
       console.log("No such document!");
     }
+  const handleCopy = () => {
+    navigator.clipboard.writeText(activeMeetingId);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 3000);
   };
 
   return (
-    <Container>
-      <h5 style={{ marginBottom: "1rem" }}>Meeting {index + 1}</h5>
-      <div style={{ marginBottom: "0.5rem", whiteSpace: "normal" }}>
-        Date of meeting: <b style={{ whiteSpace: "nowrap" }}>{date}</b>
-      </div>
-      <div style={{ marginBottom: "1.2rem", whiteSpace: "normal" }}>
-        Time of meeting: <b style={{ whiteSpace: "nowrap" }}>{time}</b>
-      </div>
+    <>
+      <Container>
 
-      <ColorButton
-        disableElevation
-        variant="contained"
-        onClick={handleMeetingJoin}
-      >
-        Join Meeting
-      </ColorButton>
+          <h5 style={{ marginBottom: "1rem" }}>Meeting {index + 1}</h5>
+          <div style={{ marginBottom: "0.5rem", whiteSpace: "normal" }}>
+            Date of meeting: <b style={{ whiteSpace: "nowrap" }}>{date}</b>
+          </div>
+          <div style={{ marginBottom: "1.2rem", whiteSpace: "normal" }}>
+            Time of meeting: <b style={{ whiteSpace: "nowrap" }}>{time}</b>
+          </div>
 
-      {activeMeetingId && <div>Meeting id: {activeMeetingId}</div>}
-    </Container>
+          <Button
+            disableElevation
+            variant="contained"
+            onClick={handleMeetingJoin}
+            sx={{
+              backgroundColor: "hsl(44, 100%, 49%)!important",
+              "&:hover": { backgroundColor: "hsl(44, 100%, 45%)!important" },
+            }}
+          >
+            Join Meeting
+          </Button>
+
+          {activeMeetingId && (
+            <Typography sx={{ marginTop: "1rem" }}>
+              Meeting id: <strong>{activeMeetingId}</strong>
+              <IconButton>
+                {!copied ? (
+                  <Tooltip title="Copy to clipboard" arrow>
+                    <ContentCopyIcon fontSize="small" onClick={handleCopy} />
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Copied" arrow>
+                    <DoneAllIcon fontSize="small" color="success" />
+                  </Tooltip>
+                )}
+              </IconButton>
+            </Typography>
+          )}
+
+      </Container>
+    </>
   );
 }
 
