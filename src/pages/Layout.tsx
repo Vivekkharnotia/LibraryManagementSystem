@@ -7,6 +7,10 @@ import { useRouter } from "next/router";
 import { Suspense, useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
 
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -16,8 +20,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-export default function Layout(props: any) {
-  const { loading } = useUser();
+export default function Layout(props: LayoutProps ) {
+  const { userLoading } = useUser();
   const router = useRouter();
   
   useEffect(() => {
@@ -30,7 +34,7 @@ export default function Layout(props: any) {
 
   return (
     <>
-      {loading ? (
+      {userLoading === 'loading' ? (
         <Box
           sx={{
             height: "100vh",

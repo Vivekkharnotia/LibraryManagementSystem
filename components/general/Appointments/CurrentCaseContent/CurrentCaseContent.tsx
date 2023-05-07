@@ -76,7 +76,6 @@ function CurrentCaseContent({handleClose}: {handleClose: () => void}) {
 
   const getProfileData = async () => {
       setLoading(true);
-      console.log(userLoading, user)
       if(!userLoading){
         const docRef = doc(db, "Userdata", user?.uid);
         const docSnap = await getDoc(docRef);

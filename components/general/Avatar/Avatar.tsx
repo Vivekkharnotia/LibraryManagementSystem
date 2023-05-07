@@ -8,14 +8,19 @@ import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
 import { auth, db } from "../firebase-config";
 import { useRouter } from "next/router";
-import { doc, getDoc } from "firebase/firestore";
 import { useUser } from "components/UserContext";
+import { doc, getDoc } from "firebase/firestore";
+import { CircularProgress } from "@material-ui/core";
+
 
 function Avatar() {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [avatar, setAvatar] = useState<string>("");
   const router = useRouter();
-  const { user } = useUser();
+  const { user, userLoading } = useUser();
+
+
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -40,12 +45,14 @@ function Avatar() {
   };
 
   const getProfileImage = async () => {
-    const docRef = doc(db, "Userdata", user?.uid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      if (data?.profileImageUrl) {
-        setAvatar(data.profileImageUrl);
+    if (userLoading === "loaded") {
+      const docRef = doc(db, "Userdata", user?.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data?.profileImageUrl) {
+          setAvatar(data.profileImageUrl);
+        }
       }
     }
   };
@@ -56,13 +63,13 @@ function Avatar() {
       await getProfileImage();
     };
 
-    fetchProfile();
-  }, [avatar]);
+    if(avatar === "") fetchProfile();
+  }, [userLoading]);
 
   return (
     <>
       <div>
-        <Button aria-describedby={id} onClick={handleClick}>
+        <Button sx={{backgroundColor: 'transparent!important'}} aria-describedby={id} onClick={handleClick}>
           <div className={styles.down_arrow}>
             <Image src={arrow_down} alt="v" />
           </div>
@@ -72,15 +79,14 @@ function Avatar() {
               width: "50px",
               height: "50px",
               borderRadius: "50%",
-              backgroundColor: "rgb(64, 64, 234)",
               overflow: "hidden",
               marginLeft: "10px",
             }}
           >
             {avatar ? (
               <img src={avatar} alt="Avatar" />
-            ) : (
-              <Image src={avatarImg} alt="Avatar" />
+              ) : (
+              <CircularProgress />
             )}
           </div>
         </Button>
@@ -127,3 +133,4 @@ function Avatar() {
 }
 
 export default Avatar;
+

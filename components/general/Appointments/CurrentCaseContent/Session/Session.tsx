@@ -1,10 +1,4 @@
-import {
-  Button,
-  IconButton,
-  Tooltip,
-  Typography,
-  styled,
-} from "@mui/material";
+import { Button, IconButton, Tooltip, Typography, styled } from "@mui/material";
 import { useMeeting } from "components/MeetingContext";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -79,6 +73,7 @@ function Session({ slot, index }: { slot: string; index: number }) {
     } else {
       console.log("No such document!");
     }
+  };
   const handleCopy = () => {
     navigator.clipboard.writeText(activeMeetingId);
     setCopied(true);
@@ -90,44 +85,42 @@ function Session({ slot, index }: { slot: string; index: number }) {
   return (
     <>
       <Container>
+        <h5 style={{ marginBottom: "1rem" }}>Meeting {index + 1}</h5>
+        <div style={{ marginBottom: "0.5rem", whiteSpace: "normal" }}>
+          Date of meeting: <b style={{ whiteSpace: "nowrap" }}>{date}</b>
+        </div>
+        <div style={{ marginBottom: "1.2rem", whiteSpace: "normal" }}>
+          Time of meeting: <b style={{ whiteSpace: "nowrap" }}>{time}</b>
+        </div>
 
-          <h5 style={{ marginBottom: "1rem" }}>Meeting {index + 1}</h5>
-          <div style={{ marginBottom: "0.5rem", whiteSpace: "normal" }}>
-            Date of meeting: <b style={{ whiteSpace: "nowrap" }}>{date}</b>
-          </div>
-          <div style={{ marginBottom: "1.2rem", whiteSpace: "normal" }}>
-            Time of meeting: <b style={{ whiteSpace: "nowrap" }}>{time}</b>
-          </div>
+        <Button
+          disableElevation
+          variant="contained"
+          onClick={handleMeetingJoin}
+          sx={{
+            backgroundColor: "hsl(44, 100%, 49%)!important",
+            "&:hover": { backgroundColor: "hsl(44, 100%, 45%)!important" },
+          }}
+        >
+          Join Meeting
+        </Button>
 
-          <Button
-            disableElevation
-            variant="contained"
-            onClick={handleMeetingJoin}
-            sx={{
-              backgroundColor: "hsl(44, 100%, 49%)!important",
-              "&:hover": { backgroundColor: "hsl(44, 100%, 45%)!important" },
-            }}
-          >
-            Join Meeting
-          </Button>
-
-          {activeMeetingId && (
-            <Typography sx={{ marginTop: "1rem" }}>
-              Meeting id: <strong>{activeMeetingId}</strong>
-              <IconButton>
-                {!copied ? (
-                  <Tooltip title="Copy to clipboard" arrow>
-                    <ContentCopyIcon fontSize="small" onClick={handleCopy} />
-                  </Tooltip>
-                ) : (
-                  <Tooltip title="Copied" arrow>
-                    <DoneAllIcon fontSize="small" color="success" />
-                  </Tooltip>
-                )}
-              </IconButton>
-            </Typography>
-          )}
-
+        {activeMeetingId && (
+          <Typography sx={{ marginTop: "1rem" }}>
+            Meeting id: <strong>{activeMeetingId}</strong>
+            <IconButton>
+              {!copied ? (
+                <Tooltip title="Copy to clipboard" arrow>
+                  <ContentCopyIcon fontSize="small" onClick={handleCopy} />
+                </Tooltip>
+              ) : (
+                <Tooltip title="Copied" arrow>
+                  <DoneAllIcon fontSize="small" color="success" />
+                </Tooltip>
+              )}
+            </IconButton>
+          </Typography>
+        )}
       </Container>
     </>
   );
