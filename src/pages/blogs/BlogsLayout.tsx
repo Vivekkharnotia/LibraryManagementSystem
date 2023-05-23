@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
 function BlogsLayout(props: any) {
-  const { user, loading } = useUser();
+  const { user, userLoading } = useUser();
   const router = useRouter();
 
   // useEffect(() => {
@@ -15,7 +15,7 @@ function BlogsLayout(props: any) {
 
   return (
     <>
-      {!loading ? (
+      {userLoading !== "loaded" ? (
         <Box
           sx={{
             height: "100vh",
