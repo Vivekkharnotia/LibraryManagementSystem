@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppointmentCard from "./AppointmentCard";
 import NewAppointmentCard from "./NewAppointmentCard";
 import Button from "@mui/material/Button";
@@ -11,12 +11,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Alert } from "@mui/material";
-const appointmentsData = [
-  { number: 1, name: "Dr. Piyush Goyel", time: "", date: "" },
-  { number: 2, name: "Dr. Piyush Goyel", time: "", date: "" },
-  { number: 3, name: "Dr. Piyush Goyel", time: "", date: "" },
-  { number: 4, name: "Dr. Piyush Goyel", time: "", date: "" },
-];
+import { collection, getDoc, getDocs } from "firebase/firestore";
+import { db } from "../firebase-config";
+import { useUser } from "components/UserContext";
 
 const Appointments = () => {
   const [state, setState] = React.useState<{
@@ -31,11 +28,13 @@ const Appointments = () => {
     Transition: Grow,
   });
   const [errorDialog, setErrorDialog] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
+  const {user, userLoading} = useUser();
+  const [appointmentsData, setAppointmentsData] = useState<any[]>([]);
 
   const handleErrorDialog = () => {
     setErrorDialog(false);
-  }
+  };
   const handleClose = () => {
     setState({
       ...state,
@@ -43,6 +42,17 @@ const Appointments = () => {
     });
   };
 
+  const getAppointmentData = async ()=>{
+    const appoinments = await getDocs(collection(db, `Userdata/${user.uid}/cases`));
+    const appointmentsData = appoinments.docs.map((doc) => {
+      return { ...doc.data(), id: doc.id };
+    });
+    setAppointmentsData(appointmentsData);
+  }
+
+  useEffect(() => {
+    getAppointmentData();
+  }, []);
   return (
     <>
       <Dialog
@@ -51,9 +61,7 @@ const Appointments = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          Try again
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">Try again</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {errorMsg}
@@ -72,18 +80,24 @@ const Appointments = () => {
         key={state.Transition.name}
         autoHideDuration={3000}
       >
-        <Alert variant="filled" severity="success" >Your slot is booked successfully...</Alert>
+        <Alert variant="filled" severity="success">
+          Your slot is booked successfully...
+        </Alert>
       </Snackbar>
 
       <div
         className={`flex flex-row flex-wrap justify-center md:justify-start gap-8 text-[#000] px-8 py-8`}
       >
-        {appointmentsData?.map((appointment) => {
+        {appointmentsData?.map((appointment, index) => {
           return (
             <AppointmentCard
-              key={appointment.number}
-              name={appointment.name}
-              number={appointment.number}
+              key={index + 1}
+              id = {appointment.id}
+              user = {user}
+              number={index + 1}
+              name={appointment.caseName}
+              date={appointment.createdAt.toDate().toDateString()}
+              time={appointment.time}
               setState={setState}
               setErrorDialog={setErrorDialog}
               setErrorMsg={setErrorMsg}

@@ -34,7 +34,7 @@ export default function Layout(props: LayoutProps ) {
 
   return (
     <>
-      {userLoading === 'loading' ? (
+      {userLoading !== 'loaded' ? (
         <Box
           sx={{
             height: "100vh",
@@ -50,7 +50,7 @@ export default function Layout(props: LayoutProps ) {
         </Box>
       ) : (
         <>
-          <Box sx={{ display: "flex" }}>
+          {  <Box sx={{ display: "flex" }}>
             <CssBaseline />
 
             <AppStructure />
@@ -60,7 +60,7 @@ export default function Layout(props: LayoutProps ) {
 
               {props.children}
             </Box>
-          </Box>
+          </Box>}
         </>
       )}
     </>

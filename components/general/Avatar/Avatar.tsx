@@ -119,7 +119,7 @@ function Avatar() {
               variant="contained"
               disableElevation
               sx={{
-                backgroundColor: "rgb(250 184 0)",
+                backgroundColor: "rgb(250 184 0)!important",
                 ":hover": { backgroundColor: "rgb(233, 171, 2)" },
               }}
             >

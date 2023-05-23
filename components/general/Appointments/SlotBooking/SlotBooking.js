@@ -23,6 +23,7 @@ function GrowTransition(props) {
 }
 
 export default function SlotBooking({
+  id,
   setSlot,
   setState,
   setErrorDialog,
@@ -39,11 +40,10 @@ export default function SlotBooking({
     const result = await handleSelectSlot();
     if (result === "Success") {
       try {
-        const refDoc = doc(db, "Userdata", user.uid);
+        const refDoc = doc(db, `Userdata/${user.uid}/cases`, id);
         const findDoc = await getDoc(refDoc);
         if (findDoc.exists()) {
           const data = findDoc.data();
-          console.log(data);
           const slots = data.slots || [];
           let slotPresent = 0;
           for (let i = 0; i < slots.length; i++) {

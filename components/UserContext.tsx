@@ -28,13 +28,15 @@ export const UserContext = createContext<ContextType>({
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<any>(null);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [userLoading, setUserLoading] = useState<string | null>(null);
+  const [userLoading, setUserLoading] = useState<string | null>('');
 
   useEffect(() => {
     setUserLoading("loading");
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setUserLoading("loaded");
+      if(currentUser) {
+        setUserLoading("loaded");
+      }
     });
   }, []);
 

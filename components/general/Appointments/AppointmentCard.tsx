@@ -1,31 +1,46 @@
-import { Alert, Button, IconButton, Modal, Snackbar } from "@mui/material";
+import {
+  Alert,
+  Button,
+  IconButton,
+  Modal,
+  Popover,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import React, { FC, useState } from "react";
 import Image from "next/image";
 import appoinmentcss from "./Appoinments.module.css";
 import qrSample from "./qrSample.png";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import SlotBooking from "./SlotBooking/SlotBooking.js";
-import RefreshIcon from '@mui/icons-material/Refresh';
+import RefreshIcon from "@mui/icons-material/Refresh";
 import CurrentCaseContent from "./CurrentCaseContent/CurrentCaseContent";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Delete } from "@material-ui/icons";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../firebase-config";
 
 interface AppointmentCardProps {
   number: number;
+  id: string;
   name: string;
   time?: string;
   date?: string;
   setState: any;
   setErrorDialog: any;
   setErrorMsg: any;
+  user: any;
 }
 
 const AppointmentCard: FC<AppointmentCardProps> = ({
   number,
+  id,
   name,
-  time,
   date,
   setState,
   setErrorDialog,
   setErrorMsg,
+  user
 }) => {
   const [open, setOpen] = React.useState(false);
   const [slot, setSlot] = React.useState(false);
@@ -44,6 +59,32 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
   };
+
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+
+  const handlePopoverClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const popoverOpen = Boolean(anchorEl);
+  const popoverId = open ? "simple-popover" : undefined;
+
+
+  const handleCaseDelete = async () => {
+    try {
+      await deleteDoc(doc(db, `Userdata/${user.uid}/cases`, id));
+    } catch (err: any) {
+      setErrorMsg(err.message);
+      setErrorDialog(true);
+    }
+  };
+
   return (
     <>
       <Snackbar
@@ -60,16 +101,42 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
           Copied to clipboard
         </Alert>
       </Snackbar>
+
       <div className="hover:outline hover:outline-[1px] transition ease-in-out flex flex-col w-[240px] h-[270px] border-[1px] border-[#000] rounded-[15px] cursor-pointer px-5 py-5 relative justify-items-start">
-        <div onClick={handleOpen} style={{position: "relative"}}>
-          <div style={{marginBottom: "15px"}}>
-            <span className="text-[24px] mr-2">{number}.</span>
-            <span className="">{name}</span>
+        <IconButton
+          onClick={handlePopoverClick}
+          className="absolute top-4 right-1 z-50"
+        >
+          <MoreVertIcon />
+        </IconButton>
+
+        <Popover
+          id={popoverId}
+          open={popoverOpen}
+          anchorEl={anchorEl}
+          onClose={handlePopoverClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+        >
+          <Button sx={{ m: 2 }} onClick={handleCaseDelete}>
+            <Delete color="error" />
+            <Typography sx={{ px: 2, py: 1 }} color={'black'}>Delete</Typography>
+          </Button>
+        </Popover>
+
+        <div onClick={handleOpen} style={{ position: "relative" }}>
+          <div style={{ marginBottom: "15px" }}>
+            <span className="text-[20px] mr-2">{number}.</span>
+            <span className="text-[26px] mr-2">{name}</span>
           </div>
-          
-          <div style={{marginBottom: "15px"}} className="font-medium mb-5">Time: {time || "12:00 am"}</div>
-          
-          <span className="font-light">Appointment at: </span>
+
+          <span className="font-light">Created at: </span>
           <span className="font-light">{date || "2nd of January, 2023"}</span>
           <Image
             src="/appointmentCardBg.svg"
@@ -101,7 +168,11 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
         aria-describedby="modal-modal-description"
       >
         <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] rounded-[15px] justify-center items-center h-[80vh] w-[95%] bg-[#fff] m-auto md:w-[80%]">
-          <CurrentCaseContent handleClose={handleClose} />
+          <CurrentCaseContent
+            toggleSlot={toggleSlot}
+            handleClose={handleClose}
+            id={id}
+          />
         </div>
       </Modal>
 
@@ -146,6 +217,7 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
       >
         <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] rounded-[15px] justify-center items-center h-[80vh] w-[97%] bg-[#fff] m-auto sm:w-[80%]">
           <SlotBooking
+            id={id}
             setErrorMsg={setErrorMsg}
             setErrorDialog={setErrorDialog}
             setState={setState}

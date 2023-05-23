@@ -34,7 +34,7 @@ const closedMixin = (theme) => ({
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
-}),
+  }),
   overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
@@ -78,14 +78,13 @@ export default function MiniDrawer() {
     { id: 1, label: "Manage Posts", link: "/app/blogs" },
     { id: 2, label: "Manage Posts", link: "/app/talk" },
     { id: 3, label: "Manage Posts", link: "/app/profile" },
-    { id: 4, label: "Manage Posts", link: "/app/more" }
+    { id: 4, label: "Manage Posts", link: "/app/more" },
   ];
 
-  useEffect(()=>{
-    const activeMenu  = menuItems.find((menu) => menu.link === router.pathname)
-    activeElement(activeMenu.id)
-  }, [router.pathname])
-
+  useEffect(() => {
+    const activeMenu = menuItems.find((menu) => menu.link === router.pathname);
+    activeElement(activeMenu.id);
+  }, [router.pathname]);
 
   const handleDrawerOpen = () => {
     let drawerBtn = document.getElementById("drawerBtn");
@@ -261,46 +260,63 @@ export default function MiniDrawer() {
 
         <div className={sidebar.bottomNav}>
           <div className={sidebar.view2Bar} id="view2Bar"></div>
-          <Button
-            className={sidebar.view2Item}
-            onClick={() => activeElement(1)}
-          >
-            <ImportContactsIcon
-              id={`view2Item${1}`}
-              className={sidebar.view2Icn}
-            />
-          </Button>
+          <Link href="/app/blogs">
+            <Button
+              className={sidebar.view2Item}
+              onClick={() => activeElement(1)}
+            >
+              <ImportContactsIcon
+                id={`view2Item${1}`}
+                className={sidebar.view2Icn}
+              />
+            </Button>
+          </Link>
+
+          <Link href="/app/talk">
           <Button
             className={sidebar.view2Item}
             onClick={() => activeElement(2)}
           >
             <PhoneIcon id={`view2Item${2}`} className={sidebar.view2Icn} />
           </Button>
-          <Button
-            className={sidebar.view2Item}
-            onClick={() => activeElement(0)}
-          >
-            <CalendarMonthIcon
-              id={`view2Item${0}`}
-              sx={{ color: "white" }}
-              className={sidebar.view2Icn}
-            />
-          </Button>
-          <Button
-            className={sidebar.view2Item}
-            onClick={() => activeElement(3)}
-          >
-            <PermIdentityIcon
-              id={`view2Item${3}`}
-              className={sidebar.view2Icn}
-            />
-          </Button>
+          </Link>
+
+
+          <Link href="/app">
+            <Button
+              className={sidebar.view2Item}
+              onClick={() => activeElement(0)}
+            >
+              <CalendarMonthIcon
+                id={`view2Item${0}`}
+                sx={{ color: "white" }}
+                className={sidebar.view2Icn}
+              />
+            </Button>
+          </Link>
+
+          <Link href="/app/profile">
+            <Button
+              className={sidebar.view2Item}
+              onClick={() => activeElement(3)}
+            >
+              <PermIdentityIcon
+                id={`view2Item${3}`}
+                className={sidebar.view2Icn}
+              />
+            </Button>
+          </Link>
+
+
+          <Link href="/app/more">
           <Button
             className={sidebar.view2Item}
             onClick={() => activeElement(4)}
           >
             <MenuIcon id={`view2Item${4}`} className={sidebar.view2Icn} />
           </Button>
+          </Link>
+        
         </div>
       </div>
     </>

@@ -5,28 +5,41 @@ import videoGIF from "./../../../public/video.gif";
 import { useVisibility } from "../../../utils/isVisible";
 import Testimonial from "../Testimonial/Testimonial";
 import useDevice from "utils/useDevice";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import zIndex from "@mui/material/styles/zIndex";
 
 export default function Main() {
   var offset: number = 1040;
   const isMobile = useDevice();
-  const [specialOffset, setSpecialOffset] = useState(650);
+  const [specialIsVisible, setSpecialIsVisible] = useState(false);
+  const firstSlice = useRef<HTMLDivElement>(null);
+
+
+
+  const onScroll = ()=>{
+    const width = window.innerWidth;
+    const elementTop = firstSlice.current?.getBoundingClientRect().top!;
+    let targetElementSpan = firstSlice.current?.parentElement!.children[0].children[0] as HTMLDivElement;
+
+    
+    if(width < 768){
+      elementTop > 750 ? setSpecialIsVisible(false) : setSpecialIsVisible(true);
+      targetElementSpan.style.transition = "opacity 250ms ease-in-out";
+
+    }else{
+      elementTop < 167 && elementTop > -1200  ? setSpecialIsVisible(true) : setSpecialIsVisible(false);
+      targetElementSpan.style.transition = "none";
+      
+    }
+
+  }
+
 
   useEffect(() => {
-    const width = window.innerWidth;
-    if (width < 768) {
-      setSpecialOffset(100);
-    } else {
-      setSpecialOffset(650);
-    }
-  }, [])
+    document.addEventListener("scroll", onScroll, true);
+    return () => document.removeEventListener("scroll", onScroll, true);
+  }, []);
 
-  // isMobile.isMobile ? specialOffset=100 : specialOffset=650;
-
-  const [isFirstSliceVisible, firstSlice] = useVisibility<HTMLDivElement>(
-    650,
-    1
-  );
   
   const [isSecondSliceVisible, secondSlice] = useVisibility<HTMLDivElement>(
     offset,
@@ -42,7 +55,7 @@ export default function Main() {
       <main>
         <section className="slice-container">
           <div className="slice slice--image text-c">
-            <span style={{ opacity: isFirstSliceVisible != true ? "0" : "1" }}>
+            <span style={{ opacity: specialIsVisible != true ? "0" : "1" }}>
               <Image src={trustGIF} alt="gif of trust and worthyness" />
             </span>
           </div>

@@ -12,8 +12,9 @@ const useDevice = () => {
   }, []);
 
   const isMobile = windowWidth < 768;
+  const specialOffset = windowWidth < 768 ? 100 : 650;
 
-  return { isMobile };
+  return { isMobile, specialOffset };
 };
 
 export default useDevice;
