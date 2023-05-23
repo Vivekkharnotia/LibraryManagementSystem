@@ -158,7 +158,7 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
       <div className="hover:outline hover:outline-[1px] transition ease-in-out flex flex-col w-[240px] h-[270px] border-[1px] border-[#000] rounded-[15px] cursor-pointer px-5 py-5 relative justify-items-start">
         <IconButton
           onClick={handlePopoverClick}
-          className="absolute top-4 right-1 z-50"
+          className="!absolute top-4 right-1 z-50"
         >
           <MoreVertIcon />
         </IconButton>
