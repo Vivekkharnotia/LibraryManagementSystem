@@ -10,7 +10,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Alert } from "@mui/material";
+import { Alert, CircularProgress } from "@mui/material";
 import { collection, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { useUser } from "components/UserContext";
@@ -29,8 +29,9 @@ const Appointments = () => {
   });
   const [errorDialog, setErrorDialog] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const {user, userLoading} = useUser();
+  const { user, userLoading } = useUser();
   const [appointmentsData, setAppointmentsData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const handleErrorDialog = () => {
     setErrorDialog(false);
@@ -42,18 +43,26 @@ const Appointments = () => {
     });
   };
 
-  const getAppointmentData = async ()=>{
-    const appoinments = await getDocs(collection(db, `Userdata/${user.uid}/cases`));
+  const getAppointmentData = async () => {
+    setLoading(true);
+    const appoinments = await getDocs(
+      collection(db, `Userdata/${user.uid}/cases`)
+    );
     const appointmentsData = appoinments.docs.map((doc) => {
       return { ...doc.data(), id: doc.id };
     });
+    setLoading(false);
     setAppointmentsData(appointmentsData);
-  }
+  };
 
   useEffect(() => {
     getAppointmentData();
   }, []);
-  return (
+  return loading ? (
+    <div className="flex justify-center items-center h-[80vh]">
+      <CircularProgress />
+    </div>
+  ) : (
     <>
       <Dialog
         open={errorDialog}
@@ -92,19 +101,20 @@ const Appointments = () => {
           return (
             <AppointmentCard
               key={index + 1}
-              id = {appointment.id}
-              user = {user}
+              id={appointment.id}
+              user={user}
               number={index + 1}
               name={appointment.caseName}
               date={appointment.createdAt.toDate().toDateString()}
-              time={appointment.time}
+              numberOfSessions={appointment.numberOfSessions}
               setState={setState}
               setErrorDialog={setErrorDialog}
               setErrorMsg={setErrorMsg}
+              getAppointmentData={getAppointmentData}
             />
           );
         })}
-        <NewAppointmentCard />
+        <NewAppointmentCard getAppointmentData={getAppointmentData} />
       </div>
     </>
   );

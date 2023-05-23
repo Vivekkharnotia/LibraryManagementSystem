@@ -41,6 +41,7 @@ interface Profile {
   whenBad?: string;
   whenBetter?: string;
   slots?: string[];
+  caseName?: string;
 }
 
 function CurrentCaseContent({
@@ -117,7 +118,7 @@ function CurrentCaseContent({
   }, []);
 
   const handleProfileSave = async () => {
-    await setDoc(doc(db, "Userdata", user.uid), formData, { merge: true });
+    await setDoc(doc(db, `Userdata/${user.uid}/cases`, id), formData, { merge: true });
     setIsEditing(false);
 
     // get the latest data
@@ -145,7 +146,7 @@ function CurrentCaseContent({
           </IconButton>
 
           <div className={style.left}>
-            <h3 className={style.mainHeading}>Case: myCase</h3>
+            <h3 className={style.mainHeading}>Case: {profileData?.caseName}</h3>
             <div className={style.leftContent}>
               <h4 className={style.sessionMainHeading}>Session Details:</h4>
 

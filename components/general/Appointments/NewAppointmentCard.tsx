@@ -4,7 +4,7 @@ import { BsPlus } from "react-icons/bs";
 import useDevice from "utils/useDevice";
 import NewAppointmentForm from "./NewAppointmentForm/NewAppointmentForm";
 
-const NewAppointmentCard = () => {
+const NewAppointmentCard = ({getAppointmentData}: {getAppointmentData: ()=>void}) => {
   const [newOpen, setNewOpen] = React.useState(false);
   const handleNewOpen = () => setNewOpen(true);
   const handleNewClose = () => setNewOpen(false);
@@ -37,7 +37,7 @@ const NewAppointmentCard = () => {
         </div>
       ) : (
         <div
-          className="hover:border-[2px] hover:border-solid flex flex-row items-center justify-center max-w-[240px] h-[240px] border-[1px] border-dashed border-[#000] rounded-[15px] cursor-pointer justify-self-center w-full md:justify-self-auto"
+          className="hover:border-[2px] hover:border-solid flex flex-row items-center justify-center max-w-[240px] border-[1px] min-h-[250px] border-dashed border-[#000] rounded-[15px] cursor-pointer justify-self-center w-full md:justify-self-auto"
           onClick={handleNewOpen}
         >
           <BsPlus className="w-8 h-8" />
@@ -50,7 +50,7 @@ const NewAppointmentCard = () => {
         aria-describedby="modal-modal-description"
       >
         <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] rounded-[15px] justify-center items-center h-[80vh] w-[80%] bg-[#fff] m-auto">
-          <NewAppointmentForm setSnackbarOpen={setSnackbarOpen} handleClose={handleNewClose} />
+          <NewAppointmentForm getAppointmentData={getAppointmentData} setSnackbarOpen={setSnackbarOpen} handleClose={handleNewClose} />
         </div>
       </Modal>
     </>

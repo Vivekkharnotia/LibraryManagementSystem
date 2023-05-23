@@ -46,12 +46,13 @@ interface Profile {
 export default function NewAppointmentForm({
   handleClose,
   setSnackbarOpen,
+  getAppointmentData
 }: {
   handleClose: () => void;
   setSnackbarOpen: (value: boolean) => void;
+  getAppointmentData: ()=>void;
 }) {
   const [formData, setFormData] = useState<Profile | null>({});
-  const [profileData, setProfileData] = useState<Profile | null>({});
   const [loading, setLoading] = useState(false);
   const { user, userLoading } = useUser();
   const [error, setError] = useState(false);
@@ -97,11 +98,14 @@ export default function NewAppointmentForm({
     if (formData?.caseName && formData?.caseName.length > 0) {
       try {
         setLoading(true);
-        const addedData = await addDoc(
+        await addDoc(
           collection(db, `Userdata/${user.uid}/cases`),
-          { ...formData, createdAt: new Date() }
+          { ...formData, createdAt: new Date(), numberOfSessions: 0 }
         );
         setSnackbarOpen(true);
+        setLoading(false);
+        handleClose();
+        getAppointmentData();
       } catch (error) {
         console.log(error);
       }
@@ -109,8 +113,6 @@ export default function NewAppointmentForm({
       alert("Please enter a case name");
       setError(true);
     }
-    setLoading(false);
-    handleClose();
     // await setDoc(doc(db, `Userdata/${user.uid}/`, user.uid), formData, { merge: true });
   };
 

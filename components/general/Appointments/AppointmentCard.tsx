@@ -1,6 +1,13 @@
 import {
   Alert,
+  Backdrop,
   Button,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   Modal,
   Popover,
@@ -30,6 +37,8 @@ interface AppointmentCardProps {
   setErrorDialog: any;
   setErrorMsg: any;
   user: any;
+  numberOfSessions: number;
+  getAppointmentData: () => void;
 }
 
 const AppointmentCard: FC<AppointmentCardProps> = ({
@@ -40,7 +49,9 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
   setState,
   setErrorDialog,
   setErrorMsg,
-  user
+  user,
+  numberOfSessions,
+  getAppointmentData,
 }) => {
   const [open, setOpen] = React.useState(false);
   const [slot, setSlot] = React.useState(false);
@@ -50,6 +61,8 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
   const toggleBuy = () => setBuy((prev) => !prev);
   const toggleSlot = () => setSlot((prev) => !prev);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleCopyButton = () => {
     navigator.clipboard.writeText("sampelupiid@oksbi");
@@ -75,18 +88,36 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
   const popoverOpen = Boolean(anchorEl);
   const popoverId = open ? "simple-popover" : undefined;
 
-
   const handleCaseDelete = async () => {
+    setAnchorEl(null);
+    setLoading(true);
+    setDialogOpen(false);
     try {
       await deleteDoc(doc(db, `Userdata/${user.uid}/cases`, id));
+      await getAppointmentData();
     } catch (err: any) {
       setErrorMsg(err.message);
       setErrorDialog(true);
     }
+    setLoading(false);
+  };
+
+  const handleDialogClose = () => {
+    handlePopoverClose();
+    setDialogOpen(false);
   };
 
   return (
     <>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+        className="flex flex-col gap-2"
+      >
+        <span>Deleting</span>
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
@@ -101,6 +132,28 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
           Copied to clipboard
         </Alert>
       </Snackbar>
+
+      <Dialog
+        open={dialogOpen}
+        onClose={handleDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to delete this case?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Delete case name, {name}?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose}>Cancel</Button>
+          <Button color="error" onClick={handleCaseDelete} autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <div className="hover:outline hover:outline-[1px] transition ease-in-out flex flex-col w-[240px] h-[270px] border-[1px] border-[#000] rounded-[15px] cursor-pointer px-5 py-5 relative justify-items-start">
         <IconButton
@@ -124,20 +177,25 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
             horizontal: "left",
           }}
         >
-          <Button sx={{ m: 2 }} onClick={handleCaseDelete}>
+          <Button sx={{ m: 2 }} onClick={() => setDialogOpen(true)}>
             <Delete color="error" />
-            <Typography sx={{ px: 2, py: 1 }} color={'black'}>Delete</Typography>
+            <Typography sx={{ px: 2, py: 1 }} color={"black"}>
+              Delete
+            </Typography>
           </Button>
         </Popover>
 
         <div onClick={handleOpen} style={{ position: "relative" }}>
-          <div style={{ marginBottom: "15px" }}>
+          <div style={{ marginBottom: "15px", overflow: 'hidden', textOverflow: 'ellipsis' }}>
             <span className="text-[20px] mr-2">{number}.</span>
             <span className="text-[26px] mr-2">{name}</span>
           </div>
 
-          <span className="font-light">Created at: </span>
-          <span className="font-light">{date || "2nd of January, 2023"}</span>
+          <div className="font-light mb-2">Sessions left: {numberOfSessions}</div>
+          <div className="font-light mb-2">
+            Created at:
+            <span className="font-light">{date || "2nd of January, 2023"}</span>
+          </div>
           <Image
             src="/appointmentCardBg.svg"
             alt="Three rows of three dots"
