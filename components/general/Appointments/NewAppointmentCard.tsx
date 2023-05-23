@@ -49,7 +49,7 @@ const NewAppointmentCard = ({getAppointmentData}: {getAppointmentData: ()=>void}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] rounded-[15px] justify-center items-center h-[80vh] w-[80%] bg-[#fff] m-auto">
+        <div className="absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] rounded-[15px] justify-center items-center h-[80vh] w-[80%] mobile:w-[97%]  bg-[#fff] m-auto">
           <NewAppointmentForm getAppointmentData={getAppointmentData} setSnackbarOpen={setSnackbarOpen} handleClose={handleNewClose} />
         </div>
       </Modal>

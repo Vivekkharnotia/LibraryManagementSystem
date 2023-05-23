@@ -141,7 +141,7 @@ export default function NewAppointmentForm({
               <TextField
                 variant="standard"
                 onChange={onChangeCaseName}
-                label="Case name"
+                label="Enter Case Name"
                 value={formData?.caseName || ""}
                 sx={{ marginY: "1rem" }}
                 error={error}

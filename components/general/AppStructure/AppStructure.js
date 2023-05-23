@@ -278,7 +278,7 @@ export default function MiniDrawer() {
             onClick={() => activeElement(2)}
           >
             <PhoneIcon id={`view2Item${2}`} className={sidebar.view2Icn} />
-          </Button>
+          </Button>--
           </Link>
 
 

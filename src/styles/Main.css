@@ -1,7 +1,8 @@
 main {
-  /* padding-inline: 0!important; */
   padding-block: 16px;
-  padding-inline: 1.5rem;
+  padding-inline: 0!Important;
+  margin-bottom: 3rem;
+  overflow-x: auto;
 }
 .slice {
   width: 100%;
@@ -79,8 +80,6 @@ main {
 
 @media only screen and (min-width: 768px) {
   main {
-    /* padding: 0; */
-    /* padding: 24px!important; */
     padding-inline: 6rem!important;
   }
   .content-hero-text {

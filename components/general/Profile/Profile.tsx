@@ -221,35 +221,33 @@ const Profile = () => {
       <div className="flex flex-col gap-4 mb-8">
         <div className="mb-4">
           <h3 className="text-[20px] font-semibold mb-2">PERSONAL DETAILS</h3>
+
           <div className="flex flex-col gap-8 border-[2px] p-4">
-            <div
-              className={`flex relative ${
-                formData?.profileImageUrl ? "" : "border-2 border-p-border"
-              } h-24 w-24 sm:h-36 sm:w-36 rounded-full items-center justify-center bg-s-bg z-10 cursor-pointer`}
-            >
-              {formData?.profileImageUrl && (
-                <label htmlFor="profileImage">
-                  {" "}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    className="absolute top-0 left-0 -z-10 rounded-full object-cover h-24 w-24 sm:h-36 sm:w-36 cursor-pointer"
-                    src={formData?.profileImageUrl}
-                    alt="PFP"
-                  />
-                </label>
-              )}
-              <div className="flex flex-row items-center space-x-3">
-                <Tooltip
-                  TransitionProps={{ timeout: 600 }}
-                  title="Change"
-                  arrow
-                >
+            <Tooltip TransitionProps={{ timeout: 600 }} title="Change profile picture" arrow>
+              <div
+                className={`flex relative ${
+                  formData?.profileImageUrl ? "" : "border-2 border-p-border"
+                } h-24 w-24 sm:h-36 sm:w-36 rounded-full items-center justify-center bg-s-bg z-10 cursor-pointer`}
+              >
+                {formData?.profileImageUrl && (
+                  <label htmlFor="profileImage">
+                    {" "}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      className="absolute top-0 left-0 -z-10 rounded-full object-cover h-24 w-24 sm:h-36 sm:w-36 cursor-pointer"
+                      src={formData?.profileImageUrl}
+                      alt="PFP"
+                    />
+                  </label>
+                )}
+
+                <div className="flex flex-row items-center space-x-3">
                   <label htmlFor="profileImage">
                     <div className="bg-s-bg rounded-full p-1 cursor-pointer">
                       <AiOutlineCamera className="h-6 w-6 " />
                     </div>
                   </label>
-                </Tooltip>
+                </div>
 
                 {/* {profileImageFile && (
                   <Tooltip
@@ -277,7 +275,7 @@ const Profile = () => {
                   </Tooltip>
                 )} */}
               </div>
-            </div>
+            </Tooltip>
             <Backdrop
               sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
               open={isImageUploading}

@@ -1,6 +1,7 @@
 .container{
     display: flex;
-    padding: 1rem;
+    padding-block: 1rem;
+    padding-inline: 0.3rem;
 }
 .grid_container{
     display: grid;
@@ -64,17 +65,11 @@
         place-items: center;
     }
     .grid_container{
-        grid-template-columns: 187px 187px;
-    }
-    
-}
-
-@media only screen and (max-width : 500px) {
-    .grid_container{
         display: block;
     }
     .grid_container>div{
         margin-bottom: 2rem;
+        height: 333px;
     }
     
 }
