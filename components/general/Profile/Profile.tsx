@@ -171,16 +171,20 @@ const Profile = () => {
     fetchProfileImage();
   }, [profileImageFile]);
 
+  const { userLoading } = useUser();
+
   // get the profile data from the database and set the profileData state and formData state
   const getProfileData = async () => {
-    const docRef = doc(db, "Userdata", user?.uid);
-    const docSnap = await getDoc(docRef);
+    if (userLoading === "loaded") {
+      const docRef = doc(db, "Userdata", user?.uid);
+      const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      setProfileData(docSnap.data());
-      setFormData(docSnap.data());
-    } else {
-      console.log("No such document!");
+      if (docSnap.exists()) {
+        setProfileData(docSnap.data());
+        setFormData(docSnap.data());
+      } else {
+        console.log("No such document!");
+      }
     }
   };
 
