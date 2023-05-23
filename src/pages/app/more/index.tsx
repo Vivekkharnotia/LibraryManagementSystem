@@ -12,10 +12,9 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function index() {
+function More() {
   useEffect(() => {
     (async function () {
-
       chartMaker(
         "ageChart",
         "line",
@@ -67,7 +66,7 @@ function index() {
         [
           ["diabetes", "bp", "thyroid", "other"],
           [10, 20, 30, 5],
-          ["#961D4E", "#A60067", "#6153CC", "#44FFD1"]
+          ["#961D4E", "#A60067", "#6153CC", "#44FFD1"],
         ],
         "Medical History",
         "Medical History of patient"
@@ -79,7 +78,7 @@ function index() {
         [
           ["smoking", "alcohol", "drugs", "other"],
           [10, 20, 30, 5],
-          ["#EEE0CB", "#BAA898", "#BE9689", "#C2847A"]
+          ["#EEE0CB", "#BAA898", "#BE9689", "#C2847A"],
         ],
         "Personal History",
         "Personal History of patient"
@@ -91,7 +90,7 @@ function index() {
         [
           ["diabetes", "paralysis", "other"],
           [10, 20, 30],
-          ["#62B6CB", "#BEE9E8", "#CAE9FF"]
+          ["#62B6CB", "#BEE9E8", "#CAE9FF"],
         ],
         "Family History",
         "Family History of patient"
@@ -100,11 +99,7 @@ function index() {
       chartMaker(
         "surgicalHistoryChart",
         "bar",
-        [
-          ["diabetes", "paralysis", "other"],
-          [10, 20, 30],
-          ["#F4A5AE"]
-        ],
+        [["diabetes", "paralysis", "other"], [10, 20, 30], ["#F4A5AE"]],
         "Surgical History",
         "Surgical History of patient"
       );
@@ -112,70 +107,65 @@ function index() {
       chartMaker(
         "otherComplaintsChart",
         "line",
-        [
-          ["diabetes", "paralysis", "other"],
-          [10, 20, 5],
-          ["#2F9C95"]
-        ],
+        [["diabetes", "paralysis", "other"], [10, 20, 5], ["#2F9C95"]],
         "Other Complaints",
         "Other complaints of patient"
       );
-
     })();
   }, []);
 
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item lg={8} md={12} >
+        <Grid item lg={8} md={12}>
           <Item className={style.item}>
             <canvas className={style.chart} id="ageChart"></canvas>
           </Item>
         </Grid>
 
-        <Grid item lg={4} md={12} >
+        <Grid item lg={4} md={12}>
           <Item className={style.item}>
             <canvas className={style.chart} id="genderChart"></canvas>
           </Item>
         </Grid>
 
-        <Grid item lg={4} md={12} >
+        <Grid item lg={4} md={12}>
           <Item className={style.item}>
             <canvas className={style.chart} id="referredByChart"></canvas>
           </Item>
         </Grid>
 
-        <Grid item lg={8} md={12} >
+        <Grid item lg={8} md={12}>
           <Item className={style.item}>
             <canvas className={style.chart} id="occupationChart"></canvas>
           </Item>
         </Grid>
 
-        <Grid item lg={6} md={12} >
+        <Grid item lg={6} md={12}>
           <Item className={style.item}>
             <canvas className={style.chart} id="surgicalHistoryChart"></canvas>
           </Item>
         </Grid>
 
-        <Grid item lg={6} md={12} >
+        <Grid item lg={6} md={12}>
           <Item className={style.item}>
             <canvas className={style.chart} id="otherComplaintsChart"></canvas>
           </Item>
         </Grid>
 
-        <Grid item lg={4} md={12} >
+        <Grid item lg={4} md={12}>
           <Item className={style.item}>
             <canvas className={style.chart} id="medicalHistoryChart"></canvas>
           </Item>
         </Grid>
 
-        <Grid item lg={4} md={12} >
+        <Grid item lg={4} md={12}>
           <Item className={style.item}>
             <canvas className={style.chart} id="personalHistoryChart"></canvas>
           </Item>
         </Grid>
 
-        <Grid item lg={4} md={12} >
+        <Grid item lg={4} md={12}>
           <Item className={style.item}>
             <canvas className={style.chart} id="familyHistoryChart"></canvas>
           </Item>
@@ -185,4 +175,4 @@ function index() {
   );
 }
 
-export default index;
+export default More;
