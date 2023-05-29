@@ -1,8 +1,6 @@
-import { useRef, useState, useEffect, RefObject } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Avatar.module.css";
 import arrow_down from "../../../public/arrow_down.svg";
-import avatarImg from "../../../public/avatar.jpg";
-import Image from "next/image";
 import Popover from "@mui/material/Popover";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
@@ -10,16 +8,14 @@ import { auth, db } from "../firebase-config";
 import { useRouter } from "next/router";
 import { useUser } from "components/UserContext";
 import { doc, getDoc } from "firebase/firestore";
-import { CircularProgress } from "@material-ui/core";
-
+import { MdOutlineAccountCircle } from "react-icons/md";
+import Image from "next/image";
 
 function Avatar() {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [avatar, setAvatar] = useState<string>("");
   const router = useRouter();
   const { user, userLoading } = useUser();
-
-
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -63,13 +59,17 @@ function Avatar() {
       await getProfileImage();
     };
 
-    if(avatar === "") fetchProfile();
+    if (avatar === "") fetchProfile();
   }, [userLoading]);
 
   return (
     <>
       <div>
-        <Button sx={{backgroundColor: 'transparent!important'}} aria-describedby={id} onClick={handleClick}>
+        <Button
+          sx={{ backgroundColor: "transparent!important" }}
+          aria-describedby={id}
+          onClick={handleClick}
+        >
           <div className={styles.down_arrow}>
             <Image src={arrow_down} alt="v" />
           </div>
@@ -86,7 +86,7 @@ function Avatar() {
             {avatar ? (
               <img src={avatar} alt="Avatar" />
               ) : (
-              <CircularProgress />
+              <MdOutlineAccountCircle className="object-contain w-full h-full text-[#000]" />
             )}
           </div>
         </Button>
@@ -133,4 +133,3 @@ function Avatar() {
 }
 
 export default Avatar;
-
