@@ -27,7 +27,7 @@ export default function Layout(props: LayoutProps ) {
   useEffect(() => {
     if (window) {
       if (window.localStorage.getItem("loggedIn") === "false") {
-        router.push("/");
+        router.push("/signin");
       }
     }
   }, []);

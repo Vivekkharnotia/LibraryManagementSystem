@@ -154,6 +154,7 @@ function SignIn() {
         if (window) {
           window.localStorage.setItem("loggedIn", true);
         }
+        router.push('/app');
       } catch (error) {
         alert(error.message);
       }
