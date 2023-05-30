@@ -96,7 +96,7 @@
 .image1 > div{
     position: relative;
     margin: auto;
-    width: 50vw;
+    width: min(45rem, 94vw);
     resize: both;
     overflow: auto;
 }
@@ -124,7 +124,7 @@
     cursor: pointer;
 }
 
-@media only screen and (max-width : 1212px) {
+@media only screen and (max-width : 500px) {
     .anchors, .contact{
         display: none;
     }

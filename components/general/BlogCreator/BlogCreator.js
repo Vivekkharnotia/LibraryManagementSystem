@@ -1,66 +1,50 @@
-import React, { useEffect, useRef, useState } from "react";
-import style from "./VisitBlog.module.css";
-import BlogPartition from "./BlogPartition/BlogPartition.js";
-import { Button, IconButton } from "@mui/material";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import { Button } from "@mui/material";
 import { useUser } from "components/UserContext";
-import HeroImage from "./HeroImage/HeroImage";
+import { useRef, useState } from "react";
+import BlogImage from "./BlogImage/BlogImage";
+import BlogPartition from './BlogPartition/BlogPartition';
 import HeadTitle from "./HeadTitle/HeadTitle";
-import EditIcon from "@mui/icons-material/Edit";
+import HeroImage from "./HeroImage/HeroImage";
+import style from "./VisitBlog.module.css";
 
 export default function BlogCreator({ data }) {
   const [titles, setTitles] = useState([]);
   const container = useRef(null);
   const blogImageInput = useRef(null);
-  const [headTitle, setHeadTitle] = useState('Click to Edit Title');
-  const [heroImageSrc, setHeroImageSrc] = useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMaJKOnh70m9VVMzrgdZY0jTGUfLSXFI01IQ&usqp=CAU");
+  const [headTitle, setHeadTitle] = useState("Click to Edit Title");
+  const [heroImageSrc, setHeroImageSrc] = useState(
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMaJKOnh70m9VVMzrgdZY0jTGUfLSXFI01IQ&usqp=CAU"
+  );
+  const [blogData, setBlogData] = useState([]);
   const user = useUser();
-  const displayName = user.user? user.user.displayName : 'loading...';
+  const displayName = user.user ? user.user.displayName : "loading...";
   const date = new Date();
 
+  // useEffect(() => {
+  //   const boldBtn = document.querySelector("#addBold");
+  //   const italicBtn = document.querySelector("#addItalic");
 
-  const handleDeleteClick = (anchorId) => {
-    // console.log(anchorId)
-    // delete blockTrial[anchorId]
-    // setBlockTrial((current)=>{
-    //   return {...current}
-    // }
-    // )
-    console.log(blockTrial[anchorId])
-  };
+  //   const handleBoldClick = () => {
+  //     var range = window.getSelection().getRangeAt(0);
 
-  const [block, setBlock] = useState([
-    <BlogPartition key={`partition0`} anchorId="anchor0" handleDeleteClick={handleDeleteClick}/>,
-  ]);
+  //     let bold = document.createElement("b");
 
-  const [blockTrial, setBlockTrial] = useState({});
+  //     bold.appendChild(range.extractContents());
+  //     range.insertNode(bold);
+  //   };
 
+  //   const handleItalicClick = () => {
+  //     var range = window.getSelection().getRangeAt(0);
+  //     let italic = document.createElement("i");
 
+  //     italic.appendChild(range.extractContents());
+  //     range.insertNode(italic);
+  //   };
 
-  useEffect(() => {
-    const boldBtn = document.querySelector("#addBold");
-    const italicBtn = document.querySelector("#addItalic");
-
-    const handleBoldClick = () => {
-      var range = window.getSelection().getRangeAt(0);
-
-      let bold = document.createElement("b");
-
-      bold.appendChild(range.extractContents());
-      range.insertNode(bold);
-    };
-
-    const handleItalicClick = () => {
-      var range = window.getSelection().getRangeAt(0);
-      let italic = document.createElement("i");
-
-      italic.appendChild(range.extractContents());
-      range.insertNode(italic);
-    };
-
-    italicBtn.addEventListener("click", handleItalicClick);
-    boldBtn.addEventListener("click", handleBoldClick);
-  });
+  //   italicBtn.addEventListener("click", handleItalicClick);
+  //   boldBtn.addEventListener("click", handleBoldClick);
+  // });
 
   // useEffect(() => {
   //   const titles = block.map((item) => {
@@ -76,46 +60,39 @@ export default function BlogCreator({ data }) {
     return title.children[0].innerText;
   };
 
-const handleParaClick = () => {
-  const blockSize = block.length;
-  setBlock((current) => [
-    ...current,
-    <BlogPartition
-      key={`partition${blockSize}`}
-      anchorId={`anchor${blockSize}`}
-      handleDeleteClick={handleDeleteClick}
-    />,
-  ]);
-
-    const key = 'anchor' + blockSize;
-    const temp = {}
-    temp[key] = <BlogPartition key={`partition${blockSize}`} anchorId={`anchor${blockSize}`} handleDeleteClick={handleDeleteClick}/> 
-
-    setBlockTrial((current)=>{
-      return {...current, ...temp}
-    }
-    )
-}
-
-  const handleAddImageClick = () => {
-    const blockSize = block.length;
-    const file = blogImageInput.current.files[0];
-    const src = URL.createObjectURL(file);
-    setBlock((current) => [
+  const handleParaClick = () => {
+    setBlogData((current) => [
       ...current,
-      <BlogImage
-        key={`image${blockSize}`}
-        src={src}
-      />,
+      { title: "Title", content: "Content" },
     ]);
   };
 
+  const handleAddImageClick = () => {
+    const file = blogImageInput.current.files[0];
+    const src = URL.createObjectURL(file);
+
+    setBlogData((current) => [
+      ...current,
+      { title: "Image", src: src },
+    ]);
+  };
+
+
+
+  
+
   return (
     <>
-
-      <HeadTitle displayName={displayName} date={date} headTitle={headTitle} setHeadTitle={setHeadTitle}/>
-      <HeroImage heroImageSrc={heroImageSrc} setHeroImageSrc={setHeroImageSrc} />
-      
+      <HeadTitle
+        displayName={displayName}
+        date={date}
+        headTitle={headTitle}
+        setHeadTitle={setHeadTitle}
+      />
+      <HeroImage
+        heroImageSrc={heroImageSrc}
+        setHeroImageSrc={setHeroImageSrc}
+      />
 
       <div className={style.container}>
         <ul className={style.anchors} style={{ paddingLeft: "1.2rem" }}>
@@ -139,15 +116,28 @@ const handleParaClick = () => {
             <Button>I</Button>
           </li>
 
-          <li className={style.fb} id="addItalic" onClick={()=>console.log(blockTrial)}>
+          <li
+            className={style.fb}
+            id="addItalic"
+            onClick={() => console.log(blockTrial)}
+          >
             <Button>T</Button>
           </li>
 
           <li className={style.fb}>
-            <Button sx={{padding: '0'}}>
+            <Button sx={{ padding: "0" }}>
               <label htmlFor="addImage" className={style.addImage}>
-                  <input ref={blogImageInput} onChange={handleAddImageClick} type="file" name="" id="addImage" className={style.file} accept=".jpg, .jpeg, .png"/>
-                  <AddPhotoAlternateIcon />
+                <input
+                  ref={blogImageInput}
+                  onClick={(e) => (e.target.value = null)}
+                  onChange={handleAddImageClick}
+                  type="file"
+                  name="addImage"
+                  id="addImage"
+                  className={style.file}
+                  accept=".jpg, .jpeg, .png"
+                />
+                <AddPhotoAlternateIcon />
               </label>
             </Button>
           </li>
@@ -155,24 +145,18 @@ const handleParaClick = () => {
 
         <div className={style.content} ref={container}>
           {
-            Object.entries(blockTrial).map((t,k) => t[1])
+            blogData.map((item, index) => {
+              if(item.title === 'Image') return <BlogImage key={index} data={item} index={index} length={blogData.length} setBlogData={setBlogData}/>
+              else
+                return (
+                  <BlogPartition key={index} data={item} index={index} length={blogData.length} setBlogData={setBlogData}/>
+                );
+            })
           }
-        </div>
-      </div>
-    </>
-  );
-}
 
-function BlogImage(src) {
-  return (
-    <>
-      <div className={style.image1} style={{marginBottom: '70px'}}>
-        <span style={{maxWidth: '30vw'}}>
-          <img src={src.src} alt="" />
-        </span>
-        <IconButton className={style.editIcon}>
-            <EditIcon sx={{color: 'white'}} />
-        </IconButton>
+          <Button onClick={()=>console.log(blogData)}>Check</Button>
+
+        </div>
       </div>
     </>
   );
