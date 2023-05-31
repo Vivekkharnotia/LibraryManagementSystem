@@ -45,14 +45,16 @@ const Appointments = () => {
 
   const getAppointmentData = async () => {
     setLoading(true);
-    const appoinments = await getDocs(
-      collection(db, `Userdata/${user.uid}/cases`)
-    );
-    const appointmentsData = appoinments.docs.map((doc) => {
-      return { ...doc.data(), id: doc.id };
-    });
-    setLoading(false);
-    setAppointmentsData(appointmentsData);
+    if (userLoading === "loaded") {
+      const appoinments = await getDocs(
+        collection(db, `Userdata/${user.uid}/cases`)
+      );
+      const appointmentsData = appoinments.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id };
+      });
+      setLoading(false);
+      setAppointmentsData(appointmentsData);
+    }
   };
 
   useEffect(() => {
