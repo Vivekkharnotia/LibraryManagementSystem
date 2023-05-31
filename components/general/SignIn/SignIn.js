@@ -1,29 +1,23 @@
-import {
-  Paper,
-  Button,
-  TextField,
-  Switch,
-  FormControlLabel,
-} from "@mui/material";
-import { useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import {
+  Button,
+  FormControlLabel,
+  Paper,
+  Switch,
+  TextField,
+} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
 import FormHelperText from "@mui/material/FormHelperText";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import InputLabel from "@mui/material/InputLabel";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 import OutlinedInput from "@mui/material/OutlinedInput";
-import {
-  validateConfirmPassword,
-  validateEmail,
-  validateName,
-  validatePassword,
-} from "./SigninFunctions.js";
-import classes from "./SignIn.module.css";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useUser } from "components/UserContext.tsx";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -31,7 +25,13 @@ import {
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase-config.js";
-import { useUser } from "components/UserContext.tsx";
+import classes from "./SignIn.module.css";
+import {
+  validateConfirmPassword,
+  validateEmail,
+  validateName,
+  validatePassword,
+} from "./SigninFunctions.js";
 
 const theme = createTheme({
   palette: {
@@ -153,6 +153,7 @@ function SignIn() {
         setLoggedIn(true);
         if (window) {
           window.localStorage.setItem("loggedIn", true);
+          window.localStorage.setItem("uid", userId);
         }
         router.push('/app');
       } catch (error) {
@@ -166,7 +167,7 @@ function SignIn() {
     setLoginEmailErr(!res_email);
     if (res_email == true) {
       try {
-        await signInWithEmailAndPassword(
+        const user = await signInWithEmailAndPassword(
           auth,
           loginData.email,
           loginData.password
@@ -175,6 +176,7 @@ function SignIn() {
         setLoggedIn(true);
         if (window) {
           window.localStorage.setItem("loggedIn", 'true');
+          window.localStorage.setItem("uid", user.user.uid);
         }
         router.push('/app');
         

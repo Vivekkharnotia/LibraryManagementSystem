@@ -1,8 +1,8 @@
-import { IconButton, Tooltip, Zoom } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import { IconButton, Tooltip, Zoom } from "@mui/material";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import style from "../VisitBlog.module.css";
-import { returnFileSize, validFileType} from "utils/ExtendedUtils";
+import { returnFileSize, validFileType } from "utils/ExtendedUtils";
+import style from "../../BlogCreator/VisitBlog.module.css";
 
 
 export default function HeroImage({ heroImageSrc, setHeroImageSrc }: { heroImageSrc: string, setHeroImageSrc: Dispatch<SetStateAction<string>>}) {

@@ -1,6 +1,7 @@
 .nav{
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
     width: 100%;
     background-color: white;
@@ -13,7 +14,6 @@
     animation-duration: 350ms;
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
-
 }
 
 .logo{
@@ -21,54 +21,15 @@
     font-size: 2rem;
 }
 
-.container{
-    color: rgb(107, 107, 107);
-
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-
-    padding-inline: 2rem;
-}
-
-.navMenu{
-    display: flex;
-    gap: 3rem;
-}
-
-.navMenu>li::after{
-    border-top-width: 2px;
-    border-top-style: solid;
-    border-top-color: rgb(107, 107, 107);
-    border-right-width: 2px;
-    border-right-style: solid;
-    border-right-color: rgb(107, 107, 107);
-
-    content: "";
-    display: inline-block;
-    margin-left: 0.3em;
-    position: relative;
-    pointer-events: none;
-    width: 6px;
-    height: 6px;
-    vertical-align: middle;
-    transform: rotate(135deg);
-    top: -2px;
-    left: 2px;
-    transition: transform 0.3s ease-out 0s;
-    transform-origin: center center;
-}
-
-.navMenu>li:hover{
-    color: black;
-    cursor: pointer;
+.btnContainer{
+    margin-right: 3rem;
+    width: max-content;
 }
 
 .signinBtn{
     color: #fff;
     margin-left: 2rem;
-    background-color: rgb(92, 92, 228);
+    background-color: rgb(233, 171, 2);
     padding: 0.8rem 1.5rem;
     border-radius: 4px;
 
@@ -81,9 +42,30 @@
 .signinBtn:hover{
     box-shadow: 0px 0px 8px hsl(240, 60%, 65%);
 }
-
-
+.hamburger{
+    display: none;
+}
 @keyframes navSlide {
     0%{top: -10%; opacity: 0;}
     100%{top: 0; opacity: 1;}
+}
+
+@media screen and (max-width: 768px){
+    .nav{
+        padding-left: 2rem;
+        padding-block: 1.5rem;
+    }
+    .btnContainer{
+        margin-right: 1rem;
+    }
+    .navBtns{
+        display: none;
+    }
+    .hamburger{
+        display: block!important;
+    }
+
+    .logo{
+        font-size: 1.5rem;
+    }
 }

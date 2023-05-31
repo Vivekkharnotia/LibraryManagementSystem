@@ -1,7 +1,6 @@
-import { Avatar, Button, Input, Typography } from "@mui/material";
+import { Avatar, Input, Typography } from "@mui/material";
+import { HeadTitleProps } from "../../BlogCreator/BlogCreator.interface";
 import style from "./HeadTitle.module.css";
-import { Dispatch, SetStateAction, useEffect } from "react";
-import { HeadTitleProps } from "../BlogCreator.interface";
 
 function HeadTitle(props: HeadTitleProps) {
   const { headTitle, setHeadTitle, displayName, date } = props;

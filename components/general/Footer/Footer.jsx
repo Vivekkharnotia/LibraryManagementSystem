@@ -1,6 +1,4 @@
-import React from "react";
-import { TfiLinkedin, TfiFacebook, TfiTwitterAlt } from "react-icons/tfi";
-import { FaArrowRight } from "react-icons/fa";
+import { TfiFacebook, TfiLinkedin, TfiTwitterAlt } from "react-icons/tfi";
 
 const FooterList = ({ title, links }) => {
   return (
@@ -56,24 +54,7 @@ const Footer = () => {
               { name: "Lift Media", link: "" },
             ]}
           />
-          <div className="px-10 py-6 bg-[#333] md:max-w-[320px] mb-16">
-            <h3 className="font-bold text-[#FFF] mb-4">Subscribe</h3>
-            <div className="flex flex-row h-[50px] items-center rounded-[6px] mb-6">
-              <input
-                type="email"
-                placeholder="Email address"
-                className="flex-1 h-[50px] rounded-l-[6px] bg-[#FFF] outline-none pl-4 pr-2 text-[#333]"
-              />
-              <button className="bg-[#0081FE] h-[50px] w-[50px] flex items-center p-2 rounded-r-[6px] justify-center text-[#FFF]">
-                <FaArrowRight />
-              </button>
-            </div>
-            <span className="text-[12px] text-[#FFF]">
-              Hello, we are Lift Media. Our goal is to translate the positive
-              effects from revolutionizing how companies engage with their
-              clients & their team.
-            </span>
-          </div>
+          
         </div>
         <div className="h-[1px] bg-[#eee] border-none"></div>
         <div className="text-[#FFF] flex flex-col md:flex-row items-center justify-between gap-10">

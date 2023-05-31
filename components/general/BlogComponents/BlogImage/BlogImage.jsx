@@ -3,7 +3,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Container, IconButton } from "@mui/material";
-import style from "../VisitBlog.module.css";
+import style from "../../BlogCreator/VisitBlog.module.css";
 
 
 
@@ -11,7 +11,9 @@ import style from "../VisitBlog.module.css";
 
 export default function BlogImage({ setBlogData, index, data, length }) {
     
-    const src = data.src;
+  const src = data.src;
+
+  console.log(src)
 
 
     const handleUpClick = () => {

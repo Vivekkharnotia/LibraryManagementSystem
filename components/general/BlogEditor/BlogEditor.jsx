@@ -2,82 +2,38 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import SaveIcon from '@mui/icons-material/Save';
 import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 import { db } from "components/general/firebase-config";
-import { collection, doc, getDoc, writeBatch } from "firebase/firestore";
-import { useRouter } from "next/router";
+import { collection, doc, writeBatch } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import BlogImage from "../BlogComponents/BlogImage/BlogImage";
 import BlogPartition from '../BlogComponents/BlogPartition/BlogPartition';
 import HeadTitle from "../BlogComponents/HeadTitle/HeadTitle";
 import HeroImage from "../BlogComponents/HeroImage/HeroImage";
-import style from "./VisitBlog.module.css";
+import style from "../BlogCreator/VisitBlog.module.css";
 
 
-export default function BlogCreator({ data }) {
+export default function BlogEditor(props) {
   const [titles, setTitles] = useState([]);
   const container = useRef(null);
   const blogImageInput = useRef(null);
-  const [headTitle, setHeadTitle] = useState("Click to Edit Title");
-  const [heroImageSrc, setHeroImageSrc] = useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMaJKOnh70m9VVMzrgdZY0jTGUfLSXFI01IQ&usqp=CAU");
-  const [blogData, setBlogData] = useState([]);
-  const [displayName, setDisplayName] = useState("loading..."); // data['displayName'
-  const date = new Date();
-  const [userBlogs, setUserBlogs] = useState([]);
-  const router = useRouter();
+  const [headTitle, setHeadTitle] = useState(props.metaBlogData.headTitle);
+  const [heroImageSrc, setHeroImageSrc] = useState(
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMaJKOnh70m9VVMzrgdZY0jTGUfLSXFI01IQ&usqp=CAU"
+  );
+  const [blogData, setBlogData] = useState(props.blogData);
+  const date = props.metaBlogData.date;
   const [loading, setLoading] = useState(false);
+  const blogID = props.blogID;
+  const displayName = props.metaBlogData.displayName;
   const [uid, setUid] = useState(null);
 
+  useEffect(()=>{
+    setUid(localStorage.getItem('uid'));
+  }, [])
 
-  useEffect(() => {
-    const userId = localStorage.getItem('uid');
-    setUid(userId);
-    getUserData(userId);
-  }, []);
-
-  const getUserData = async (userId) => {
-      const userSnap = await getDoc(doc(collection(db, "Userdata"), userId));
-      const data = userSnap.data();
-      setDisplayName(`${data.fname} ${data.lname}`);
-      setUserBlogs(data.blogs);
-  };
-
-  // useEffect(() => {
-  //   const boldBtn = document.querySelector("#addBold");
-  //   const italicBtn = document.querySelector("#addItalic");
-
-  //   const handleBoldClick = () => {
-  //     var range = window.getSelection().getRangeAt(0);
-
-  //     let bold = document.createElement("b");
-
-  //     bold.appendChild(range.extractContents());
-  //     range.insertNode(bold);
-  //   };
-
-  //   const handleItalicClick = () => {
-  //     var range = window.getSelection().getRangeAt(0);
-  //     let italic = document.createElement("i");
-
-  //     italic.appendChild(range.extractContents());
-  //     range.insertNode(italic);
-  //   };
-
-  //   italicBtn.addEventListener("click", handleItalicClick);
-  //   boldBtn.addEventListener("click", handleBoldClick);
-  // });
-
-  // useEffect(() => {
-  //   const titles = block.map((item) => {
-  //     if (item.type.name === "BlogImage") return 'image';
-  //     return getTitle(item.props.anchorId);
-  //   });
-
-  //   setTitles(titles);
-  // }, [block]);
-
-  const getTitle = (anchorId) => {
-    const title = document.getElementById(`${anchorId}`);
-    return title.children[0].innerText;
-  };
+  // const getTitle = (anchorId) => {
+  //   const title = document.getElementById(`${anchorId}`);
+  //   return title.children[0].innerText;
+  // };
 
   const handleParaClick = () => {
     setBlogData((current) => [
@@ -109,44 +65,32 @@ export default function BlogCreator({ data }) {
       heroImageSrc: heroImageSrc,
       uid: uid,
     }
-
     
     
     // write blog to firestore in batch
     const batch = writeBatch(db);
-    const blogRef = doc(collection(db, "blogs"));
-    const blogId = blogRef.id;
 
-    const blogs = [...userBlogs, blogId ] || [blogId];
-    const userRef = doc(collection(db, "Userdata"), uid);
-    const metaBlogRef = doc(collection(db, "metaBlogs"), blogId);
-    
-    
-    batch.set(userRef, {blogs: blogs}, {merge: true});
-    batch.set(blogRef, blog);
-    batch.set(metaBlogRef, metaBlog);
+    const blogRef = doc(collection(db, "blogs"), blogID);
+    const metaBlogRef = doc(collection(db, "metaBlogs"), blogID);
+
+    batch.update(blogRef, blog);
+    batch.update(metaBlogRef, metaBlog);
     setLoading(true);
     await batch.commit();
-    router.push(`/blogs/edit/${blogId}`);
-      
-  };
-
-
-
-
+    setLoading(false);
+  }
   
 
   return (
     <>
       <Backdrop open={loading} sx={{zIndex: 100, flexDirection: 'column', gap: 4, color: 'white'}}>
-        <Typography fontSize={24}> Creating new blog... </Typography>
+        <Typography fontSize={24}> Saving... </Typography>
         <CircularProgress  sx={{color: 'white'}} />
       </Backdrop>
 
-
       <HeadTitle
         displayName={displayName}
-        date={date}
+        date={new Date()}
         headTitle={headTitle}
         setHeadTitle={setHeadTitle}
       />
@@ -207,6 +151,8 @@ export default function BlogCreator({ data }) {
                 );
             })
           }
+
+          {/* <Button onClick={()=>console.log(metaBlogData)}>Check</Button> */}
 
         </div>
       </div>
