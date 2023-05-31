@@ -52,7 +52,7 @@ export default function Main() {
 
   return (
     <>
-      <main>
+      <main id="about">
         <section className="slice-container">
           <div className="slice slice--image text-c">
             <span style={{ opacity: specialIsVisible != true ? "0" : "1" }}>
