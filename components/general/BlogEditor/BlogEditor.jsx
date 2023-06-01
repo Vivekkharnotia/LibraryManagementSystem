@@ -1,16 +1,17 @@
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 import { db } from "components/general/firebase-config";
 import { collection, doc, writeBatch } from "firebase/firestore";
+import Image from 'next/image';
 import { useEffect, useRef, useState } from "react";
+import emptyHere from '../../../public/emptyHere.jpg';
 import BlogImage from "../BlogComponents/BlogImage/BlogImage";
 import BlogPartition from '../BlogComponents/BlogPartition/BlogPartition';
 import HeadTitle from "../BlogComponents/HeadTitle/HeadTitle";
 import HeroImage from "../BlogComponents/HeroImage/HeroImage";
 import style from "../BlogCreator/VisitBlog.module.css";
-
 
 export default function BlogEditor(props) {
   const [titles, setTitles] = useState([]);
@@ -26,6 +27,8 @@ export default function BlogEditor(props) {
   const blogID = props.blogID;
   const displayName = props.metaBlogData.displayName;
   const [uid, setUid] = useState(null);
+  const [open, setOpen] = useState(false);
+
 
   useEffect(()=>{
     setUid(localStorage.getItem('uid'));
@@ -111,7 +114,7 @@ export default function BlogEditor(props) {
             );
           })} */}
         </ul>
-        <ul className={style.contact}>
+        <ul className={`${style.contact} ${open === true ? style.contactMobile : ''}`}>
           
           <li className={style.fb} onClick={handleParaClick}>
             <Button className={style.addPara}>P</Button>
@@ -142,15 +145,22 @@ export default function BlogEditor(props) {
           </li>
 
           <li className={`${style.fb} ${style.openBtn}`}>
-            <Button className={style.addPara}>
-              <OpenInFullIcon />
+            <Button onClick={()=>setOpen(!open)} className={style.addPara}>
+              
+                <CloseIcon sx={{transform: open === false ? "rotate(45deg)" : "", transition: "transform 250ms ease-in-out"}}/> 
+              
             </Button>
+          </li>
+
+          <li onClick={()=>setOpen(false)} className={`${style.fb} ${style.backdrop}`} style={{scale: open === true ? '100': '1'}}>
           </li>
 
         </ul>
 
         <div className={style.content} ref={container}>
           {
+            blogData.length > 0 ?
+
             blogData.map((item, index) => {
               if(item.title === 'Image') return <BlogImage key={index} data={item} index={index} length={blogData.length} setBlogData={setBlogData}/>
               else
@@ -158,9 +168,12 @@ export default function BlogEditor(props) {
                   <BlogPartition key={index} data={item} index={index} length={blogData.length} setBlogData={setBlogData}/>
                 );
             })
+            :
+            <>
+              <Image style={{display: 'block',marginInline: 'auto', marginTop: '9rem', opacity: '0.7', width: '40%'}} src={emptyHere} alt="NO content added, Please add content by clicking the P button" />
+              <Typography sx={{textAlign: "center", marginTop: "2rem"}}>Please Enter content by clicking add buttons</Typography>
+            </>
           }
-
-          {/* <Button onClick={()=>console.log(metaBlogData)}>Check</Button> */}
 
         </div>
       </div>

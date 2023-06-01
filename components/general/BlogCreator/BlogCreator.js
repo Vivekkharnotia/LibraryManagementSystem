@@ -1,6 +1,6 @@
+import AddIcon from '@mui/icons-material/Add';
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import CloseIcon from '@mui/icons-material/Close';
-import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import SaveIcon from '@mui/icons-material/Save';
 import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 import { db } from "components/general/firebase-config";
@@ -200,7 +200,7 @@ export default function BlogCreator({ data }) {
           <li className={`${style.fb} ${style.openBtn}`}>
             <Button onClick={()=>setOpen(!open)} className={style.addPara}>
               {
-                open ? <CloseIcon /> : <OpenInFullIcon />
+                open ? <CloseIcon /> : <AddIcon />
               }
             </Button>
           </li>
