@@ -49,15 +49,14 @@
     right: 80px;
 }
 .contact > li{
+    transition: all 250ms ease-in-out;
     margin-bottom: 25px;
 }
 .content{
     margin: auto;
     max-width: 760px;
 }
-/* .fb > a{
-    color: rgb(87, 84, 84);
-} */
+
 .fb{
     display: flex;
     justify-content: center;
@@ -124,20 +123,72 @@
     cursor: pointer;
 }
 
+
+
+
 @media only screen and (max-width : 500px) {
-    .anchors, .contact{
+    .anchors{
         display: none;
     }
     .image1 > img{
         width: 80%;
     }
+    
 }
 @media only screen and (max-width : 768px) {
+    
     .title{
         font-size: 35px;
         width: 80%;
     }
+    .contact{
+        position: absolute;
+        bottom: 0;
+        z-index: 1000;
+        
+    }
+    .contact>li{
+        position: fixed;
+        bottom: 0;
+    }
+
+    .contactMobile>li{
+        bottom: 13.5rem!important;
+    }
+    
+    .contactMobile>li + li{
+        bottom: 9rem!important;
+    }
+    
+    .contactMobile>li + li + li{
+        bottom: 4.5rem!important;
+    }
+
+    .contactMobile>li + li + li+ li{
+        bottom: 0!important;
+    }
+
+    .backdrop{
+        position: absolute;
+        width: 2rem;
+        height: 2rem;
+        bottom: 1rem!;
+        right: 2rem;
+        margin-bottom: 4rem;
+        margin-left: 1rem;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: -1;
+    }
+
+
 }
+
+
+
+
+
+
 @media only screen and (max-width : 500px) {
     .author{
         flex-direction: column;

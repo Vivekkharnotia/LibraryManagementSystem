@@ -1,4 +1,6 @@
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import CloseIcon from '@mui/icons-material/Close';
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import SaveIcon from '@mui/icons-material/Save';
 import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 import { db } from "components/general/firebase-config";
@@ -10,6 +12,7 @@ import BlogPartition from '../BlogComponents/BlogPartition/BlogPartition';
 import HeadTitle from "../BlogComponents/HeadTitle/HeadTitle";
 import HeroImage from "../BlogComponents/HeroImage/HeroImage";
 import style from "./VisitBlog.module.css";
+
 
 
 export default function BlogCreator({ data }) {
@@ -25,6 +28,7 @@ export default function BlogCreator({ data }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [uid, setUid] = useState(null);
+  const [open, setOpen] = useState(false);
 
 
   useEffect(() => {
@@ -132,8 +136,6 @@ export default function BlogCreator({ data }) {
   };
 
 
-
-
   
 
   return (
@@ -166,7 +168,7 @@ export default function BlogCreator({ data }) {
             );
           })} */}
         </ul>
-        <ul className={style.contact}>
+        <ul className={`${style.contact} ${open === true ? style.contactMobile : ''}`}>
           <li className={style.fb} onClick={handleParaClick}>
             <Button className={style.addPara}>P</Button>
           </li>
@@ -194,6 +196,19 @@ export default function BlogCreator({ data }) {
               <SaveIcon />
             </Button>
           </li>
+
+          <li className={`${style.fb} ${style.openBtn}`}>
+            <Button onClick={()=>setOpen(!open)} className={style.addPara}>
+              {
+                open ? <CloseIcon /> : <OpenInFullIcon />
+              }
+            </Button>
+          </li>
+
+          <li onClick={()=>setOpen(false)} className={`${style.fb} ${style.backdrop}`} style={{scale: open === true ? '100': '1'}}>
+          </li>
+
+          
 
         </ul>
 

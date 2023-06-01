@@ -1,4 +1,5 @@
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import SaveIcon from '@mui/icons-material/Save';
 import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 import { db } from "components/general/firebase-config";
@@ -111,6 +112,7 @@ export default function BlogEditor(props) {
           })} */}
         </ul>
         <ul className={style.contact}>
+          
           <li className={style.fb} onClick={handleParaClick}>
             <Button className={style.addPara}>P</Button>
           </li>
@@ -136,6 +138,12 @@ export default function BlogEditor(props) {
           <li className={style.fb}>
             <Button className={style.addPara} onClick={handleSaveClick}>
               <SaveIcon />
+            </Button>
+          </li>
+
+          <li className={`${style.fb} ${style.openBtn}`}>
+            <Button className={style.addPara}>
+              <OpenInFullIcon />
             </Button>
           </li>
 
