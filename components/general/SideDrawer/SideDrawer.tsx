@@ -1,11 +1,10 @@
-import BookIcon from "@mui/icons-material/Book";
 import CloseIcon from "@mui/icons-material/Close";
-import CottageIcon from "@mui/icons-material/Cottage";
-import EditIcon from "@mui/icons-material/Edit";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Avatar,
+  Box,
   Divider,
+  Drawer,
   IconButton,
   List,
   ListItem,
@@ -17,9 +16,31 @@ import {
 import { auth } from "components/general/firebase-config";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-export default function SideDrawer({handleDrawerToggle} : {handleDrawerToggle: () => void}) {
+
+interface drawerList {
+  name: string;
+  icon: any;
+  link: string;
+}
+
+interface Props {
+  window?: () => Window;
+  setMobieOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  mobileOpen: boolean;
+  handleDrawerToggle: () => void;
+  drawerList: drawerList[];
+}
+
+
+export default function SideDrawer(props: any) {
   const router = useRouter();
+  const id = router.query.id;
+  const { window } = props;
+  const { mobileOpen, setMobileOpen, handleDrawerToggle, drawerList } = props;
+  
+  const drawerWidth = 240;
 
   const handleLogOutClick = async () => {
     try {
@@ -34,8 +55,37 @@ export default function SideDrawer({handleDrawerToggle} : {handleDrawerToggle: (
     }
   };
 
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [router.pathname])
+
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
+
   return (
     <>
+      <Box
+        component="nav"
+        aria-label="mailbox folders"
+      >
+      <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          anchor="right"
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: "block", md: "none", lg: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
+          }}
+        >
       <Toolbar sx={{ justifyContent: "space-between", paddingBlock: "1.5rem" }}>
         <IconButton onClick={handleDrawerToggle}>
           <CloseIcon />
@@ -54,20 +104,17 @@ export default function SideDrawer({handleDrawerToggle} : {handleDrawerToggle: (
       <Divider />
 
       <List>
-        {["Home", "Book Appointment", "Edit"].map((text, index) => (
+        {drawerList.map((item: drawerList, index: number) => (
           <Link
-            href={index === 0 ? "/blogs" : index === 1 ? "/app" : "/blogs/edit"}
-            key={text}
+            href={item.link}
+            key={`drawer-${index}`}
           >
-            <ListItem key={text} disablePadding>
+            <ListItem disablePadding>
               <ListItemButton sx={{ paddingBlock: "1rem" }}>
                 <ListItemIcon sx={{ color: "black!important" }}>
-                  {index === 0 && <CottageIcon />}
-                  {index === 1 && <BookIcon />}
-                  {index === 2 && <EditIcon />}
-                  {index === 3 && <LogoutIcon />}
+                  {item.icon}
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={item.name} />
               </ListItemButton>
             </ListItem>
           </Link>
@@ -85,6 +132,9 @@ export default function SideDrawer({handleDrawerToggle} : {handleDrawerToggle: (
           </ListItemButton>
         </ListItem>
       </List>
+
+      </Drawer>
+      </Box>
     </>
   );
 }

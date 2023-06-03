@@ -1,23 +1,25 @@
-import { useEffect, useState } from "react";
-import { styled, useTheme } from "@mui/material/styles";
+import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
+import BookIcon from '@mui/icons-material/Book';
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"; //appoinment
+import ImportContactsIcon from "@mui/icons-material/ImportContacts"; //blog
+import MenuIcon from "@mui/icons-material/Menu"; // menu
+import PermIdentityIcon from "@mui/icons-material/PermIdentity"; //profile
+import PhoneIcon from "@mui/icons-material/Phone"; //call
+import { Button, Typography } from "@mui/material";
+import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
-import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import PermIdentityIcon from "@mui/icons-material/PermIdentity"; //profile
-import ImportContactsIcon from "@mui/icons-material/ImportContacts"; //blog
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"; //appoinment
-import PhoneIcon from "@mui/icons-material/Phone"; //call
-import MenuIcon from "@mui/icons-material/Menu"; // menu
-import sidebar from "./Sidebar.module.css";
-import { Button, Typography } from "@mui/material";
-import AppNavBar from "../AppNavBar/AppNavBar";
+import { styled } from "@mui/material/styles";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import AppNavBar from "../AppNavBar/AppNavBar";
+import SideDrawer from "../SideDrawer/SideDrawer";
+import sidebar from "./Sidebar.module.css";
 
 const drawerWidth = 270;
 
@@ -72,17 +74,58 @@ export default function MiniDrawer() {
   const [open, setOpen] = useState(true);
   const [current, setCurrent] = useState(0);
   const router = useRouter();
+  const [uid, setUid] = useState("hello");
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  const menuItems = [
-    { id: 0, label: "Home", link: "/app" },
-    { id: 1, label: "Manage Posts", link: "/app/blogs" },
-    { id: 2, label: "Manage Posts", link: "/app/talk" },
-    { id: 3, label: "Manage Posts", link: "/app/profile" },
-    { id: 4, label: "Manage Posts", link: "/app/more" },
-  ];
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+
+  const navList = [
+    {
+      id: 0,
+      name: "My appoinments",
+      icon: <CalendarMonthIcon />,
+      link: "/app",
+    },
+    {
+      id: 1,
+      name: "Blogs",
+      icon: <BookIcon />,
+      link: "/app/blogs",
+    },
+    {
+      id: 2,
+      name: "My Blogs",
+      icon: <ImportContactsIcon />,
+      link: "/app/myBlogs",
+    },
+    {
+      id: 3,
+      name: "Talk with us",
+      icon: <PhoneIcon />,
+      link: "/app/talk",
+    },
+    {
+      id: 4,
+      name: "Profile",
+      icon: <PermIdentityIcon />,
+      link: "/app/profile",
+    },
+    {
+      id: 5,
+      name: "More",
+      icon: <MenuIcon />,
+      link: "/app/more",
+    },
+  ]
 
   useEffect(() => {
-    const activeMenu = menuItems.find((menu) => menu.link === router.pathname);
+    setUid(localStorage.getItem("uid"));
+
+    const activeMenu = navList.find((item) => item.link === router.pathname);
     activeElement(activeMenu.id);
   }, [router.pathname]);
 
@@ -111,13 +154,15 @@ export default function MiniDrawer() {
   };
 
   const activeElement = (ind) => {
+    console.log(ind)
     let bar = document.getElementById("bar");
     let tp = 0;
     if (ind == 0) tp = 100;
     else if (ind == 1) tp = 181;
     else if (ind == 2) tp = 261;
     else if (ind == 3) tp = 344;
-    else tp = 425;
+    else if (ind == 4) tp = 425;
+    else tp = 506;
 
     let view2Bar = document.getElementById("view2Bar");
 
@@ -127,18 +172,33 @@ export default function MiniDrawer() {
     else if (ind == 3) view2Bar.style.left = `60vw`;
     else view2Bar.style.left = `80vw`;
 
+    console.log("current: ", current);
     document.getElementById(`item${current}`).style.color = "black";
-    document.getElementById(`icon${current}`).style.color = "black";
-
-    document.getElementById(`view2Item${current}`).style.color = "black";
-    document.getElementById(`view2Item${ind}`).style.color = "white";
-
-    setCurrent(ind);
+    document.getElementById(`icon${current}`).children[0].style.color = "black";
+    
+    setCurrent(4);
+    if(ind <= 4){
+      document.getElementById(`view2Item${current}`).style.color = "black";
+      document.getElementById(`view2Item${ind}`).style.color = "white";
+      setCurrent(ind);
+    }
+    
 
     bar.style.top = `${tp}px`;
     document.getElementById(`item${ind}`).style.color = "white";
-    document.getElementById(`icon${ind}`).style.color = "white";
+    document.getElementById(`icon${ind}`).children[0].style.color = "white";
   };
+
+  const drawerList = [
+    {
+      name: "my blogs",
+      icon: <BookIcon />,
+      link: "/app/myBlogs",
+    }
+  ];
+
+
+  
 
   return (
     <>
@@ -183,11 +243,10 @@ export default function MiniDrawer() {
 
           <div className={sidebar.bar} id="bar"></div>
 
-          {["My appoinments", "Blogs", "Talk with us", "Profile", "More"].map(
-            (text, index) => (
-              <Link key={index} href={menuItems[index].link}>
+          {navList.map(
+            (item, index) => (
+              <Link key={index} href={item.link }   >
                 <ListItem
-                  key={index}
                   disablePadding
                   sx={{
                     display: "block",
@@ -204,46 +263,22 @@ export default function MiniDrawer() {
                       paddingX: "20px",
                       paddingY: "25px",
                     }}
-                    // onClick={() => activeElement(index)}
                   >
                     <ListItemIcon
                       sx={{
                         minWidth: 0,
                         mr: open ? 3 : "auto",
                         justifyContent: "center",
+                        color: index == 0 ? "white" : "black",
                       }}
+                      id={`icon${index}`}
                     >
-                      {index == 0 ? (
-                        <CalendarMonthIcon
-                          id={`icon${index}`}
-                          sx={{ color: "white" }}
-                        />
-                      ) : null}
-                      {index == 1 ? (
-                        <ImportContactsIcon
-                          id={`icon${index}`}
-                          sx={{ color: "black" }}
-                        />
-                      ) : null}
-                      {index == 2 ? (
-                        <PhoneIcon
-                          id={`icon${index}`}
-                          sx={{ color: "black" }}
-                        />
-                      ) : null}
-                      {index == 3 ? (
-                        <PermIdentityIcon
-                          id={`icon${index}`}
-                          sx={{ color: "black" }}
-                        />
-                      ) : null}
-                      {index == 4 ? (
-                        <MenuIcon id={`icon${index}`} sx={{ color: "black" }} />
-                      ) : null}
+                      {item.icon}
+                      
                     </ListItemIcon>
 
                     <ListItemText
-                      primary={text}
+                      primary={item.name}
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>
@@ -307,18 +342,19 @@ export default function MiniDrawer() {
             </Button>
           </Link>
 
-
-          <Link href="/app/more">
-          <Button
-            className={sidebar.view2Item}
-            onClick={() => activeElement(4)}
-          >
-            <MenuIcon id={`view2Item${4}`} className={sidebar.view2Icn} />
-          </Button>
-          </Link>
+            <span>
+            <Button
+              className={sidebar.view2Item}
+              onClick={() => {activeElement(4), handleDrawerToggle()}}
+            >
+              <MenuIcon id={`view2Item${4}`} className={sidebar.view2Icn} />
+            </Button>
+            </span>
         
         </div>
       </div>
+
+      <SideDrawer sx={{display: { "@media (min-width:768px)": "none" }}} drawerList={drawerList} handleDrawerToggle={handleDrawerToggle} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen}/>
     </>
   );
 }

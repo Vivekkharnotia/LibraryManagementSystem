@@ -1,39 +1,52 @@
+import BookIcon from "@mui/icons-material/Book";
+import CottageIcon from "@mui/icons-material/Cottage";
+import EditIcon from '@mui/icons-material/Edit';
 import MenuIcon from "@mui/icons-material/Menu";
 import {
-  Box,
-  Drawer,
+  Button,
   IconButton
 } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState } from 'react';
 import { scrollTrigger } from "utils/scrollTrigger";
+import SideDrawer from "../../SideDrawer/SideDrawer";
 import styles from "./BlogsNav.module.css";
-import SideDrawer from "./SideDrawer";
 
-const drawerWidth = 240;
-
-interface Props {
-  window?: () => Window;
-}
-
-export default function BlogsNav(props: Props) {
+export default function BlogsNav() {
+  const [mobileOpen, setMobileOpen] = useState(false);
   const router = useRouter();
+  const id = router.query.id;
 
   let triggered = false;
   if (router.pathname === "/blogs") {
     [triggered] = scrollTrigger();
   }
 
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = useState(false);
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const drawerList = [
+    {
+      name: "Home",
+      link: "/app",
+      icon: <CottageIcon />
+    },
+    {
+      name: "Book Appointment",
+      link: "/app",
+      icon: <BookIcon />
+    },
+    {
+      name: "Edit",
+      link: `/blogs/edit/${id}`,
+      icon: <EditIcon />
+    },
+  ]
+
+
+  
 
   return (
     <>
@@ -56,6 +69,24 @@ export default function BlogsNav(props: Props) {
             <Link href="/signin" className={styles.signinBtn}>
               Sign In
             </Link>
+
+            {router.pathname.startsWith("/blogs/read/") ?
+
+            <>
+              <span style={{marginInline: '1rem', fontSize: '1.5rem'}}>/</span>
+
+              <Button color='inherit'>
+                <Link href={`/blogs/edit/${id}`} className={styles.signupBtn}>
+                  Edit
+                  <EditIcon sx={{fontSize: '1.4rem', marginLeft: '0.5rem'}} />
+                </Link>
+              </Button>
+            </>
+            :
+            null
+            }
+
+
           </div>
 
           <div className={styles.hamburger}>
@@ -71,32 +102,9 @@ export default function BlogsNav(props: Props) {
         </div>
       </nav>
 
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          anchor="right"
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: "block", md: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          <SideDrawer handleDrawerToggle={handleDrawerToggle} />
-        </Drawer>
-      </Box>
+      
+        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}        
+        <SideDrawer drawerList={drawerList} handleDrawerToggle={handleDrawerToggle} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen}/>
     </>
   );
 }

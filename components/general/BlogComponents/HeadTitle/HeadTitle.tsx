@@ -36,6 +36,7 @@ function HeadTitle(props: HeadTitleProps) {
             fontWeight: "bolder",
             resize: "none",
             textAlign: "center",
+            paddingInline: "1rem",
           }}
           onChange={headTitleChange}
         ></textarea>

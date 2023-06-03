@@ -18,6 +18,7 @@ import { useState } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { useUser } from "components/UserContext.tsx";
+import { setCookie } from "cookies-next";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -32,6 +33,8 @@ import {
   validateName,
   validatePassword,
 } from "./SigninFunctions.js";
+
+
 
 const theme = createTheme({
   palette: {
@@ -55,7 +58,9 @@ const initialCreateAccData = {
   cPassword: "",
 };
 
+
 function SignIn() {
+
   const iniErrCreateUserState = {
     email_err: false,
     fname_err: false,
@@ -80,14 +85,17 @@ function SignIn() {
     inBox.style.transform = "rotateY(-180deg)";
     inBox.style.transformStyle = "preserve-3d";
   }
+
   function handleSignUpPage() {
     let inBox = document.getElementById("innerbox");
     inBox.style.transform = "rotateY(0deg)";
     inBox.style.transformStyle = "preserve-3d";
   }
+
   function handleClear() {
     setLoginData(initialLoginData);
   }
+
   function handleClear2() {
     setCreateAccData(initialCreateAccData);
     setErr({
@@ -98,6 +106,7 @@ function SignIn() {
       cPassword_err: false,
     });
   }
+
   const handleCreateAccount = async () => {
     let validCred = true;
     const res_fname = validateName(createAccData.fname);
@@ -178,10 +187,17 @@ function SignIn() {
           window.localStorage.setItem("loggedIn", 'true');
           window.localStorage.setItem("uid", user.user.uid);
         }
+
+        setCookie("uid", user.user.uid, {
+          path: "/",
+          sameSite: true,
+          secure: true,
+        });
+
         router.push('/app');
         
       } catch (error) {
-        alert("Incorrect Credentials!!!");
+        alert(error);
       }
     }
   };

@@ -7,6 +7,8 @@ interface BlogCardProps {
 }
 
 const BlogCard: FC<BlogCardProps> = ({ imgUrl, mainTitle, title }) => {
+  console.log(imgUrl, mainTitle, title)
+
   return (
     <div className={`w-full overflow-hidden hover:cursor-pointer`}>
       <div className="rounded-[4px] overflow-hidden mb-4 border-2 border-black">

@@ -53,7 +53,6 @@ export const chartMaker = (
   title: string | _DeepPartialArray<string>,
   label: string
 ) => {
-  console.log(data[0], data[1]);
 
   new Chart(document.getElementById(id) as HTMLCanvasElement, {
     type: type,

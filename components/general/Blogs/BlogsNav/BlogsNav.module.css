@@ -16,6 +16,11 @@
     animation-fill-mode: forwards;
 }
 
+.navBtns{
+    display: flex;
+    align-items: center;
+}
+
 .logo{
     white-space: nowrap;
     font-size: 2rem;

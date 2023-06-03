@@ -1,12 +1,13 @@
-import AddIcon from '@mui/icons-material/Add';
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 import { db } from "components/general/firebase-config";
 import { collection, doc, getDoc, writeBatch } from "firebase/firestore";
+import Image from 'next/image';
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
+import emptyHere from '../../../public/emptyHere.jpg';
 import BlogImage from "../BlogComponents/BlogImage/BlogImage";
 import BlogPartition from '../BlogComponents/BlogPartition/BlogPartition';
 import HeadTitle from "../BlogComponents/HeadTitle/HeadTitle";
@@ -199,11 +200,12 @@ export default function BlogCreator({ data }) {
 
           <li className={`${style.fb} ${style.openBtn}`}>
             <Button onClick={()=>setOpen(!open)} className={style.addPara}>
-              {
-                open ? <CloseIcon /> : <AddIcon />
-              }
+
+              <CloseIcon sx={{transform: open === false ? "rotate(45deg)" : "", transition: "transform 250ms ease-in-out"}}/>
+              
             </Button>
           </li>
+
 
           <li onClick={()=>setOpen(false)} className={`${style.fb} ${style.backdrop}`} style={{scale: open === true ? '100': '1'}}>
           </li>
@@ -214,6 +216,8 @@ export default function BlogCreator({ data }) {
 
         <div className={style.content} ref={container}>
           {
+            blogData.length > 0 ?
+
             blogData.map((item, index) => {
               if(item.title === 'Image') return <BlogImage key={index} data={item} index={index} length={blogData.length} setBlogData={setBlogData}/>
               else
@@ -221,6 +225,11 @@ export default function BlogCreator({ data }) {
                   <BlogPartition key={index} data={item} index={index} length={blogData.length} setBlogData={setBlogData}/>
                 );
             })
+            :
+            <>
+              <Image style={{display: 'block',marginInline: 'auto', marginTop: '9rem', opacity: '0.7', width: '40%'}} src={emptyHere} alt="NO content added, Please add content by clicking the P button" />
+              <Typography sx={{textAlign: "center", marginTop: "2rem"}}>Please Enter content by clicking add buttons</Typography>
+            </>
           }
 
         </div>

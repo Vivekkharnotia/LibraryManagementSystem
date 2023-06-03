@@ -1,7 +1,7 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Container, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import styles from "./BlogPartition.module.css";
 
 
@@ -70,7 +70,7 @@ export default function BlogPartition({anchorId, data, index, length, setBlogDat
           onChange={handleTitleChange}
           onInput={(e) => {e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px';}}
         />
-      <Container className={styles.buttonGroup}>
+      <div className={styles.buttonGroup}>
         <IconButton onClick={handleUpClick}>
           <KeyboardArrowUpIcon color="primary" />
         </IconButton>
@@ -82,7 +82,7 @@ export default function BlogPartition({anchorId, data, index, length, setBlogDat
         <IconButton onClick={handleDeleteClick}>
           <DeleteIcon color="error" />
         </IconButton>
-      </Container>
+      </div>
       </div>
       <div>
         <textarea

@@ -21,6 +21,7 @@ export default function index(props:any) {
 
 export async function getServerSideProps(context:any) {
   const blogID = context.params.id;
+  
   const metaBlogSnap = await getDoc(doc(collection(db, "metaBlogs"), blogID));
   const metaBlogData = metaBlogSnap.data();
   const metaBlogDataString = JSON.stringify(metaBlogData);

@@ -105,7 +105,7 @@
 }
 
 .editIcon{
-    position: absolute;
+    position: absolute!important;
     top: 0rem;
     right: 0;
     z-index: 999;
@@ -113,7 +113,7 @@
     height: 3rem;
     margin-left: 1rem;
     cursor: pointer;
-    background-color: black;
+    background-color: black!important;
 }
 .editIcon:hover{
     background-color: black;
@@ -123,6 +123,9 @@
     cursor: pointer;
 }
 
+.openBtn{
+    display: none;
+}
 
 
 
@@ -179,6 +182,10 @@
         border-radius: 50%;
         background-color: rgba(0, 0, 0, 0.7);
         z-index: -1;
+    }
+
+    .openBtn{
+        display: block;
     }
 
 
