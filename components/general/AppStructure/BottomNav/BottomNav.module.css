@@ -24,7 +24,7 @@
 }
 
 .bottomNav>a:nth-child(4){
-    width: 135%;
+    width: 135%!important;
 }
 
 .view2Item{
