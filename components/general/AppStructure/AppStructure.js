@@ -5,7 +5,7 @@ import ImportContactsIcon from "@mui/icons-material/ImportContacts"; //blog
 import MenuIcon from "@mui/icons-material/Menu"; // menu
 import PermIdentityIcon from "@mui/icons-material/PermIdentity"; //profile
 import PhoneIcon from "@mui/icons-material/Phone"; //call
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import AppNavBar from "../AppNavBar/AppNavBar";
 import SideDrawer from "../SideDrawer/SideDrawer";
+import BottomNav from "./BottomNav/BottomNav";
 import sidebar from "./Sidebar.module.css";
 
 const drawerWidth = 270;
@@ -154,7 +155,6 @@ export default function MiniDrawer() {
   };
 
   const activeElement = (ind) => {
-    console.log(ind)
     let bar = document.getElementById("bar");
     let tp = 0;
     if (ind == 0) tp = 100;
@@ -164,29 +164,17 @@ export default function MiniDrawer() {
     else if (ind == 4) tp = 425;
     else tp = 506;
 
-    let view2Bar = document.getElementById("view2Bar");
-
-    if (ind == 0) view2Bar.style.left = `40vw`;
-    else if (ind == 1) view2Bar.style.left = `0vw`;
-    else if (ind == 2) view2Bar.style.left = `20vw`;
-    else if (ind == 3) view2Bar.style.left = `60vw`;
-    else view2Bar.style.left = `80vw`;
-
-    console.log("current: ", current);
     document.getElementById(`item${current}`).style.color = "black";
     document.getElementById(`icon${current}`).children[0].style.color = "black";
     
-    setCurrent(4);
-    if(ind <= 4){
-      document.getElementById(`view2Item${current}`).style.color = "black";
-      document.getElementById(`view2Item${ind}`).style.color = "white";
-      setCurrent(ind);
-    }
+    setCurrent(ind);
     
 
     bar.style.top = `${tp}px`;
     document.getElementById(`item${ind}`).style.color = "white";
     document.getElementById(`icon${ind}`).children[0].style.color = "white";
+
+
   };
 
   const drawerList = [
@@ -290,71 +278,12 @@ export default function MiniDrawer() {
         <Divider />
       </Drawer>
 
-      <div className={sidebar.view2}>
-        {/* ---------------------------------------------- Content of the bage ----------------------- */}
 
-        <div className={sidebar.bottomNav}>
-          <div className={sidebar.view2Bar} id="view2Bar"></div>
-          <Link href="/app/blogs">
-            <Button
-              className={sidebar.view2Item}
-              onClick={() => activeElement(1)}
-            >
-              <ImportContactsIcon
-                id={`view2Item${1}`}
-                className={sidebar.view2Icn}
-              />
-            </Button>
-          </Link>
+      {/* navigation bar for mobile view */}
+      <BottomNav handleDrawerToggle={handleDrawerToggle} current={current}/>
 
-          <Link href="/app/talk">
-          <Button
-            className={sidebar.view2Item}
-            onClick={() => activeElement(2)}
-          >
-            <PhoneIcon id={`view2Item${2}`} className={sidebar.view2Icn} />
-          </Button>--
-          </Link>
-
-
-          <Link href="/app">
-            <Button
-              className={sidebar.view2Item}
-              onClick={() => activeElement(0)}
-            >
-              <CalendarMonthIcon
-                id={`view2Item${0}`}
-                sx={{ color: "white" }}
-                className={sidebar.view2Icn}
-              />
-            </Button>
-          </Link>
-
-          <Link href="/app/profile">
-            <Button
-              className={sidebar.view2Item}
-              onClick={() => activeElement(3)}
-            >
-              <PermIdentityIcon
-                id={`view2Item${3}`}
-                className={sidebar.view2Icn}
-              />
-            </Button>
-          </Link>
-
-            <span>
-            <Button
-              className={sidebar.view2Item}
-              onClick={() => {activeElement(4), handleDrawerToggle()}}
-            >
-              <MenuIcon id={`view2Item${4}`} className={sidebar.view2Icn} />
-            </Button>
-            </span>
-        
-        </div>
-      </div>
-
-      <SideDrawer sx={{display: { "@media (min-width:768px)": "none" }}} drawerList={drawerList} handleDrawerToggle={handleDrawerToggle} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen}/>
+      {/* rectractable drawer from hamburger */}
+      <SideDrawer sx={{display: { "@media (min-width:768px)": "none" }}}  drawerList={drawerList} handleDrawerToggle={handleDrawerToggle} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen}/>
     </>
   );
 }
