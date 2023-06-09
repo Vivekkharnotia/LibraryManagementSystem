@@ -16,7 +16,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { Data, HeadCell, Order } from "components/general/TableComponents/Table.interface";
+import { Order } from "components/general/TableComponents/Table.interface";
 import {
   getComparator,
   stableSort,
@@ -26,6 +26,19 @@ import EnhancedTableHead from "../TableComponents/EnhancedTableHead";
 import EnhancedTableToolbar from "../TableComponents/EnhancedTableToolbar";
 import HistoryTableRow from "./HistoryTableRow";
 
+interface Data {
+  id: string,
+  name: string,
+  email: string,
+  payments?: Array<string>,
+}
+
+interface HeadCell {
+  id: keyof Data;
+  disablePadding: boolean;
+  label: string;
+  numeric: boolean;
+}
 
 const headCells: readonly HeadCell[] = [
   {
@@ -95,6 +108,7 @@ export default function UsersTable({ rows }: { rows: Data[] }) {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
+              // @ts-ignore
               headCells={headCells}
             />
             <TableBody>
