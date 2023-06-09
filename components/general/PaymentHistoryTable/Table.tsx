@@ -1,34 +1,51 @@
-import * as React from "react";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import {
   Box,
+  Collapse,
+  FormControlLabel,
+  IconButton,
+  Paper,
+  Switch,
   Table,
   TableBody,
   TableCell,
   TableContainer,
+  TableHead,
   TablePagination,
   TableRow,
-  Paper,
-  FormControlLabel,
-  Switch,
-  Collapse,
   Typography,
-  TableHead,
-  IconButton,
 } from "@mui/material";
+import { Data, HeadCell, Order } from "components/general/TableComponents/Table.interface";
 import {
   getComparator,
   stableSort,
-} from "components/general/Table/Table.utils";
-import { Data, Order } from "components/general/Table/Table.interface";
-import EnhancedTableToolbar from "./EnhancedTableToolbar";
-import EnhancedTableHead from "./EnhancedTableHead";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+} from "components/general/TableComponents/Table.utils";
+import * as React from "react";
+import EnhancedTableHead from "../TableComponents/EnhancedTableHead";
+import EnhancedTableToolbar from "../TableComponents/EnhancedTableToolbar";
 import HistoryTableRow from "./HistoryTableRow";
+
+
+const headCells: readonly HeadCell[] = [
+  {
+    id: "name",
+    numeric: false,
+    disablePadding: true,
+    label: "Patient Name",
+  },
+  {
+    id: "email",
+    numeric: false,
+    disablePadding: false,
+    label: "Email",
+  },
+];
+
 
 export default function UsersTable({ rows }: { rows: Data[] }) {
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("email");
+  const [orderBy, setOrderBy] = React.useState<string>("email");
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -36,7 +53,7 @@ export default function UsersTable({ rows }: { rows: Data[] }) {
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data
+    property: string
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -67,7 +84,7 @@ export default function UsersTable({ rows }: { rows: Data[] }) {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar />
+        <EnhancedTableToolbar message="Payment History" />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -78,6 +95,7 @@ export default function UsersTable({ rows }: { rows: Data[] }) {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
+              headCells={headCells}
             />
             <TableBody>
               {/* @ts-ignore */}

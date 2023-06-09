@@ -6,6 +6,8 @@ import {
   Button,
   IconButton
 } from "@mui/material";
+import Avatar from "components/general/Avatar/Avatar";
+import { getCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from 'react';
@@ -13,10 +15,11 @@ import { scrollTrigger } from "utils/scrollTrigger";
 import SideDrawer from "../../SideDrawer/SideDrawer";
 import styles from "./BlogsNav.module.css";
 
-export default function BlogsNav() {
+export default function BlogsNav({isAdmin}: {isAdmin: boolean}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const router = useRouter();
   const id = router.query.id;
+  const uid = getCookie('uid');
 
   let triggered = false;
   if (router.pathname === "/blogs") {
@@ -45,7 +48,6 @@ export default function BlogsNav() {
     },
   ]
 
-
   
 
   return (
@@ -66,24 +68,32 @@ export default function BlogsNav() {
             <Link href="/app" className={styles.bookBtn}>
               Book Slot
             </Link>
-            <Link href="/signin" className={styles.signinBtn}>
-              Sign In
-            </Link>
 
-            {router.pathname.startsWith("/blogs/read/") ?
+            {
+              uid ?
+              <div style={{marginLeft: "1rem"}}>
+                <Avatar />
+              </div>:
+              <Link href="/signin" className={styles.signinBtn}>
+                Sign In
+              </Link>
+            }
 
-            <>
-              <span style={{marginInline: '1rem', fontSize: '1.5rem'}}>/</span>
+            {
+              router.pathname.startsWith("/blogs/read/") && isAdmin ?
+              
+              <>
+                <span style={{marginInline: '1rem', fontSize: '1.5rem'}}>/</span>
 
-              <Button color='inherit'>
-                <Link href={`/blogs/edit/${id}`} className={styles.signupBtn}>
-                  Edit
-                  <EditIcon sx={{fontSize: '1.4rem', marginLeft: '0.5rem'}} />
-                </Link>
-              </Button>
-            </>
-            :
-            null
+                <Button color='inherit'>
+                  <Link href={`/blogs/edit/${id}`} className={styles.signupBtn}>
+                    Edit
+                    <EditIcon sx={{fontSize: '1.4rem', marginLeft: '0.5rem'}} />
+                  </Link>
+                </Button>
+              </>
+              :
+              null
             }
 
 
@@ -103,8 +113,8 @@ export default function BlogsNav() {
       </nav>
 
       
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}        
-        <SideDrawer drawerList={drawerList} handleDrawerToggle={handleDrawerToggle} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen}/>
+      {/* The implementation can be swapped with js to avoid SEO duplication of links. */}        
+      <SideDrawer drawerList={drawerList} handleDrawerToggle={handleDrawerToggle} setMobileOpen={setMobileOpen} mobileOpen={mobileOpen}/>
     </>
   );
 }

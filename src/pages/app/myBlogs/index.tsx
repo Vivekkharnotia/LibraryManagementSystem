@@ -5,6 +5,7 @@ import { getCookie } from "cookies-next";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
 import Link from "next/link";
+import { withAdmin } from 'ProtectedRoutes/AdminRoute';
 
 const app = (props : any) => {
   const metaBlogsData = JSON.parse(props.metaBlogsDataString);
@@ -27,7 +28,7 @@ const app = (props : any) => {
   );
 };
 
-export default app;
+export default withAdmin(app);
 
 
 export const getServerSideProps = async ({req, res}: {req: NextApiRequest, res: NextApiResponse}) => {
@@ -37,15 +38,15 @@ export const getServerSideProps = async ({req, res}: {req: NextApiRequest, res: 
   const userSnap = await getDoc(doc(collection(db, "Userdata"), `${uid}`));
   const user = userSnap.data();
   const userBlogs = user?.blogs;
-  const userBlogsString = JSON.stringify(userBlogs);
 
-
+  let metaBlogsDataString = null;
+  if(userBlogs && userBlogs.length > 0){
     const q = query(collection(db, "metaBlogs"), where("__name__", "in", userBlogs));
     const metaBlogs = await getDocs(q);
     const metaBlogsData = metaBlogs.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-    const metaBlogsDataString = JSON.stringify(metaBlogsData);
+    metaBlogsDataString = JSON.stringify(metaBlogsData);
+  }
 
-  
 
   return {
     props: {

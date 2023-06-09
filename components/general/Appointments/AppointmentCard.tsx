@@ -1,3 +1,6 @@
+import { Delete } from "@material-ui/icons";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
   Alert,
   Backdrop,
@@ -14,18 +17,14 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import React, { FC, useState } from "react";
-import Image from "next/image";
-import appoinmentcss from "./Appoinments.module.css";
-import qrSample from "./qrSample.png";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import SlotBooking from "./SlotBooking/SlotBooking.js";
-import RefreshIcon from "@mui/icons-material/Refresh";
-import CurrentCaseContent from "./CurrentCaseContent/CurrentCaseContent";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Delete } from "@material-ui/icons";
 import { deleteDoc, doc } from "firebase/firestore";
+import Image from "next/image";
+import React, { FC, useState } from "react";
 import { db } from "../firebase-config";
+import appoinmentcss from "./Appoinments.module.css";
+import CurrentCaseContent from "./CurrentCaseContent/CurrentCaseContent";
+import SlotBooking from "./SlotBooking/SlotBooking.js";
+import qrSample from "./qrSample.png";
 
 interface AppointmentCardProps {
   number: number;
@@ -206,7 +205,7 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
         </div>
         <Button
           variant="contained"
-          style={{ backgroundColor: "#e9ab02", marginTop: "10px" }}
+          style={{ backgroundColor: "#e9ab02", marginTop: "1.5rem" }}
           onClick={toggleBuy}
         >
           Buy sessions

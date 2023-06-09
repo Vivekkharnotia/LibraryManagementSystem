@@ -1,35 +1,21 @@
 import {
   Box,
-  Checkbox,
   TableCell,
   TableHead,
   TableRow,
   TableSortLabel,
 } from "@mui/material";
-import { MouseEvent } from "react";
-import { Data, EnhancedTableProps, HeadCell } from "components/general/Table/Table.interface";
 import { visuallyHidden } from '@mui/utils';
+import { Data, EnhancedTableProps } from "components/general/TableComponents/Table.interface";
+import { MouseEvent } from "react";
 
-const headCells: readonly HeadCell[] = [
-  {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Patient Name",
-  },
-  {
-    id: "email",
-    numeric: false,
-    disablePadding: false,
-    label: "Email",
-  },
-];
 
 export default function EnhancedTableHead(props: EnhancedTableProps) {
   const {
     order,
     orderBy,
     onRequestSort,
+    headCells,
   } = props;
 
   const createSortHandler =
@@ -41,7 +27,6 @@ export default function EnhancedTableHead(props: EnhancedTableProps) {
     <TableHead>
       <TableRow>
         
-        <TableCell></TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}

@@ -1,12 +1,10 @@
+import { withAdmin } from "ProtectedRoutes/AdminRoute";
 import BlogEditor from "components/general/BlogEditor/BlogEditor";
 import { db } from "components/general/firebase-config";
 import { collection, doc, getDoc } from "firebase/firestore";
 
 
-
-
-
-export default function index(props:any) {
+function index(props:any) {
 
   const metaBlogData = JSON.parse(props.metaBlogDataString);
   const blogData = JSON.parse(props.blogDataString);
@@ -38,3 +36,5 @@ export async function getServerSideProps(context:any) {
     }, // will be passed to the page component as props
   };
 }
+
+export default withAdmin(index);

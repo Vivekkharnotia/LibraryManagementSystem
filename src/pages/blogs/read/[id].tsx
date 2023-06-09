@@ -9,7 +9,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 function index({blogDataString}: {blogDataString: string}) {
 
   const data = JSON.parse(blogDataString);
-  console.log(data);
 
   return (
     <>

@@ -1,30 +1,22 @@
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
 import { AiOutlineInstagram, AiOutlineTwitter } from 'react-icons/ai';
 import { CgFacebook } from 'react-icons/cg';
 import { MdOutlineEmail } from 'react-icons/md';
+import { Data } from './BlogInterface/Blog.interface';
 import BlogPartition from './BlogPartition/BlogPartition';
+import HeadTitle from './HeadTitle/HeadTitle';
+import HeroImage from './HeroImage/HeroImage';
 import visblog from './VisitBlog.module.css';
 
-export default function VisitBlog({data}) {
-
+export default function VisitBlog({data}: {data: Data}) {
 
     return (
     <>
-        <div className = {visblog.head}>
-            <Typography variant='h3' sx = {{fontWeight : 'bolder'}} className = {visblog.title}>{data.headTitle}</Typography>
-            <div className={visblog.author}>
-                <Avatar className = {visblog.authorAvatar} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCQaD1mEh95w9y6o_8eVSErM9mnbbRQUiCgw&usqp=CAU' sx = {{backgroundColor :'#1565c0'}} ></Avatar>
-                <Typography variant='body1' sx = {{fontWeight : 'bold'}}>Written By {data.displayName} &nbsp; &nbsp;</Typography>
-                <Typography variant='body1'>February 16, 2023</Typography>
-            </div>
-        </div>
+        <HeadTitle headTitle={data.headTitle} displayName={data.displayName} date={data.date}/>
 
-        <div className={visblog.image1}>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMaJKOnh70m9VVMzrgdZY0jTGUfLSXFI01IQ&usqp=CAU" alt="" />
-        </div>
+        <HeroImage heroImageSrc={data.heroImageSrc} />
         
         <div className = {visblog.container}>
+            
             <ul className={visblog.anchors}>
                 {
                     data.blogData.map((content, index) => {
@@ -32,8 +24,8 @@ export default function VisitBlog({data}) {
                     })
                 }
             </ul>
+
             <ul className={visblog.contact}>
-            
                 <li className = {visblog.fb}><CgFacebook className={visblog.icn} color='white'/></li>
                 <li className = {visblog.fb}><AiOutlineTwitter className={visblog.icn} color='white'/></li>
                 <li className = {visblog.fb}><AiOutlineInstagram  className={visblog.icn} color='white' /></li>

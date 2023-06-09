@@ -1,10 +1,12 @@
+import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
+import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 import BookIcon from '@mui/icons-material/Book';
+import BookOutlinedIcon from '@mui/icons-material/BookOutlined';
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"; //appoinment
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import ImportContactsIcon from "@mui/icons-material/ImportContacts"; //blog
-import MenuIcon from "@mui/icons-material/Menu"; // menu
 import PermIdentityIcon from "@mui/icons-material/PermIdentity"; //profile
-import PhoneIcon from "@mui/icons-material/Phone"; //call
 import { Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
@@ -71,7 +73,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function MiniDrawer() {
+export default function MiniDrawer({isAdmin}) {
   const [open, setOpen] = useState(true);
   const [current, setCurrent] = useState(0);
   const router = useRouter();
@@ -83,8 +85,7 @@ export default function MiniDrawer() {
     setMobileOpen(!mobileOpen);
   };
 
-
-  const navList = [
+  const normalList = [
     {
       id: 0,
       name: "My appoinments",
@@ -94,40 +95,55 @@ export default function MiniDrawer() {
     {
       id: 1,
       name: "Blogs",
-      icon: <BookIcon />,
+      icon: <BookOutlinedIcon />,
       link: "/app/blogs",
     },
     {
       id: 2,
+      name: "Profile",
+      icon: <PermIdentityIcon />,
+      link: "/app/profile",
+    },
+    
+  ];
+
+  const adminList = [
+    {
+      id: 3,
       name: "My Blogs",
       icon: <ImportContactsIcon />,
       link: "/app/myBlogs",
     },
     {
-      id: 3,
-      name: "Talk with us",
-      icon: <PhoneIcon />,
-      link: "/app/talk",
-    },
-    {
       id: 4,
-      name: "Profile",
-      icon: <PermIdentityIcon />,
-      link: "/app/profile",
+      name: "Payment History",
+      icon: <AccountBalanceWalletOutlinedIcon />,
+      link: "/app/paymentHistory",
     },
     {
       id: 5,
-      name: "More",
-      icon: <MenuIcon />,
-      link: "/app/more",
+      name: "Meeting Data",
+      icon: <GroupsOutlinedIcon />,
+      link: "/app/meetingData",
     },
-  ]
+    {
+      id: 6,
+      name: "Analytics",
+      icon: <AnalyticsOutlinedIcon />,
+      link: "/app/analytics",
+    },
+  ];
+
+  const navList = isAdmin ? [...normalList, ...adminList] : normalList;
+
 
   useEffect(() => {
     setUid(localStorage.getItem("uid"));
 
     const activeMenu = navList.find((item) => item.link === router.pathname);
-    activeElement(activeMenu.id);
+    if(activeMenu){
+      activeElement(activeMenu.id);
+    }
   }, [router.pathname]);
 
   const handleDrawerOpen = () => {
@@ -159,10 +175,11 @@ export default function MiniDrawer() {
     let tp = 0;
     if (ind == 0) tp = 100;
     else if (ind == 1) tp = 181;
-    else if (ind == 2) tp = 261;
-    else if (ind == 3) tp = 344;
-    else if (ind == 4) tp = 425;
-    else tp = 506;
+    else if (ind == 2) tp = 264;
+    else if (ind == 3) tp = 346;
+    else if (ind == 4) tp = 426;
+    else if (ind == 5) tp = 508; //344-425=81
+    else tp = 590;
 
     document.getElementById(`item${current}`).style.color = "black";
     document.getElementById(`icon${current}`).children[0].style.color = "black";
@@ -179,14 +196,27 @@ export default function MiniDrawer() {
 
   const drawerList = [
     {
-      name: "my blogs",
+      name: "My Blogs",
       icon: <BookIcon />,
       link: "/app/myBlogs",
+    },
+    {
+      name: "Payment History",
+      icon: <AccountBalanceWalletOutlinedIcon />,
+      link: "/app/paymentHistory",
+    },
+    {
+      name: "Analytics",
+      icon: <AnalyticsOutlinedIcon />,
+      link: "/app/analytics",
+    },
+    {
+      name: "Meetings Data",
+      icon: <GroupsOutlinedIcon />,
+      link: "/app/meetingData",
     }
   ];
 
-
-  
 
   return (
     <>
@@ -267,7 +297,7 @@ export default function MiniDrawer() {
 
                     <ListItemText
                       primary={item.name}
-                      sx={{ opacity: open ? 1 : 0 }}
+                      sx={{ opacity: open ? 1 : 0,  }}
                     />
                   </ListItemButton>
                 </ListItem>
@@ -287,3 +317,5 @@ export default function MiniDrawer() {
     </>
   );
 }
+
+

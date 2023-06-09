@@ -1,14 +1,16 @@
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import AppStructure from "../../components/general/AppStructure/AppStructure";
+import { styled } from "@mui/material/styles";
 import { useUser } from "components/UserContext";
+import Loading from "components/general/Loading/Loading";
+import { auth } from "components/general/firebase-config";
 import { useRouter } from "next/router";
-import { Suspense, useEffect, useState } from "react";
-import { CircularProgress } from "@mui/material";
+import { useEffect, useState } from "react";
+import AppStructure from "../../components/general/AppStructure/AppStructure";
 
 interface LayoutProps {
   children: React.ReactNode;
+  isAdmin?: boolean;
 }
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -23,6 +25,15 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 export default function Layout(props: LayoutProps ) {
   const { userLoading } = useUser();
   const router = useRouter();
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const user = auth.currentUser;
+  user?.getIdTokenResult().then((idTokenResult) => {
+    setIsAdmin(idTokenResult.claims.admin);
+    setLoading(false);
+  });
+
   
   useEffect(() => {
     if (window) {
@@ -34,35 +45,24 @@ export default function Layout(props: LayoutProps ) {
 
   return (
     <>
-      {userLoading !== 'loaded' ? (
-        <Box
-          sx={{
-            height: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-            gap: "1rem",
-          }}
-        >
-          Loading
-          <CircularProgress />
-        </Box>
+      {userLoading !== 'loaded' || loading ? (
+        <Loading message="Loading..." />
       ) : (
         <>
-          {  <Box sx={{ display: "flex" }}>
+          <Box sx={{ display: "flex" }}>
             <CssBaseline />
 
-            <AppStructure />
+            <AppStructure isAdmin={isAdmin}/>
 
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
               <DrawerHeader />
 
               {props.children}
             </Box>
-          </Box>}
+          </Box>
         </>
       )}
     </>
   );
 }
+

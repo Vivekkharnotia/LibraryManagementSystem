@@ -80,3 +80,12 @@ export const chartMaker = (
     },
   });
 };
+
+export const timeMiner = (time: string) => {
+  const timeArray = time.split(":");
+  const hours = parseInt(timeArray[0]);
+
+  if (hours >= 5 && hours < 12) return "at morning";
+  else if (hours >= 12 && hours < 4) return "at afternoon";
+  else return "at evening";
+};

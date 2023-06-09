@@ -1,12 +1,12 @@
-import "@/styles/globals.css";
 import "@/styles/Main.css";
+import "@/styles/globals.css";
+import { MeetingProvider } from "components/MeetingContext";
+import { UserProvider } from "components/UserContext";
 import BlogsLayout from "components/general/Blogs/BlogsLayout";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import Layout from "./Layout";
-import { UserProvider } from "components/UserContext";
 import { Suspense } from "react";
-import { MeetingProvider } from "components/MeetingContext";
+import Layout from "./Layout";
 
 const Loading = () => <div className="bg-[#000]">Loading...</div>;
 

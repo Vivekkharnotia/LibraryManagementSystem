@@ -1,3 +1,4 @@
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
   Button,
@@ -5,21 +6,20 @@ import {
   Container,
   IconButton,
 } from "@mui/material";
-import { auth, db } from "components/general/firebase-config";
+import { useUser } from "components/UserContext";
+import FormCheckbox from "components/general/Profile/FormCheckbox";
+import FormTextarea from "components/general/Profile/FormTextarea";
 import {
   diurnalOptions,
   painOptions,
 } from "components/general/Profile/constants";
-import FormCheckbox from "components/general/Profile/FormCheckbox";
-import FormTextarea from "components/general/Profile/FormTextarea";
-import { useUser } from "components/UserContext";
+import { db } from "components/general/firebase-config";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import EmptyHere from "../../../../public/emptyHere.jpg";
 import style from "./CurrentCaseContent.module.css";
 import Session from "./Session/Session";
-import CloseIcon from "@mui/icons-material/Close";
-import EmptyHere from "../../../../public/emptyHere.jpg";
-import Image from "next/image";
 
 interface Profile {
   fname?: string;
@@ -40,7 +40,7 @@ interface Profile {
   surgicalHistory?: string[];
   whenBad?: string;
   whenBetter?: string;
-  slots?: string[];
+  slot?: string;
   caseName?: string;
 }
 
@@ -151,7 +151,7 @@ function CurrentCaseContent({
               <h4 className={style.sessionMainHeading}>Session Details:</h4>
 
               <div>
-                {profileData?.slots === undefined ? (
+                {profileData?.slot === undefined ? (
                   <>
                   <Container
                     sx={{
@@ -176,13 +176,10 @@ function CurrentCaseContent({
 
                   
                 ) : (
-                  profileData?.slots?.map((slot, index) => (
                     <Session
-                      key={`session_${index}`}
-                      slot={slot}
-                      index={index}
+                      slot={profileData?.slot}
+                      caseId={id}
                     />
-                  ))
                 )}
               </div>
             </div>

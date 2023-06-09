@@ -1,11 +1,7 @@
-import { Table } from '@mui/material';
-import Appointments from 'components/general/Appointments/Appointments';
-import UsersTable from 'components/general/Table/Table';
-import CollapsibleTable from 'components/general/Table/Table';
+import { withAdmin } from 'ProtectedRoutes/AdminRoute';
+import UsersTable from 'components/general/PaymentHistoryTable/Table';
 import { db } from 'components/general/firebase-config';
-import { FieldPath, collection, documentId, getDocs, limit, orderBy, query } from 'firebase/firestore';
-import React, { useEffect } from 'react'
-
+import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
 
 
 
@@ -36,4 +32,4 @@ export async function getStaticProps() {
   return { props: { rows } };
 }
 
-export default app;
+export default withAdmin(app);

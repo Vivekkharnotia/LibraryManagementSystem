@@ -2,16 +2,15 @@ import { useMeeting } from "components/MeetingContext";
 import { db } from "components/general/firebase-config";
 import { endMeeting, getToken } from "controllers/meeting";
 import {
+  Timestamp,
   collection,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
   setDoc,
-  Timestamp,
 } from "firebase/firestore";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
 
 interface MeetingType {
   userId: string;
@@ -26,6 +25,10 @@ interface MeetingsDataProps {
 // use JSON.parse(meeting.userData) to get the userData object
 
 const MeetingsData = ({ meetingsData }: MeetingsDataProps) => {
+  
+  meetingsData.map((item)=>{
+    console.log(JSON.parse(item.userData))
+  })
   const router = useRouter();
   const { updateToken } = useMeeting();
 

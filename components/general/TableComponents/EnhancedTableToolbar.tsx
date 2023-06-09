@@ -1,7 +1,7 @@
-import { IconButton, Toolbar, Tooltip, Typography } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import { IconButton, Toolbar, Tooltip, Typography } from "@mui/material";
 
-export default function EnhancedTableToolbar() {
+export default function EnhancedTableToolbar({message}: {message: string}) {
   return (
     <Toolbar
       sx={{
@@ -15,7 +15,7 @@ export default function EnhancedTableToolbar() {
         id="tableTitle"
         component="div"
       >
-        Payment History
+        {message}
       </Typography>
 
       <Tooltip title="Filter list">

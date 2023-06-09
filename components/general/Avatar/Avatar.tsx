@@ -1,21 +1,23 @@
-import { useState, useEffect } from "react";
-import styles from "./Avatar.module.css";
-import arrow_down from "../../../public/arrow_down.svg";
-import Popover from "@mui/material/Popover";
-import Button from "@mui/material/Button";
 import { Box } from "@mui/material";
-import { auth, db } from "../firebase-config";
-import { useRouter } from "next/router";
+import AvatarMui from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Popover from "@mui/material/Popover";
 import { useUser } from "components/UserContext";
+import { removeCookies } from "cookies-next";
 import { doc, getDoc } from "firebase/firestore";
-import { MdOutlineAccountCircle } from "react-icons/md";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import arrow_down from "../../../public/arrow_down.svg";
+import { auth, db } from "../firebase-config";
+import styles from "./Avatar.module.css";
 
 function Avatar() {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [avatar, setAvatar] = useState<string>("");
   const router = useRouter();
   const { user, userLoading } = useUser();
+  const [displayName, setDisplayName] = useState<string>("");
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -34,6 +36,7 @@ function Avatar() {
       if (window) {
         window.localStorage.setItem("loggedIn", "false");
       }
+      removeCookies("uid");
       router.push("/");
     } catch (e) {
       console.log(e);
@@ -46,8 +49,12 @@ function Avatar() {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
+        setDisplayName(data?.fname);
         if (data?.profileImageUrl) {
           setAvatar(data.profileImageUrl);
+        }
+        else {
+          setAvatar(" ");
         }
       }
     }
@@ -73,22 +80,8 @@ function Avatar() {
           <div className={styles.down_arrow}>
             <Image src={arrow_down} alt="v" />
           </div>
-          <div
-            className={styles.profile_circle}
-            style={{
-              width: "50px",
-              height: "50px",
-              borderRadius: "50%",
-              overflow: "hidden",
-              marginLeft: "10px",
-            }}
-          >
-            {avatar ? (
-              <img src={avatar} alt="Avatar" />
-              ) : (
-              <MdOutlineAccountCircle className="object-contain w-full h-full text-[#000]" />
-            )}
-          </div>
+          
+          <AvatarMui alt={displayName} src={avatar} sx={{marginLeft: "0.8rem", backgroundColor: "rgb(250 184 0)"}}/>
         </Button>
 
         <Popover

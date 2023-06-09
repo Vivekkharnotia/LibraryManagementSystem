@@ -1,24 +1,22 @@
+import CloseIcon from "@mui/icons-material/Close";
 import {
-  Alert,
   Box,
   Button,
   CircularProgress,
   IconButton,
-  Snackbar,
-  TextField,
+  TextField
 } from "@mui/material";
-import { auth, db } from "components/general/firebase-config";
+import { useUser } from "components/UserContext";
+import FormCheckbox from "components/general/Profile/FormCheckbox";
+import FormTextarea from "components/general/Profile/FormTextarea";
 import {
   diurnalOptions,
   painOptions,
 } from "components/general/Profile/constants";
-import FormCheckbox from "components/general/Profile/FormCheckbox";
-import FormTextarea from "components/general/Profile/FormTextarea";
-import { useUser } from "components/UserContext";
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import { db } from "components/general/firebase-config";
+import { Timestamp, addDoc, collection } from "firebase/firestore";
+import React, { useState } from "react";
 import style from "./NewAppointmentForm.module.css";
-import CloseIcon from "@mui/icons-material/Close";
 
 interface Profile {
   fname?: string;
@@ -100,7 +98,7 @@ export default function NewAppointmentForm({
         setLoading(true);
         await addDoc(
           collection(db, `Userdata/${user.uid}/cases`),
-          { ...formData, createdAt: new Date(), numberOfSessions: 0 }
+          { ...formData, createdAt: Timestamp.now(), numberOfSessions: 0 }
         );
         setSnackbarOpen(true);
         setLoading(false);

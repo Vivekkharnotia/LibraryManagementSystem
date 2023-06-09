@@ -163,7 +163,13 @@ function SignIn() {
         if (window) {
           window.localStorage.setItem("loggedIn", true);
           window.localStorage.setItem("uid", userId);
-        }
+        }       
+        setCookie("uid", userId, {
+          path: "/",
+          sameSite: true,
+          secure: true,
+          maxAge: 3600 * 24 * 7,
+        });
         router.push('/app');
       } catch (error) {
         alert(error.message);
@@ -192,6 +198,7 @@ function SignIn() {
           path: "/",
           sameSite: true,
           secure: true,
+          maxAge: 3600 * 24 * 7,
         });
 
         router.push('/app');

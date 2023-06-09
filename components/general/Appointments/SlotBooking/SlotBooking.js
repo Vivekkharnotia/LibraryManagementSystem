@@ -1,22 +1,23 @@
 import { Button } from "@mui/material";
+import Badge from "@mui/material/Badge";
+import CircularProgress from "@mui/material/CircularProgress";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import React, { useState } from "react";
-import slotcss from "./SlotBooking.module.css";
+import Grow from "@mui/material/Grow";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { db } from "components/general/firebase-config.js";
-import { getDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import Image from "next/image";
-import Badge from "@mui/material/Badge";
+import { useState } from "react";
+import { timeMiner } from "utils/ExtendedUtils";
 import calander from "../../../../public/calander.png";
-import CircularProgress from "@mui/material/CircularProgress";
-import Grow from "@mui/material/Grow";
 import { useUser } from "../../../UserContext";
+import slotcss from "./SlotBooking.module.css";
 
 function GrowTransition(props) {
   return <Grow {...props} />;
@@ -42,25 +43,26 @@ export default function SlotBooking({
       try {
         const refDoc = doc(db, `Userdata/${user.uid}/cases`, id);
         const findDoc = await getDoc(refDoc);
+
         if (findDoc.exists()) {
           const data = findDoc.data();
-          const slots = data.slots || [];
-          let slotPresent = 0;
-          for (let i = 0; i < slots.length; i++) {
-            if (slots[i] === `${date} ${selectedSlot}`) {
-              slotPresent = 1;
-              break;
-            }
-          }
-          if (slotPresent === 1) {
+          const slot = data.slot || "";
+
+          if (slot === `${date} ${selectedSlot}`) {
             setErrorMsg("You have already booked this slot");
             setErrorDialog(true);
             return;
           }
-          slots.push(`${date} ${selectedSlot}`);
+          else if(slot !== "") {
+            setErrorMsg("You have already booked one slot. You cannot book two slots at a time");
+            setErrorDialog(true);
+            return;
+          }
+          
           await updateDoc(refDoc, {
-            slots: [...slots],
+            slot: `${date} ${selectedSlot}` 
           });
+
         } else {
           console.log('User not found');
         }
@@ -155,15 +157,6 @@ export default function SlotBooking({
       setSlot(false);
       return "Sorry... falied to book your slot";
     }
-  };
-
-  const timeMiner = (time) => {
-    time = time.split(":");
-    time = parseInt(time[0]);
-
-    if (time >= 5 && time < 12) return "at morning";
-    else if (time >= 12 && time < 4) return "at afternoon";
-    else return "at evening";
   };
 
   const handleClickOpen = () => {

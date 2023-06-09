@@ -1,8 +1,8 @@
+import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"; //appoinment
 import ImportContactsIcon from "@mui/icons-material/ImportContacts"; //blog
 import MenuIcon from "@mui/icons-material/Menu"; // menu
 import PermIdentityIcon from "@mui/icons-material/PermIdentity"; //profile
-import PhoneIcon from "@mui/icons-material/Phone";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -12,25 +12,25 @@ import styles from "./BottomNav.module.css";
 const bottomNavList = [
   {
     id: 0,
-    name: "blogs",
+    name: "Blogs",
     icon: <ImportContactsIcon />,
     link: "/app/blogs",
   },
   {
     id: 1,
-    name: "talk",
-    icon: <PhoneIcon />,
-    link: "/app/talk",
+    name: "Payments",
+    icon: <AccountBalanceWalletOutlinedIcon />,
+    link: "/app/paymentHistory",
   },
   {
     id: 2,
-    name: "appoinments",
+    name: "Appoinments",
     icon: <CalendarMonthIcon />,
     link: "/app",
   },
   {
     id: 3,
-    name: "profile",
+    name: "Profile",
     icon: <PermIdentityIcon />,
     link: "/app/profile",
   },
@@ -91,7 +91,7 @@ function BottomNav({handleDrawerToggle, current}: {handleDrawerToggle: () => voi
             bottomNavList.map((item, index) => {
                 return (
                     <Link id={`view2Item${index}`} href={item.link} key={item.id}>
-                        <Button className={styles.view2Item}>
+                        <Button sx={{textTransform: "none"}} className={styles.view2Item}>
                             {item.icon}
                             {item.name}
                         </Button>

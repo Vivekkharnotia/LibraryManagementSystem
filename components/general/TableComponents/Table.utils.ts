@@ -1,4 +1,4 @@
-import { Order } from "components/general/Table/Table.interface";
+import { Order } from "components/general/TableComponents/Table.interface";
 
 export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -12,17 +12,17 @@ export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
 export function getComparator<Key extends keyof any>(
   order: Order,
-  orderBy: Key
-): (a: { [key in Key]: string }, b: { [key in Key]: string }) => number {
-  return order === "desc"
+  orderBy: Key,
+): (
+  a: { [key in Key]: string },
+  b: { [key in Key]: string },
+) => number {
+  return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export function stableSort<T>(
-  array: readonly T[],
-  comparator: (a: T, b: T) => number
-) {
+export function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -33,3 +33,4 @@ export function stableSort<T>(
   });
   return stabilizedThis.map((el) => el[0]);
 }
+

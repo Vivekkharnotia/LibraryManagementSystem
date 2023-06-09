@@ -30,22 +30,31 @@
     margin-right: 3rem;
     width: max-content;
 }
-
 .signinBtn{
     color: #fff;
     margin-left: 2rem;
     background-color: rgb(233, 171, 2);
-    padding: 0.8rem 1.5rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid rgb(233, 171, 2);
+
     border-radius: 4px;
 
     transition: all 150ms ease-in-out;
 }
-
-.bookBtn:hover{
+.bookBtn{
     color: black;
+    border: 2px solid black;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 150ms ease-in-out;
+
+}
+.bookBtn:hover{
+    background-color: black;
+    color: white;
 }
 .signinBtn:hover{
-    box-shadow: 0px 0px 8px hsl(240, 60%, 65%);
+    box-shadow: 0px 0px 8px rgba(233, 171, 2, 0.5);
 }
 .hamburger{
     display: none;
