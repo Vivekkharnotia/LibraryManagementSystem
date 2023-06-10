@@ -1,34 +1,33 @@
 import { useEffect, useState } from 'react';
 import Footer from '../Footer/Footer';
-import Loading from '../Loading/Loading';
 import { auth } from '../firebase-config';
 import BlogsNav from './BlogsNav/BlogsNav';
 
 function BlogsLayout(props: any) {
 
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
 
-  try{
-    const user = auth.currentUser;
-    user?.getIdTokenResult().then((idTokenResult) => {
-      setIsAdmin(idTokenResult.claims.admin);
-      setLoading(false);
-    });
+
+  const getIsAdmin = ()=>{
+    try{
+      const user = auth.currentUser;
+      user?.getIdTokenResult().then((idTokenResult) => {
+        setIsAdmin(idTokenResult.claims.admin);
+      });
+    }
+    catch(err) {
+      console.log(err);
+    }
   }
-  catch(err) {
-    setLoading(false);
-    console.log(err);
-  }
+
+  
 
   useEffect(() => {
-    console.log("isAdmin: ", isAdmin);
-    
-  }, [isAdmin])
+    getIsAdmin();
+  }, [])
 
 
   return (
-    loading ? <Loading message="Loading..." /> :
     <>
       <BlogsNav isAdmin={isAdmin}/>
       {props.children}
@@ -38,3 +37,6 @@ function BlogsLayout(props: any) {
 }
 
 export default BlogsLayout
+
+
+

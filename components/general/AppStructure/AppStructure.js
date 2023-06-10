@@ -201,11 +201,6 @@ export default function MiniDrawer({isAdmin}) {
       link: "/app/myBlogs",
     },
     {
-      name: "Payment History",
-      icon: <AccountBalanceWalletOutlinedIcon />,
-      link: "/app/paymentHistory",
-    },
-    {
       name: "Analytics",
       icon: <AnalyticsOutlinedIcon />,
       link: "/app/analytics",

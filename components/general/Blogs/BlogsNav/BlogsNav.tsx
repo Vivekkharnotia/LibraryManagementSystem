@@ -48,6 +48,10 @@ export default function BlogsNav({isAdmin}: {isAdmin: boolean}) {
     },
   ]
 
+  if(!router.pathname.startsWith("/blogs/read/")) {
+    drawerList.pop();
+  }
+
   
 
   return (

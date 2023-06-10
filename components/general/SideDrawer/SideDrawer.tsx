@@ -90,15 +90,17 @@ export default function SideDrawer(props: any) {
         <IconButton onClick={handleDrawerToggle}>
           <CloseIcon />
         </IconButton>
-        <Avatar
-          sx={{
-            bgcolor: "rgb(233, 171, 2)",
-            width: "3.2rem",
-            height: "3.2rem",
-          }}
-          alt=""
-          src="/broken-image.jpg"
-        />
+        <Link href="/app/profile">
+          <Avatar
+            sx={{
+              bgcolor: "rgb(233, 171, 2)",
+              width: "3.2rem",
+              height: "3.2rem",
+            }}
+            alt=""
+            src=" "
+          />
+        </Link>
       </Toolbar>
 
       <Divider />

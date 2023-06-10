@@ -1,18 +1,22 @@
-import { styled, useTheme } from "@mui/material/styles";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import sidebar from "./AppNavBar.module.css";
 import { Typography } from "@mui/material";
-import SearchBar from "../SearchBar/SearchBar";
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Toolbar from "@mui/material/Toolbar";
+import { styled } from "@mui/material/styles";
 import Avatar from "../Avatar/Avatar";
+import SearchBar from "../SearchBar/SearchBar";
+import sidebar from "./AppNavBar.module.css";
 
 const drawerWidth = 270;
 
 
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}
+
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
+})<AppBarProps>(({ theme, open }) => ({
+  zIndex: 100,
   transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -29,7 +33,7 @@ const AppBar = styled(MuiAppBar, {
 
 
 
-export default function AppNavBar({ open }) {
+export default function AppNavBar({ open }: { open: boolean }) {
   return (
     <>
       <AppBar
@@ -50,7 +54,7 @@ export default function AppNavBar({ open }) {
               R
             </Typography>
             <div
-              sx={{ color: "black" }}
+              style={{ color: "black" }}
               id="NavTitle"
               className={sidebar.navBarContent}
             >

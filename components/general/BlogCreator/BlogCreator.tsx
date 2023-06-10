@@ -3,10 +3,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
 import { db } from "components/general/firebase-config";
-import { collection, doc, getDoc, writeBatch } from "firebase/firestore";
+import { collection, doc, writeBatch } from "firebase/firestore";
 import Image from 'next/image';
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import emptyHere from '../../../public/emptyHere.jpg';
 import BlogImage from "../BlogComponents/BlogImage/BlogImage";
 import BlogPartition from '../BlogComponents/BlogPartition/BlogPartition';
@@ -16,34 +16,23 @@ import style from "./VisitBlog.module.css";
 
 
 
-export default function BlogCreator({ data }) {
+export default function BlogCreator({dataString}: {dataString: string}) {
+  const data = JSON.parse(dataString);
   const [titles, setTitles] = useState([]);
   const container = useRef(null);
-  const blogImageInput = useRef(null);
+  const blogImageInput = useRef<HTMLInputElement>(null);
   const [headTitle, setHeadTitle] = useState("Click to Edit Title");
   const [heroImageSrc, setHeroImageSrc] = useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMaJKOnh70m9VVMzrgdZY0jTGUfLSXFI01IQ&usqp=CAU");
-  const [blogData, setBlogData] = useState([]);
-  const [displayName, setDisplayName] = useState("loading..."); // data['displayName'
+  const [blogData, setBlogData] = useState<{ title: string; src?: string; content?: string; }[]>([]);
+  const displayName = `${data.fname} ${data.lname}`;
   const date = new Date();
-  const [userBlogs, setUserBlogs] = useState([]);
+  const userBlogs = data.blogs;
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [uid, setUid] = useState(null);
+  const uid = data.uid;
   const [open, setOpen] = useState(false);
 
-
-  useEffect(() => {
-    const userId = localStorage.getItem('uid');
-    setUid(userId);
-    getUserData(userId);
-  }, []);
-
-  const getUserData = async (userId) => {
-      const userSnap = await getDoc(doc(collection(db, "Userdata"), userId));
-      const data = userSnap.data();
-      setDisplayName(`${data.fname} ${data.lname}`);
-      setUserBlogs(data.blogs);
-  };
+  console.log(data);
 
   // useEffect(() => {
   //   const boldBtn = document.querySelector("#addBold");
@@ -79,10 +68,10 @@ export default function BlogCreator({ data }) {
   //   setTitles(titles);
   // }, [block]);
 
-  const getTitle = (anchorId) => {
-    const title = document.getElementById(`${anchorId}`);
-    return title.children[0].innerText;
-  };
+  // const getTitle = (anchorId: any) => {
+  //   const title = document.getElementById(`${anchorId}`);
+  //   return title.children[0].innerText;
+  // };
 
   const handleParaClick = () => {
     setBlogData((current) => [
@@ -92,13 +81,15 @@ export default function BlogCreator({ data }) {
   };
 
   const handleAddImageClick = () => {
-    const file = blogImageInput.current.files[0];
-    const src = URL.createObjectURL(file);
+    if(blogImageInput.current?.files){
+      const file = blogImageInput.current.files[0];
+      const src = URL.createObjectURL(file);
 
-    setBlogData((current) => [
-      ...current,
-      { title: "Image", src: src },
-    ]);
+      setBlogData((current) => [
+        ...current,
+        { title: "Image", src: src },
+      ]);
+    }
   };
 
   const handleSaveClick = async () => {
@@ -179,7 +170,7 @@ export default function BlogCreator({ data }) {
               <label htmlFor="addImage" className={style.addImage}>
                 <input
                   ref={blogImageInput}
-                  onClick={(e) => (e.target.value = null)}
+                  onClick={(e) => ((e.target as HTMLInputElement).value = '')}
                   onChange={handleAddImageClick}
                   type="file"
                   name="addImage"
@@ -222,7 +213,7 @@ export default function BlogCreator({ data }) {
               if(item.title === 'Image') return <BlogImage key={index} data={item} index={index} length={blogData.length} setBlogData={setBlogData}/>
               else
                 return (
-                  <BlogPartition key={index} data={item} index={index} length={blogData.length} setBlogData={setBlogData}/>
+                  <BlogPartition key={index} anchorId={index} data={item} index={index} length={blogData.length} setBlogData={setBlogData}/>
                 );
             })
             :
