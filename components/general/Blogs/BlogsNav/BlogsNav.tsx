@@ -15,7 +15,7 @@ import { scrollTrigger } from "utils/scrollTrigger";
 import SideDrawer from "../../SideDrawer/SideDrawer";
 import styles from "./BlogsNav.module.css";
 
-export default function BlogsNav({isAdmin}: {isAdmin: boolean}) {
+export default function BlogsNav({isAdmin, isLoggedIn}: {isAdmin: boolean, isLoggedIn: boolean}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const router = useRouter();
   const id = router.query.id;
@@ -68,13 +68,14 @@ export default function BlogsNav({isAdmin}: {isAdmin: boolean}) {
         </Link>
 
         <div className={styles.btnContainer}>
+          
           <div className={styles.navBtns}>
             <Link href="/app" className={styles.bookBtn}>
               Book Slot
             </Link>
 
             {
-              uid ?
+              isLoggedIn ?
               <div style={{marginLeft: "1rem"}}>
                 <Avatar />
               </div>:
@@ -113,6 +114,8 @@ export default function BlogsNav({isAdmin}: {isAdmin: boolean}) {
               <MenuIcon fontSize="large" />
             </IconButton>
           </div>
+
+
         </div>
       </nav>
 

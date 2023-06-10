@@ -6,6 +6,7 @@ import BlogsNav from './BlogsNav/BlogsNav';
 function BlogsLayout(props: any) {
 
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
 
   const getIsAdmin = ()=>{
@@ -14,6 +15,7 @@ function BlogsLayout(props: any) {
       user?.getIdTokenResult().then((idTokenResult) => {
         setIsAdmin(idTokenResult.claims.admin);
       });
+      setIsLoggedIn(user? true : false);
     }
     catch(err) {
       console.log(err);
@@ -29,7 +31,7 @@ function BlogsLayout(props: any) {
 
   return (
     <>
-      <BlogsNav isAdmin={isAdmin}/>
+      <BlogsNav isAdmin={isAdmin} isLoggedIn={isLoggedIn}/>
       {props.children}
       <Footer />
     </>

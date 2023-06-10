@@ -1,4 +1,3 @@
-import { withAdmin } from "ProtectedRoutes/AdminRoute";
 import BlogCreator from "components/general/BlogCreator/BlogCreator";
 import { db } from "components/general/firebase-config";
 import { collection, doc, getDoc } from "firebase/firestore";
@@ -14,7 +13,7 @@ function index({dataString}: {dataString: string}) {
   );
 }
 
-export default withAdmin(index);
+export default index;
 
 
 
