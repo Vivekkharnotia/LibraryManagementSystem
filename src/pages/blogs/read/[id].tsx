@@ -24,13 +24,22 @@ export const getServerSideProps = async ({req, res, params}: {req: NextApiReques
   // const router = useRouter();
   // const id = router.query.id;
   const id = params.id;
-  const blogRef = doc(db, "blogs", id);
-  const blogSnap = await getDoc(blogRef);
-  const blogData = blogSnap.data();
-
   const blogMetaRef = doc(db, "metaBlogs", id);
   const blogMetaSnap = await getDoc(blogMetaRef);
   const blogMetaData = blogMetaSnap.data();
+
+  if(blogMetaData && blogMetaData.published === false){
+    return {
+      redirect: {
+        destination: '/error404',
+        permanent: false,
+      },
+    }
+  }
+
+  const blogRef = doc(db, "blogs", id);
+  const blogSnap = await getDoc(blogRef);
+  const blogData = blogSnap.data();
 
   const data = {...blogData, ...blogMetaData, id: id};
   const blogDataString = JSON.stringify(data);

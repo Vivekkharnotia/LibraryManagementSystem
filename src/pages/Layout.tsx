@@ -54,7 +54,7 @@ export default function Layout(props: LayoutProps ) {
 
             <AppStructure isAdmin={isAdmin}/>
 
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Box component="main" sx={{ flexGrow: 1, paddingBottom: "3rem" }}>
               <DrawerHeader />
 
               {props.children}

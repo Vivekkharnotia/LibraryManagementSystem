@@ -16,7 +16,11 @@ const BlogCard: FC<BlogCardProps> = ({ imgUrl, mainTitle, title }) => {
           className="w-full h-full max-h-[210px] object-cover hover:scale-[1.015] transition-all duration-300"
         />
       </div>
-      <h2 className="my-3 text-xs">{mainTitle}</h2>
+      <h2 className="my-3 text-xs" >
+        <span  style={{backgroundColor: mainTitle !== "Published" ? "rgb(211, 47, 47)" : "rgb(46 125 50)", padding: "0.3rem 0.6rem", color: "white", borderRadius: "5px"}}>
+          {mainTitle}  
+        </span>
+      </h2>
       <h4 className="text-[21px] leading-6 font-semibold pr-4">{title}</h4>
     </div>
   );

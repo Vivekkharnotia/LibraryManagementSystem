@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -21,7 +22,10 @@ function BlogsGrid({data}: {data: metaBlogsData[]}) {
     router.push("/blogs");
   };
 
+
   return (
+    data.length === 0 ? <Typography variant="h4"  style={{height: "75vh", display: "grid", placeItems: "center"}}> No Blogs Yet </Typography> :
+
     <>
       <div className={styles.container}>
         <div className={styles.grid_container}>

@@ -104,6 +104,7 @@ export default function BlogCreator({dataString}: {dataString: string}) {
       headTitle: headTitle,
       heroImageSrc: heroImageSrc,
       uid: uid,
+      published: false,
     }
 
     
