@@ -10,7 +10,7 @@ interface Props {
     open: boolean;
     setOpen: Dispatch<SetStateAction<boolean>>;
     title: string;
-    message: string;
+    contentText: string;
     buttons: [
       {text: string, color?: "primary" | "secondary" | "error" | "warning" | "info" | "success", onClick?: () => void},
       {text: string, color?: "primary" | "secondary" | "error" | "warning" | "info" | "success", onClick: () => void}
@@ -20,7 +20,7 @@ interface Props {
 
 
 export default function GPDialog(props: Props) {
-  const {title, message, open, setOpen, buttons} = props;
+  const {title, contentText, open, setOpen, buttons} = props;
   const button1 = buttons[0];
   const button2 = buttons[1];
 
@@ -41,7 +41,7 @@ export default function GPDialog(props: Props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {message}
+            {contentText}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

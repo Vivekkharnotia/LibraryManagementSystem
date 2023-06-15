@@ -1,7 +1,7 @@
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
-import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { db } from "components/general/firebase-config";
 import { collection, doc, writeBatch } from "firebase/firestore";
 import Image from 'next/image';
@@ -12,6 +12,7 @@ import BlogPartition from '../BlogComponents/BlogPartition/BlogPartition';
 import HeadTitle from "../BlogComponents/HeadTitle/HeadTitle";
 import HeroImage from "../BlogComponents/HeroImage/HeroImage";
 import style from "../BlogCreator/VisitBlog.module.css";
+import GPBackdrop from "../GeneralPurpose/GPBackdrop";
 
 export default function BlogEditor(props) {
   const [titles, setTitles] = useState([]);
@@ -87,10 +88,7 @@ export default function BlogEditor(props) {
 
   return (
     <>
-      <Backdrop open={loading} sx={{zIndex: 100, flexDirection: 'column', gap: 4, color: 'white'}}>
-        <Typography fontSize={24}> Saving... </Typography>
-        <CircularProgress  sx={{color: 'white'}} />
-      </Backdrop>
+      <GPBackdrop loading={loading} message="Saving..."/>
 
       <HeadTitle
         displayName={displayName}

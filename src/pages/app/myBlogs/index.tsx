@@ -4,9 +4,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PublishIcon from '@mui/icons-material/Publish';
 import UnpublishedIcon from '@mui/icons-material/Unpublished';
-import { Backdrop, Box, CircularProgress, Divider, Grid, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Popover } from "@mui/material";
+import { Box, Divider, Grid, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Popover } from "@mui/material";
 import { withAdmin } from 'ProtectedRoutes/AdminRoute';
 import BlogsCard from "components/general/Blogs/BlogsCard/BlogsCard";
+import GPBackdrop from 'components/general/GeneralPurpose/GPBackdrop';
 import GPDialog from 'components/general/GeneralPurpose/GPDialog';
 import GPSnackbar from 'components/general/GeneralPurpose/GPSnackbar';
 import { db } from "components/general/firebase-config";
@@ -109,14 +110,7 @@ const app = (props : any) => {
   return (
     <>
 
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, flexDirection: "column", gap: "1rem" }}
-        open={loading}
-      >
-        &nbsp;&nbsp;{backdropMessage}
-        <CircularProgress color="inherit" />
-        
-      </Backdrop>
+      <GPBackdrop loading={loading} message={backdropMessage} />
 
     
       <Box sx={{ textAlign: "center", marginTop: "2rem", '@media (max-width:768px)': { paddingInline : "2rem"} }}>
@@ -198,8 +192,14 @@ const app = (props : any) => {
         </List>
       </Popover>
 
-      <GPDialog title="Are you sure you want to Delete this blog?" message="This will permanantely delete this blog." buttons={[{text: "Cancel"}, {text: "Delete", color: "error", onClick: handleDelete}]} open={dialogOpen} setOpen={setDialogOpen}/>
-      <GPSnackbar message={snackbarMessage} open={snackbarOpen} setOpen={setSnackbarOpen} />
+      <GPDialog
+        title="Are you sure you want to Delete this blog?"
+        contentText="This will permanantely delete this blog."
+        buttons={[{text: "Cancel"}, {text: "Delete", color: "error", onClick: handleDelete}]}
+        open={dialogOpen}
+        setOpen={setDialogOpen}
+      />
+      <GPSnackbar message={snackbarMessage} />
 
     </>
   );

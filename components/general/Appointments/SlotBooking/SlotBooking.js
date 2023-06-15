@@ -1,17 +1,13 @@
 import { Button } from "@mui/material";
 import Badge from "@mui/material/Badge";
 import CircularProgress from "@mui/material/CircularProgress";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import Grow from "@mui/material/Grow";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+import GPDialog from "components/general/GeneralPurpose/GPDialog";
 import { db } from "components/general/firebase-config.js";
-import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, writeBatch } from "firebase/firestore";
 import Image from "next/image";
 import { useState } from "react";
 import { timeMiner } from "utils/ExtendedUtils";
@@ -29,6 +25,7 @@ export default function SlotBooking({
   setState,
   setErrorDialog,
   setErrorMsg,
+  setSnackbarMessage,
 }) {
   const [open, setOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState("");
@@ -36,48 +33,6 @@ export default function SlotBooking({
   const [allSlots, setAllSlots] = useState([]);
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
-
-  const handleClick = (Transition) => async () => {
-    const result = await handleSelectSlot();
-    if (result === "Success") {
-      try {
-        const refDoc = doc(db, `Userdata/${user.uid}/cases`, id);
-        const findDoc = await getDoc(refDoc);
-
-        if (findDoc.exists()) {
-          const data = findDoc.data();
-          const slot = data.slot || "";
-
-          if (slot === `${date} ${selectedSlot}`) {
-            setErrorMsg("You have already booked this slot");
-            setErrorDialog(true);
-            return;
-          }
-          else if(slot !== "") {
-            setErrorMsg("You have already booked one slot. You cannot book two slots at a time");
-            setErrorDialog(true);
-            return;
-          }
-          
-          await updateDoc(refDoc, {
-            slot: `${date} ${selectedSlot}` 
-          });
-
-        } else {
-          console.log('User not found');
-        }
-      } catch (error) {
-        console.log(error);
-      }
-      setState({
-        openSnackbar: true,
-        Transition,
-      });
-    } else {
-      setErrorMsg(result);
-      setErrorDialog(true);
-    }
-  };
 
   const handleChange = async (e) => {
     setLoading(true);
@@ -100,98 +55,85 @@ export default function SlotBooking({
     }
   };
 
-  const handleSelectSlot = async () => {
-    const refDoc = doc(db, "Slots", date);
-    let findDoc;
-    try {
-      findDoc = await getDoc(refDoc);
-    } catch (error) {
-      console.log(error);
-      setOpen(false);
-      setSlot(false);
-      return "Some problem occured.. please try again";
-    }
-    if (!findDoc.exists()) {
-      setOpen(false);
-      setSlot(false);
-      return "Some problem occured.. please try again";
-    }
-    const docFound = findDoc.data().slots;
 
-    const oldSlots = docFound;
-    let newSlots = [];
-    let slotFound = 0;
-    for (let i = 0; i < oldSlots.length; i++) {
-      let slotArr = oldSlots[i].split(" ");
-      if (selectedSlot === slotArr[0]) {
-        slotFound = 1;
-        let capacity = parseInt(slotArr[1]);
-        capacity -= 1;
-        if (capacity !== 0) {
-          newSlots.push(`${slotArr[0]} ${capacity}`);
-        }
-      } else {
-        newSlots.push(oldSlots[i]);
-      }
-    }
-    if (slotFound === 0) {
-      setOpen(false);
-      setSlot(false);
-      return "Somebody booked the selected slot just before you. Please select another slot...";
-    }
-    try {
-      await updateDoc(refDoc, {
-        slots: [...newSlots],
-      });
-      if (newSlots.length === 0) {
-        deleteDoc(refDoc);
-      }
-      console.log("handle Click start");
-      setOpen(false);
-      setSlot(false);
+  const handleClick = async () => {
 
-      return "Success";
-    } catch (error) {
-      console.log(error);
+    const slotRef = doc(db, "Slots", date);
+    const slotsDoc = await getDoc(slotRef);
+    const caseRef = doc(db, `Userdata/${user.uid}/cases`, id);
+    const caseData = await getDoc(caseRef);
+
+    // find index of selected slot in slots array
+    const index = slotsDoc.data().slots.findIndex((slot) => slot.split(" ")[0] === selectedSlot)
+    if(index === -1) {
+      setSlot(false);
+      setOpen(false);
+      setErrorDialog(true);
+      setErrorMsg("Sorry, the slot you selected is not available. Please try again");
+      return
+    }
+    if(caseData.data().slot) {
+      setSlot(false);
+      setOpen(false);
+      setErrorDialog(true);
+      setErrorMsg("Sorry, you have already booked a slot for this case. Please cancel the previous slot to book a new one");
+      return
+    }
+    
+    // update the slot in the slots array
+    const slots = slotsDoc.data().slots;
+    const noOfSlotsLeft = slots[index].split(" ")[1]-1;
+    if(noOfSlotsLeft === 0) {
+      slots.splice(index, 1)
+    } else{
+      slots[index] = `${selectedSlot} ${noOfSlotsLeft}`;
+    }
+
+    // create a batch and update the slots array and the case status
+    const batch = writeBatch(db);
+    batch.update(slotRef, { slots })
+    batch.set(caseRef, { slot: `${date} ${selectedSlot}` }, { merge: true })
+    try{
+      await batch.commit()
       setOpen(false);
       setSlot(false);
-      return "Sorry... falied to book your slot";
+      setSnackbarMessage("Slot booked successfully");
     }
+    catch(err) {
+      console.log(err)
+      setSlot(false);
+      setOpen(false);
+      setErrorDialog(true);
+      setErrorMsg("Sorry, something went wrong. Please try again");
+      return
+    }
+
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   return (
     <>
-      <Dialog
+
+      <GPDialog
         open={open}
-        onClose={handleClose}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogTitle id="responsive-dialog-title">
-          {"Are you sure you want to book this slot?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Slot will be scheduled on {date} between{" "}
-            {selectedSlot + " " + timeMiner(selectedSlot)}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose} color="warning">
-            No
-          </Button>
-          <Button onClick={handleClick(GrowTransition)} autoFocus>
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
+        setOpen={setOpen}
+        title="Are you sure you want to book this slot?"
+        contentText={`Slot will be scheduled on ${date} between ${selectedSlot} ${timeMiner(selectedSlot)}`}
+        buttons={[
+          {
+            text: "No",
+            onClick: ()=> setOpen(false),
+            color: "warning",
+          },
+          {
+            text: "Yes",
+            onClick: handleClick,
+          },
+
+        ]}
+      />
+
 
       <div
         style={{ height: "100%", width: "100%", color: "black" }}
@@ -274,7 +216,7 @@ export default function SlotBooking({
                       >
                         <Button
                           onClick={() => {
-                            handleClickOpen();
+                            setOpen(true);
                             setSelectedSlot(slotArr[0]);
                           }}
                           style={{

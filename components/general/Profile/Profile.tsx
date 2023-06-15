@@ -1,10 +1,19 @@
-import React, { FC, useEffect, useRef, useState } from "react";
-import FormCheckbox from "./FormCheckbox";
-import FormTextarea from "./FormTextarea";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "../firebase-config.js";
+import {
+  Alert,
+  Snackbar,
+  Tooltip
+} from "@mui/material";
 import { useUser } from "components/UserContext";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { AiOutlineCamera } from "react-icons/ai";
+import { uploadFileToFirebaseAndGetUrl } from "utils/ExtendedUtils";
+import GPBackdrop from "../GeneralPurpose/GPBackdrop";
+import { db } from "../firebase-config.js";
+import FormCheckbox from "./FormCheckbox";
 import FormRadio from "./FormRadio";
+import FormTextarea from "./FormTextarea";
+import Input from "./Input";
 import {
   familyHistoryOptions,
   genderOptions,
@@ -15,16 +24,6 @@ import {
   referrerOptions,
   surgicalHistoryOptions,
 } from "./constants";
-import {
-  Alert,
-  Backdrop,
-  CircularProgress,
-  Snackbar,
-  Tooltip,
-} from "@mui/material";
-import Input from "./Input";
-import { AiOutlineCamera } from "react-icons/ai";
-import { uploadFileToFirebaseAndGetUrl } from "utils/ExtendedUtils";
 
 interface Profile {
   fname?: string;
@@ -276,14 +275,9 @@ const Profile = () => {
                 )} */}
               </div>
             </Tooltip>
-            <Backdrop
-              sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-              open={isImageUploading}
-              className="flex flex-col gap-2"
-            >
-              <span>Uploading Image</span>
-              <CircularProgress color="inherit" />
-            </Backdrop>
+            
+            <GPBackdrop loading={isImageUploading} message="Uploading Image..."/>
+            
             <input
               type="file"
               id="profileImage"

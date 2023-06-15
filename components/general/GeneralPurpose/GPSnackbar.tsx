@@ -2,26 +2,33 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Alert, IconButton } from '@mui/material';
 import Grow, { GrowProps } from '@mui/material/Grow';
 import Snackbar from '@mui/material/Snackbar';
+import { useEffect, useState } from 'react';
 
 function GrowTransition(props: GrowProps) {
   return <Grow {...props} />;
 }
 
 interface Props {
-    open: boolean;
-    setOpen: (open: boolean) => void;
     message: string;
 }
 
 
 export default function GPSnackbar(props: Props) {
-
-    const {open, setOpen, message} = props;
+  const [open, setOpen] = useState(false);
+  const { message} = props;
 
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    if(message === '' || message === undefined){
+      return;
+    }
+    setOpen(true);
+  }, [message])
+
 
   return (
     <>

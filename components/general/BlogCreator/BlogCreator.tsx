@@ -1,7 +1,7 @@
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
-import { Backdrop, Button, CircularProgress, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { db } from "components/general/firebase-config";
 import { collection, doc, writeBatch } from "firebase/firestore";
 import Image from 'next/image';
@@ -12,6 +12,7 @@ import BlogImage from "../BlogComponents/BlogImage/BlogImage";
 import BlogPartition from '../BlogComponents/BlogPartition/BlogPartition';
 import HeadTitle from "../BlogComponents/HeadTitle/HeadTitle";
 import HeroImage from "../BlogComponents/HeroImage/HeroImage";
+import GPBackdrop from "../GeneralPurpose/GPBackdrop";
 import style from "./VisitBlog.module.css";
 
 
@@ -133,10 +134,8 @@ export default function BlogCreator({dataString}: {dataString: string}) {
 
   return (
     <>
-      <Backdrop open={loading} sx={{zIndex: 100, flexDirection: 'column', gap: 4, color: 'white'}}>
-        <Typography fontSize={24}> Creating new blog... </Typography>
-        <CircularProgress  sx={{color: 'white'}} />
-      </Backdrop>
+      
+      <GPBackdrop loading={loading} message="Creating new Blog..." />
 
 
       <HeadTitle

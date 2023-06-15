@@ -2,24 +2,18 @@ import { Delete } from "@material-ui/icons";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
-  Alert,
-  Backdrop,
   Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   IconButton,
   Modal,
   Popover,
-  Snackbar,
-  Typography,
+  Typography
 } from "@mui/material";
 import { deleteDoc, doc } from "firebase/firestore";
 import Image from "next/image";
 import React, { FC, useState } from "react";
+import GPBackdrop from "../GeneralPurpose/GPBackdrop";
+import GPDialog from "../GeneralPurpose/GPDialog";
+import GPSnackbar from "../GeneralPurpose/GPSnackbar";
 import { db } from "../firebase-config";
 import appoinmentcss from "./Appoinments.module.css";
 import CurrentCaseContent from "./CurrentCaseContent/CurrentCaseContent";
@@ -62,14 +56,11 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const handleCopyButton = () => {
     navigator.clipboard.writeText("sampelupiid@oksbi");
-    setSnackbarOpen(true);
-  };
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
+    setSnackbarMessage("UPI ID copied to clipboard");
   };
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -108,51 +99,28 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
 
   return (
     <>
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-        className="flex flex-col gap-2"
-      >
-        <span>Deleting</span>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <GPBackdrop loading={loading} message="Deleting..."/>
 
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert
-          variant="filled"
-          onClose={handleCloseSnackbar}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Copied to clipboard
-        </Alert>
-      </Snackbar>
+      <GPSnackbar message={snackbarMessage} />
 
-      <Dialog
+      <GPDialog
         open={dialogOpen}
-        onClose={handleDialogClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Are you sure you want to delete this case?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Delete case name, {name}?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDialogClose}>Cancel</Button>
-          <Button color="error" onClick={handleCaseDelete} autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
+        setOpen={handleDialogClose}
+        title="Are you sure you want to delete this case?"
+        contentText = {`Delete case name, ${name}?`}
+        buttons = {[
+          {
+            text: "Cancel",
+            onClick: handleDialogClose
+          },
+          {
+            text: "Delete",
+            onClick: handleCaseDelete,
+            color: "error"
+          }
+        ]}
+      />
+
 
       <div className="hover:outline hover:outline-[1px] transition ease-in-out flex flex-col w-[240px] h-[270px] border-[1px] border-[#000] rounded-[15px] cursor-pointer px-5 py-5 relative justify-items-start">
         <IconButton
@@ -218,6 +186,7 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
           Book Slots
         </Button>
       </div>
+      
       <Modal
         open={open}
         onClose={handleClose}
@@ -278,6 +247,7 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
             setErrorMsg={setErrorMsg}
             setErrorDialog={setErrorDialog}
             setState={setState}
+            setSnackbarMessage={setSnackbarMessage}
             setSlot={setSlot}
           />
         </div>
