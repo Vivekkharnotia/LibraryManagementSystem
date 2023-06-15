@@ -89,3 +89,20 @@ export const timeMiner = (time: string) => {
   else if (hours >= 12 && hours < 4) return "at afternoon";
   else return "at evening";
 };
+
+
+export const getDateArray = (date: Date)=>{
+  let dateArray:  string[] = [...Array(7)];
+  const tempDate = date.toJSON().slice(0,10).split('-').reverse();
+  tempDate[1][0] === '0' ? tempDate[1] = tempDate[1][1] : tempDate[1] = tempDate[1];
+  dateArray[0] = tempDate.join('-');
+  
+  for(let i=1; i<7; i++){
+      date.setDate(date.getDate() + 1)
+      const tempDate = date.toJSON().slice(0,10).split('-').reverse();
+      tempDate[1][0] === '0' ? tempDate[1] = tempDate[1][1] : tempDate[1] = tempDate[1];
+      dateArray[i] = tempDate.join('-');
+    }
+    
+  return dateArray;
+}
