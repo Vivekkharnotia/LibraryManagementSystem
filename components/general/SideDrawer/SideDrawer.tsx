@@ -1,7 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
-  Avatar,
   Box,
   Divider,
   Drawer,
@@ -11,13 +10,13 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Toolbar
+  Toolbar,
 } from "@mui/material";
 import { auth } from "components/general/firebase-config";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-
+import Avatar from "../Avatar/Avatar";
 
 interface drawerList {
   name: string;
@@ -33,13 +32,12 @@ interface Props {
   drawerList: drawerList[];
 }
 
-
 export default function SideDrawer(props: any) {
   const router = useRouter();
   const id = router.query.id;
   const { window } = props;
   const { mobileOpen, setMobileOpen, handleDrawerToggle, drawerList } = props;
-  
+
   const drawerWidth = 240;
 
   const handleLogOutClick = async () => {
@@ -55,21 +53,17 @@ export default function SideDrawer(props: any) {
     }
   };
 
-
   useEffect(() => {
     setMobileOpen(false);
-  }, [router.pathname])
+  }, [router.pathname]);
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
   return (
     <>
-      <Box
-        component="nav"
-        aria-label="mailbox folders"
-      >
-      <Drawer
+      <Box component="nav" aria-label="mailbox folders">
+        <Drawer
           container={container}
           variant="temporary"
           open={mobileOpen}
@@ -86,56 +80,46 @@ export default function SideDrawer(props: any) {
             },
           }}
         >
-      <Toolbar sx={{ justifyContent: "space-between", paddingBlock: "1.5rem" }}>
-        <IconButton onClick={handleDrawerToggle}>
-          <CloseIcon />
-        </IconButton>
-        <Link href="/app/profile">
-          <Avatar
-            sx={{
-              bgcolor: "rgb(233, 171, 2)",
-              width: "3.2rem",
-              height: "3.2rem",
-            }}
-            alt=""
-            src=" "
-          />
-        </Link>
-      </Toolbar>
-
-      <Divider />
-
-      <List>
-        {drawerList.map((item: drawerList, index: number) => (
-          <Link
-            href={item.link}
-            key={`drawer-${index}`}
+          <Toolbar
+            sx={{ justifyContent: "space-between", paddingBlock: "1.5rem" }}
           >
-            <ListItem disablePadding>
-              <ListItemButton sx={{ paddingBlock: "1rem" }}>
+            <IconButton onClick={handleDrawerToggle}>
+              <CloseIcon />
+            </IconButton>
+            <Link href="/app/profile">
+              <Avatar withPopOver={false} />
+            </Link>
+          </Toolbar>
+
+          <Divider />
+
+          <List>
+            {drawerList.map((item: drawerList, index: number) => (
+              <Link href={item.link} key={`drawer-${index}`}>
+                <ListItem disablePadding>
+                  <ListItemButton sx={{ paddingBlock: "1rem" }}>
+                    <ListItemIcon sx={{ color: "black!important" }}>
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={item.name} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            ))}
+
+            <ListItem key="logout" disablePadding>
+              <ListItemButton
+                sx={{ paddingBlock: "1rem" }}
+                onClick={handleLogOutClick}
+              >
                 <ListItemIcon sx={{ color: "black!important" }}>
-                  {item.icon}
+                  <LogoutIcon />
                 </ListItemIcon>
-                <ListItemText primary={item.name} />
+                <ListItemText primary="Logout" />
               </ListItemButton>
             </ListItem>
-          </Link>
-        ))}
-
-        <ListItem key="logout" disablePadding>
-          <ListItemButton
-            sx={{ paddingBlock: "1rem" }}
-            onClick={handleLogOutClick}
-          >
-            <ListItemIcon sx={{ color: "black!important" }}>
-              <LogoutIcon />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItemButton>
-        </ListItem>
-      </List>
-
-      </Drawer>
+          </List>
+        </Drawer>
       </Box>
     </>
   );
