@@ -12,7 +12,7 @@ import arrow_down from "../../../public/arrow_down.svg";
 import { auth, db } from "../firebase-config";
 import styles from "./Avatar.module.css";
 
-function Avatar() {
+function Avatar({ withPopOver = true }: { withPopOver?: boolean }) {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [avatar, setAvatar] = useState<string>("");
   const router = useRouter();
@@ -52,8 +52,7 @@ function Avatar() {
         setDisplayName(data?.fname);
         if (data?.profileImageUrl) {
           setAvatar(data.profileImageUrl);
-        }
-        else {
+        } else {
           setAvatar(" ");
         }
       }
@@ -71,56 +70,68 @@ function Avatar() {
 
   return (
     <>
-      <div>
-        <Button
-          sx={{ backgroundColor: "transparent!important" }}
-          aria-describedby={id}
-          onClick={handleClick}
-        >
-          <div className={styles.down_arrow}>
-            <Image src={arrow_down} alt="v" />
-          </div>
-          
-          <AvatarMui alt={displayName} src={avatar} sx={{marginLeft: "0.8rem", backgroundColor: "rgb(250 184 0)"}}/>
-        </Button>
-
-        <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          elevation={0}
-        >
-          <Box
-            sx={{
-              px: 4,
-              py: 3,
-              border: "1px solid black",
-              borderRadius: "4px",
-            }}
+      {withPopOver ? (
+        <div>
+          <Button
+            sx={{ backgroundColor: "transparent!important" }}
+            aria-describedby={id}
+            onClick={handleClick}
           >
-            <Button
-              onClick={handleLogOutClick}
-              variant="contained"
-              disableElevation
+            <div className={styles.down_arrow}>
+              <Image src={arrow_down} alt="v" />
+            </div>
+
+            <AvatarMui
+              alt={displayName}
+              src={avatar}
+              sx={{ marginLeft: "0.8rem", backgroundColor: "rgb(250 184 0)" }}
+            />
+          </Button>
+
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            elevation={0}
+          >
+            <Box
               sx={{
-                backgroundColor: "rgb(250 184 0)!important",
-                ":hover": { backgroundColor: "rgb(233, 171, 2)" },
+                px: 4,
+                py: 3,
+                border: "1px solid black",
+                borderRadius: "4px",
               }}
             >
-              Logout
-            </Button>
-          </Box>
-        </Popover>
-      </div>
+              <Button
+                onClick={handleLogOutClick}
+                variant="contained"
+                disableElevation
+                sx={{
+                  backgroundColor: "rgb(250 184 0)!important",
+                  ":hover": { backgroundColor: "rgb(233, 171, 2)" },
+                }}
+              >
+                Logout
+              </Button>
+            </Box>
+          </Popover>
+        </div>
+      ) : (
+        <AvatarMui
+          alt={displayName}
+          src={avatar}
+          sx={{ marginLeft: "0.8rem", backgroundColor: "rgb(250 184 0)" }}
+        />
+      )}
     </>
   );
 }

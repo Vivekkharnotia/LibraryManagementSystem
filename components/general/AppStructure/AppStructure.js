@@ -7,6 +7,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"; //appoinment
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import ImportContactsIcon from "@mui/icons-material/ImportContacts"; //blog
 import PermIdentityIcon from "@mui/icons-material/PermIdentity"; //profile
+import ScheduleIcon from '@mui/icons-material/Schedule';
 import { Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
@@ -122,12 +123,18 @@ export default function MiniDrawer({isAdmin}) {
     },
     {
       id: 5,
+      name: "Create Slots",
+      icon: <ScheduleIcon />,
+      link: "/app/createSlots",
+    },
+    {
+      id: 6,
       name: "Meeting Data",
       icon: <GroupsOutlinedIcon />,
       link: "/app/meetingData",
     },
     {
-      id: 6,
+      id: 7,
       name: "Analytics",
       icon: <AnalyticsOutlinedIcon />,
       link: "/app/analytics",
@@ -178,8 +185,9 @@ export default function MiniDrawer({isAdmin}) {
     else if (ind == 2) tp = 264;
     else if (ind == 3) tp = 346;
     else if (ind == 4) tp = 426;
-    else if (ind == 5) tp = 508; //344-425=81
-    else tp = 590;
+    else if (ind == 5) tp = 508; 
+    else if (ind == 6) tp = 590; 
+    else tp = 672;
 
     document.getElementById(`item${current}`).style.color = "black";
     document.getElementById(`icon${current}`).children[0].style.color = "black";
@@ -206,10 +214,15 @@ export default function MiniDrawer({isAdmin}) {
       link: "/app/analytics",
     },
     {
+      name: "Create Slots",
+      icon: <ScheduleIcon />,
+      link: "/app/createSlots",
+    },
+    {
       name: "Meetings Data",
       icon: <GroupsOutlinedIcon />,
       link: "/app/meetingData",
-    }
+    },
   ];
 
 
