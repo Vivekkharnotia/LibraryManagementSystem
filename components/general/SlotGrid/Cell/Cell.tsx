@@ -1,15 +1,19 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import style from "../SlotGrid.module.css";
 
-function Cell({slots, row, column, setSlots}: {slots: Array<Array<number>>, row: number, column: number, setSlots: Dispatch<SetStateAction<number[][]>>}) {
+function Cell({slots, row, column, setSlots, setterSlots}: {slots: number[][], row: number, column: number, setSlots: Dispatch<SetStateAction<number[][]>>, setterSlots: number[][]}) {
     const [classNames, setClassNames] = useState<string>("");
 
     useEffect(()=>{
-        if(slots[row][column]===1){
-            const newClassNames = classNames + " " + style.alreadySelected;
+        if(setterSlots[row][column]===1){
+            // check if already selected   
+            const newClassNames = style.alreadySelected;
+            setClassNames(newClassNames);
+        }else if(setterSlots[row][column]===0){
+            const newClassNames = " ";
             setClassNames(newClassNames);
         }
-    }, [])
+    }, [setterSlots])
 
     const handleClick = ()=>{
         if(slots[row][column] === 1){

@@ -106,3 +106,78 @@ export const getDateArray = (date: Date)=>{
     
   return dateArray;
 }
+
+export const getDaysofWeek = (day: number)=>{
+  // get the name of the day of the week as a string array with respect to date
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ];
+  let dateArray:  string[] = [...Array(7)];
+  dateArray[0] = days[day];
+  for(let i=1; i<7; i++){
+    if(day === 6){
+      day = 0;
+    }
+    else{
+      day++;
+    }
+    dateArray[i] = days[day];
+  }
+
+  
+  return dateArray;
+}
+
+export const getTimings = ()=>{
+  return [
+    "8:00",
+    "8:30",
+    "9:00",
+    "9:30",
+    "10:00",
+    "10:30",
+    "11:00",
+    "11:30",
+    "12:00",
+    "12:30",
+    "13:00",
+    "13:30",
+    "14:00",
+    "14:30",
+    "15:00",
+    "15:30",
+    "16:00",
+    "16:30",
+    "17:00",
+    "17:30",
+    "18:00",
+    "18:30",
+    "19:00",
+    "19:30",
+    "20:00",
+  ]
+}
+
+
+export const getSlotMatrix = (slot: {date: string, slots: string[]}[], timings: string[])=>{
+  const slotMatrix: number[][] = [...Array(7)].map((e, index) => Array(timings.length - 1).fill(0));
+  slot.map((slot, index)=>{
+    slot.slots.map((slot)=>{
+      const time = slot.split(' ')[0].split('-');
+      const slotIndex1 = timings.indexOf(time[0]);
+      const slotIndex2 = timings.indexOf(time[1]) - 1;
+      // make slot = 1 from slotIndex1 to slotIndex2
+      for(let i=slotIndex1; i<=slotIndex2; i++){
+        slotMatrix[index][i] = 1;
+      }
+    }
+    )
+  })
+  return slotMatrix;
+}

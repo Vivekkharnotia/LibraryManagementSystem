@@ -2,12 +2,11 @@ import { Input } from "@material-ui/core";
 import { Button, Dialog, DialogContent, DialogTitle, FormControl, FormGroup, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
-import { getDateArray } from "utils/ExtendedUtils";
 import { db } from "../firebase-config";
 import Cell from "./Cell/Cell";
 import style from "./SlotGrid.module.css";
 
-function SlotGrid() {
+function SlotGrid({ slotMatrix, daysOfWeek, dateArray }: { slotMatrix: Array<Array<number>>, daysOfWeek: string[], dateArray: string[]}) {
   // create a timings array with 30mins difference starting from 8:00 to 20:00
     const timings = [
         "8:00",
@@ -36,12 +35,10 @@ function SlotGrid() {
         "19:30",
         "20:00",
     ];
-    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-    const [slots, setSlots] = useState<Array<Array<number>>>([...Array(7)].map((e, index) => Array(timings.length - 1).fill(0)));
+    const [slots, setSlots] = useState<Array<Array<number>>>(slotMatrix);
+    const [setterSlots, setSetterSlots] = useState<Array<Array<number>>>(slotMatrix);
     const [blocks, setBlocks] = useState([...Array(7)].map((e) => Array(0)));
     const [open, setOpen] = useState(false);
-    let todaysDate = new Date();
-    let dateArray = getDateArray(todaysDate);
 
 
   const slotGenerator = () => {
@@ -68,7 +65,7 @@ function SlotGrid() {
           }
         });
       });
-      
+
       setOpen(true);
   }
 
@@ -80,9 +77,6 @@ function SlotGrid() {
   const handleSave = async ()=>{
     // save the blocks elements to the Slots collection in the database with id as dateArray elements
     dateArray.map(async (date, index) => {
-      if(blocks[index].length === 0){
-        return;
-      }
       const docRef = doc(db, "Slots", `${date}`);
       const docSnap = await getDoc(docRef);
       if (!docSnap.data()) {
@@ -97,10 +91,9 @@ function SlotGrid() {
       }
     }
     );
+    setSetterSlots([...slots]);
     setOpen(false);
   }
-
-
 
 
 
@@ -133,7 +126,7 @@ function SlotGrid() {
                         <td>{time}</td>
                         {
                             daysOfWeek.map((day, row) => 
-                              <Cell key={`row-${row}`} row={row} column={column} slots={slots} setSlots={setSlots}/>
+                              <Cell key={`row-${row}`} row={row} column={column} slots={slots} setSlots={setSlots} setterSlots={setterSlots}/>
                             )
                         }
                     </tr>
