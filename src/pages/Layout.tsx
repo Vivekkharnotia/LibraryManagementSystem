@@ -6,7 +6,7 @@ import Loading from "components/general/Loading/Loading";
 import { auth } from "components/general/firebase-config";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import AppStructure from "../../components/general/AppStructure/AppStructure";
+import AppStructure from "components/app/AppStructure/AppStructure"
 
 interface LayoutProps {
   children: React.ReactNode;

@@ -17,7 +17,7 @@ import {
   Popover,
 } from "@mui/material";
 import { withAdmin } from "ProtectedRoutes/AdminRoute";
-import BlogsCard from "components/general/Blogs/BlogsCard/BlogsCard";
+import BlogsCard from "components/blogs/Blogs/BlogsCard/BlogsCard";
 import GPBackdrop from "components/general/GeneralPurpose/GPBackdrop";
 import GPDialog from "components/general/GeneralPurpose/GPDialog";
 import GPSnackbar from "components/general/GeneralPurpose/GPSnackbar";

@@ -1,4 +1,4 @@
-import BlogsGrid from "components/general/App/BlogsGrid/BlogsGrid";
+import BlogsGrid from "components/app/blogs/BlogsGrid/BlogsGrid";
 import { db } from "components/general/firebase-config";
 import {
   collection,

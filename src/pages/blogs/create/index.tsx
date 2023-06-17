@@ -1,5 +1,5 @@
 import { withAdmin } from "ProtectedRoutes/AdminRoute";
-import BlogCreator from "components/general/BlogCreator/BlogCreator";
+import BlogCreator from "components/blogs/BlogCreator/BlogCreator";
 import { db } from "components/general/firebase-config";
 import { collection, doc, getDoc } from "firebase/firestore";
 import { GetServerSidePropsContext } from "next";

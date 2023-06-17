@@ -1,4 +1,4 @@
-import VisitBlog from "components/general/VisitBlog/VisitBlog";
+import VisitBlog from "components/blogs/VisitBlog/VisitBlog";
 import { db } from "components/general/firebase-config";
 import { doc, getDoc } from "firebase/firestore";
 
