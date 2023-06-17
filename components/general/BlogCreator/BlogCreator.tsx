@@ -20,10 +20,9 @@ export default function BlogCreator({ dataString }: { dataString: string }) {
   const data = JSON.parse(dataString);
   const [titles, setTitles] = useState([]);
   const container = useRef(null);
-  const blogImageInput = useRef<HTMLInputElement>(null);
   const [headTitle, setHeadTitle] = useState("Click to Edit Title");
   const [blogData, setBlogData] = useState<
-    { title: string; src?: string; content?: string }[]
+    { title: string; src?: File; content?: string }[]
   >([]);
   const displayName = `${data.fname} ${data.lname}`;
   const date = new Date();
@@ -38,6 +37,8 @@ export default function BlogCreator({ dataString }: { dataString: string }) {
     null
   );
 
+  const blogImageInput = useRef<HTMLInputElement>(null);
+
   const handleParaClick = () => {
     setBlogData((current) => [
       ...current,
@@ -48,10 +49,27 @@ export default function BlogCreator({ dataString }: { dataString: string }) {
   const handleAddImageClick = () => {
     if (blogImageInput.current?.files) {
       const file = blogImageInput.current.files[0];
-      const src = URL.createObjectURL(file);
 
-      setBlogData((current) => [...current, { title: "Image", src: src }]);
+      setBlogData((current) => [...current, { title: "Image", src: file }]);
     }
+  };
+
+  const uploadImageToFirebase = async (file: File, path: string) => {
+    const imageUrl = await uploadFileToFirebaseAndGetUrl(file, path);
+    return imageUrl.uploadedToUrl;
+  };
+
+  const handleBlogImageUpload = async (blog: {
+    title: string;
+    src?: File;
+    content?: string;
+  }) => {
+    if (blog.title === "Image") {
+      const blogImageUrl = await uploadImageToFirebase(blog.src!, "BlogImages");
+      console.log(blogImageUrl);
+      return { ...blog, src: blogImageUrl };
+    }
+    return blog;
   };
 
   const handleSaveClick = async () => {
@@ -62,8 +80,17 @@ export default function BlogCreator({ dataString }: { dataString: string }) {
 
     setLoading(true);
     try {
+      // set the src to the src from firebase
+      const updatedBlogData = await Promise.all(
+        blogData.map(async (blog) => {
+          return await handleBlogImageUpload(blog);
+        })
+      );
+
+      console.log(updatedBlogData);
+
       const blog = {
-        blogData: blogData,
+        blogData: updatedBlogData,
         uid: uid,
       };
 

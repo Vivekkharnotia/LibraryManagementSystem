@@ -59,7 +59,6 @@ export default function HeroImage({
                 fill={true}
                 alt="Blog Cover Image"
                 className="object-cover cursor-pointer rounded-[10px] transition-all duration-150"
-                onClick={() => blogCoverImageRef.current?.click()}
               />
             ) : (
               <div
@@ -75,19 +74,20 @@ export default function HeroImage({
           </div>
         </Tooltip>
         <IconButton className="absolute right-6 top-2 z-40 w-12 h-12 cursor-pointer bg-black flex items-center justify-center hover:bg-gray-400">
-          <label htmlFor="file" className="grid items-start cursor-pointer">
-            <input
-              ref={blogCoverImageRef}
-              type="file"
-              name=""
-              id="file"
-              className={style.file}
-              accept=".jpg, .jpeg, .png"
-              hidden
-              onChange={handleBlogCoverImageChange}
-            />
-            <EditIcon style={{ color: "white" }} />
-          </label>
+          <input
+            ref={blogCoverImageRef}
+            type="file"
+            name=""
+            id="file"
+            className={style.file}
+            accept=".jpg, .jpeg, .png"
+            hidden
+            onChange={handleBlogCoverImageChange}
+          />
+          <EditIcon
+            onClick={() => blogCoverImageRef.current?.click()}
+            style={{ color: "white" }}
+          />
         </IconButton>
       </div>
     </div>

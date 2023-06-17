@@ -21,6 +21,7 @@ export default function VisitBlog({ data }: { data: Data }) {
       <div className={visblog.container}>
         <ul className={visblog.anchors}>
           {data.blogData.map((content, index) => {
+            if (content.title === "Image") return;
             return (
               <li key={`anchor${index}`}>
                 <a href={`#anchor${index}`}>----{content.title}</a>
@@ -52,6 +53,7 @@ export default function VisitBlog({ data }: { data: Data }) {
                 index={index}
                 title={content.title}
                 text={content.content}
+                imageUrl={content.src}
               />
             );
           })}
