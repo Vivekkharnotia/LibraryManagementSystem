@@ -23,7 +23,6 @@ function HeadTitle(props: HeadTitleProps) {
     headTtitleHeight();
   };
 
-
   return (
     <div className={style.head}>
       <Typography variant="h3" className={style.title}>
@@ -42,7 +41,6 @@ function HeadTitle(props: HeadTitleProps) {
         ></textarea>
       </Typography>
       <div className={style.author}>
-        
         <Avatar
           className={style.authorAvatar}
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCQaD1mEh95w9y6o_8eVSErM9mnbbRQUiCgw&usqp=CAU"
@@ -56,8 +54,6 @@ function HeadTitle(props: HeadTitleProps) {
         <Typography variant="body1">{`${date.toLocaleString("default", {
           month: "long",
         })} ${date.getDate()}, ${date.getFullYear()}`}</Typography>
-
-        
       </div>
     </div>
   );

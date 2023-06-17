@@ -14,13 +14,10 @@ export function withAdmin<T>(Component: React.ComponentType<any>) {
     user?.getIdTokenResult().then((idTokenResult) => {
       setIsAdmin(idTokenResult.claims.admin || false);
     });
-    
+
     if (isAdmin === true) {
-      return  <Component {...props} />;
-    } else if (isAdmin === null) {
-      return <Loading message="Checking for Admin Priviledges" />;
+      return <Component {...props} />;
     } else {
-      router.back();
       return (
         <div style={{ height: "75vh", display: "grid", placeItems: "center" }}>
           <Typography variant="h3">Not Authorised</Typography>

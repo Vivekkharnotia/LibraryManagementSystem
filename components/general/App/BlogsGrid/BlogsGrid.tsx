@@ -1,22 +1,11 @@
 import { Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import styles from "./BlogsGrid.module.css";
-
-interface MetaBlog {
-  id: string;
-  date: Date;
-  displayName: string;
-  headTitle: string;
-  heroImageSrc: string;
-  published: boolean;
-  uid: string;
-}
+import { MetaBlog } from "types/blogs";
 
 function BlogsGrid({ data }: { data: MetaBlog[] }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const handleReadMore = () => {
     router.push("/blogs");
   };

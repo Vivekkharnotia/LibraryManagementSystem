@@ -38,8 +38,6 @@ export default function BlogCreator({ dataString }: { dataString: string }) {
     null
   );
 
-  console.log(data);
-
   const handleParaClick = () => {
     setBlogData((current) => [
       ...current,
@@ -69,7 +67,10 @@ export default function BlogCreator({ dataString }: { dataString: string }) {
         uid: uid,
       };
 
-      const blogCoverImageUrl = await uploadFileToFirebaseAndGetUrl(blogCoverImageFile, "BlogImages");
+      const blogCoverImageUrl = await uploadFileToFirebaseAndGetUrl(
+        blogCoverImageFile,
+        "BlogImages"
+      );
 
       const metaBlog = {
         displayName: displayName,
@@ -103,7 +104,6 @@ export default function BlogCreator({ dataString }: { dataString: string }) {
 
   return (
     <>
-      
       <GPBackdrop loading={loading} message="Creating new Blog..." />
 
       <HeadTitle
