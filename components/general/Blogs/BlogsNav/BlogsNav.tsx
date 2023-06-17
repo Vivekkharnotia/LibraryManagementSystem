@@ -8,7 +8,7 @@ import { getCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { scrollTrigger } from "utils/scrollTrigger";
+import { useScrollTrigger } from "utils/scrollTrigger";
 import SideDrawer from "../../SideDrawer/SideDrawer";
 import styles from "./BlogsNav.module.css";
 
@@ -24,10 +24,7 @@ export default function BlogsNav({
   const id = router.query.id;
   const uid = getCookie("uid");
 
-  let triggered = false;
-  if (router.pathname === "/blogs") {
-    [triggered] = scrollTrigger();
-  }
+  const triggered = useScrollTrigger();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

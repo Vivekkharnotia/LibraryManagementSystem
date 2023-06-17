@@ -8,37 +8,17 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { NextApiRequest, NextApiResponse } from "next";
-
-interface MetaBlog {
-  id: string;
-  date: Date;
-  displayName: string;
-  headTitle: string;
-  heroImageSrc: string;
-  published: boolean;
-  uid: string;
-}
+import { MetaBlog } from "types/blogs";
 
 const app = ({ metaBlogsDataString }: { metaBlogsDataString: string }) => {
   const data: MetaBlog[] = JSON.parse(metaBlogsDataString);
 
-  return (
-    <>
-      <BlogsGrid data={data} />
-    </>
-  );
+  return <BlogsGrid data={data} />;
 };
 
 export default app;
 
-export const getServerSideProps = async ({
-  req,
-  res,
-}: {
-  req: NextApiRequest;
-  res: NextApiResponse;
-}) => {
+export const getServerSideProps = async () => {
   // get the latest 10 blogs from firestore
   const q = query(
     collection(db, "metaBlogs"),

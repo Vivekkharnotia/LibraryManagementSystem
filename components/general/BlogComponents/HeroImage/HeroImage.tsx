@@ -40,8 +40,11 @@ export default function HeroImage({
   };
 
   return (
-    <div className="relative mt-[70px] w-full text-center" id="blogCoverImage">
-      <div className="relative m-auto overflow-auto max-w-[900px] h-[600px] px-4">
+    <div
+      className="relative mt-[40px] md:mt-[70px] w-full text-center"
+      id="blogCoverImage"
+    >
+      <div className="relative m-auto overflow-auto w-[90%] h-[260px] sm:max-w-[900px] sm:h-[350px] md:h-[450px] lg:h-[600px] px-4">
         <Tooltip title={tooltipTitle} TransitionComponent={Zoom}>
           <div className="w-full h-full bg-gray-200 rounded-[10px] overflow-hidden cursor-pointer">
             {blogCoverImageFile ? (
