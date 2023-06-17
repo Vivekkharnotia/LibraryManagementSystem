@@ -14,21 +14,36 @@ import HeadTitle from "../BlogComponents/HeadTitle/HeadTitle";
 import HeroImage from "../BlogComponents/HeroImage/HeroImage";
 import style from "../BlogCreator/VisitBlog.module.css";
 import GPBackdrop from "../GeneralPurpose/GPBackdrop";
+import { BlogData } from "../VisitBlog/BlogInterface/Blog.interface";
+import { MetaBlog } from "types/blogs";
 
-export default function BlogEditor(props) {
+export default function BlogEditor(props: {
+  metaBlogData: MetaBlog;
+  blogData: BlogData[];
+  blogID: string;
+}) {
   const [titles, setTitles] = useState([]);
   const container = useRef(null);
-  const blogImageInput = useRef(null);
+  const blogImageInput = useRef<HTMLInputElement>(null);
   const [headTitle, setHeadTitle] = useState(props.metaBlogData.headTitle);
-  const [blogData, setBlogData] = useState(props.blogData);
+  const [blogData, setBlogData] = useState<
+    (
+      | { title: string; src?: string; content?: string }
+      | { title: string; src?: File; content?: string }
+    )[]
+  >(props.blogData);
   const date = props.metaBlogData.date;
   const [loading, setLoading] = useState(false);
   const blogID = props.blogID;
   const displayName = props.metaBlogData.displayName;
-  const [uid, setUid] = useState(null);
+  const [uid, setUid] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const [blogCoverImage, setBlogCoverImage] = useState(props.metaBlogData?.heroImageSrc || "");
-  const [blogCoverImageFile, setBlogCoverImageFile] = useState(null);
+  const [blogCoverImage, setBlogCoverImage] = useState<string>(
+    props.metaBlogData?.heroImageSrc || ""
+  );
+  const [blogCoverImageFile, setBlogCoverImageFile] = useState<File | null>(
+    null
+  );
 
   useEffect(() => {
     setUid(localStorage.getItem("uid"));
@@ -49,35 +64,70 @@ export default function BlogEditor(props) {
   const handleAddImageClick = () => {
     if (blogImageInput.current?.files) {
       const file = blogImageInput.current.files[0];
-      const src = URL.createObjectURL(file);
 
-      setBlogData((current) => [...current, { title: "Image", src: src }]);
+      setBlogData((current) => [...current, { title: "Image", src: file }]);
     }
   };
 
+  const uploadImageToFirebase = async (file: File, path: string) => {
+    const imageUrl = await uploadFileToFirebaseAndGetUrl(file, path);
+    return imageUrl.uploadedToUrl;
+  };
+
+  const handleBlogImageUpload = async (blog: {
+    title: string;
+    src?: File | string;
+    content?: string;
+  }) => {
+    console.log(blog);
+    if (blog.title === "Image") {
+      // if image is not updated (because if string imageUrl already exists if not new file is there)
+      if (typeof blog.src === "string") return blog;
+
+      const blogImageUrl = await uploadImageToFirebase(blog.src!, "BlogImages");
+      console.log(blogImageUrl);
+      return { ...blog, src: blogImageUrl };
+    }
+    return blog;
+  };
+
   const handleSaveClick = async () => {
-    if (!blogCoverImageFile) {
+    if (!blogCoverImage) {
       alert("Please add a cover image");
       return;
     }
 
     setLoading(true);
     try {
+      // set the src to the src from firebase for the changed images
+      const updatedBlogData = await Promise.all(
+        blogData.map(async (blog) => {
+          return await handleBlogImageUpload(blog);
+        })
+      );
+
+      console.log(updatedBlogData);
+
       const blog = {
-        blogData: blogData,
+        blogData: updatedBlogData,
         uid: uid,
       };
 
-      const blogCoverImageUrl = await uploadFileToFirebaseAndGetUrl(
-        blogCoverImageFile,
-        "BlogImages"
-      );
+      // if cover image changed then upload
+      let heroImageSrc = blogCoverImage;
+      if (blogCoverImage !== props.metaBlogData.heroImageSrc) {
+        const blogCoverImageUrl = await uploadFileToFirebaseAndGetUrl(
+          blogCoverImageFile,
+          "BlogImages"
+        );
+        heroImageSrc = blogCoverImageUrl.uploadedToUrl;
+      }
 
       const metaBlog = {
         displayName: displayName,
         date: date,
         headTitle: headTitle,
-        heroImageSrc: blogCoverImageUrl.uploadedToUrl,
+        heroImageSrc: heroImageSrc,
         uid: uid,
       };
 
@@ -99,7 +149,7 @@ export default function BlogEditor(props) {
 
   return (
     <>
-      <GPBackdrop loading={loading} message="Saving..."/>
+      <GPBackdrop loading={loading} message="Saving..." />
 
       <HeadTitle
         displayName={displayName}
@@ -139,7 +189,6 @@ export default function BlogEditor(props) {
               <label htmlFor="addImage" className={style.addImage}>
                 <input
                   ref={blogImageInput}
-                  onClick={(e) => (e.target.value = null)}
                   onChange={handleAddImageClick}
                   type="file"
                   name="addImage"
@@ -195,6 +244,7 @@ export default function BlogEditor(props) {
                     key={index}
                     data={item}
                     index={index}
+                    anchorId={index}
                     length={blogData.length}
                     setBlogData={setBlogData}
                   />
