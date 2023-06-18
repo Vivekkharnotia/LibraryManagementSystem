@@ -1,17 +1,19 @@
 import { onAuthStateChanged } from "firebase/auth";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { auth } from "./general/firebase-config.js";
-
-// interface User {
-//     uid: string
-//     email: string
-// }
 
 interface ContextType {
   user: any;
   userLoading: string | null;
   loggedIn: boolean;
-  setLoggedIn: any;
+  setLoggedIn: Dispatch<SetStateAction<boolean>>;
 }
 
 interface UserProviderProps {
@@ -22,19 +24,19 @@ export const UserContext = createContext<ContextType>({
   user: null,
   userLoading: null,
   loggedIn: false,
-  setLoggedIn: null,
+  setLoggedIn: () => {},
 });
 
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<any>(null);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [userLoading, setUserLoading] = useState<string | null>('');
+  const [userLoading, setUserLoading] = useState<string | null>("");
 
   useEffect(() => {
     setUserLoading("loading");
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      if(currentUser) {
+      if (currentUser) {
         setUserLoading("loaded");
       }
     });

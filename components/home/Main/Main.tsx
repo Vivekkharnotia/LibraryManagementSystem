@@ -4,13 +4,10 @@ import consultancyGIF from "./../../../public/consultancy.gif";
 import videoGIF from "./../../../public/video.gif";
 import { useVisibility } from "../../../utils/isVisible";
 import Testimonial from "../Testimonial/Testimonial";
-import useDevice from "utils/useDevice";
 import { useEffect, useRef, useState } from "react";
-import zIndex from "@mui/material/styles/zIndex";
 
 export default function Main() {
   var offset: number = 1040;
-  const isMobile = useDevice();
   const [specialIsVisible, setSpecialIsVisible] = useState(false);
   const firstSlice = useRef<HTMLDivElement>(null);
 

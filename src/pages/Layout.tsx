@@ -6,7 +6,7 @@ import Loading from "components/general/Loading/Loading";
 import { auth } from "components/general/firebase-config";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import AppStructure from "components/app/AppStructure/AppStructure"
+import AppStructure from "components/app/AppStructure/AppStructure";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -22,7 +22,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-export default function Layout(props: LayoutProps ) {
+export default function Layout(props: LayoutProps) {
   const { userLoading } = useUser();
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
@@ -34,7 +34,6 @@ export default function Layout(props: LayoutProps ) {
     setLoading(false);
   });
 
-  
   useEffect(() => {
     if (window) {
       if (window.localStorage.getItem("loggedIn") === "false") {
@@ -45,24 +44,27 @@ export default function Layout(props: LayoutProps ) {
 
   return (
     <>
-      {userLoading !== 'loaded' || loading ? (
+      {userLoading !== "loaded" || loading ? (
         <Loading message="Loading..." />
       ) : (
-        <>
-          <Box sx={{ display: "flex" }}>
-            <CssBaseline />
+        <Box sx={{ display: "flex" }}>
+          <CssBaseline />
 
-            <AppStructure isAdmin={isAdmin}/>
+          <AppStructure isAdmin={isAdmin} />
 
-            <Box component="main" sx={{ flexGrow: 1, paddingBottom: "3rem" }}>
-              <DrawerHeader />
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              paddingBottom: "3rem",
+            }}
+          >
+            <DrawerHeader />
 
-              {props.children}
-            </Box>
+            {props.children}
           </Box>
-        </>
+        </Box>
       )}
     </>
   );
 }
-

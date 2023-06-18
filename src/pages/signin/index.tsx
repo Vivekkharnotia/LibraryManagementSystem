@@ -1,5 +1,5 @@
 import React from "react";
-import SignIn from "../../../components/signin/SignIn/SignIn";
+import SignIn from "../../../components/signin/SignIn/SignInPage";
 
 const index = () => {
   return (
