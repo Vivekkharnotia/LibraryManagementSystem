@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import AppointmentCard from "./AppointmentCard";
-import NewAppointmentCard from "./NewAppointmentCard";
+import AppointmentCard from "../AppointmentCard/AppointmentCard";
+import NewAppointmentCard from "../NewAppointmentCard/NewAppointmentCard";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import Grow from "@mui/material/Grow";
@@ -12,8 +12,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Alert, CircularProgress } from "@mui/material";
 import { collection, getDoc, getDocs } from "firebase/firestore";
-import { db } from "../../general/firebase-config";
+import { db } from "../../../general/firebase-config";
 import { useUser } from "components/UserContext";
+import GPSnackbar from "components/general/GeneralPurpose/GPSnackbar";
 
 const Appointments = () => {
   const [state, setState] = React.useState<{
@@ -60,6 +61,7 @@ const Appointments = () => {
   useEffect(() => {
     getAppointmentData();
   }, []);
+
   return loading ? (
     <div className="flex justify-center items-center h-[80vh]">
       <CircularProgress />
@@ -97,8 +99,9 @@ const Appointments = () => {
       </Snackbar>
 
       <div
-        className={`flex flex-row flex-wrap justify-center md:justify-start gap-8 text-[#000] px-8 py-8`}
+        className={`flex flex-row flex-wrap justify-center md:justify-start text-[#000] px-5 py-8 gap-y-8`}
       >
+        {/* all the appointments of the user */}
         {appointmentsData?.map((appointment, index) => {
           return (
             <AppointmentCard
@@ -109,13 +112,14 @@ const Appointments = () => {
               name={appointment.caseName}
               date={appointment.createdAt.toDate().toDateString()}
               numberOfSessions={appointment.numberOfSessions}
-              setState={setState}
               setErrorDialog={setErrorDialog}
               setErrorMsg={setErrorMsg}
               getAppointmentData={getAppointmentData}
             />
           );
         })}
+
+        {/* to create a new appointment */}
         <NewAppointmentCard getAppointmentData={getAppointmentData} />
       </div>
     </>

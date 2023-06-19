@@ -8,7 +8,6 @@ import Image from "next/image";
 function AppointmentHeroImage() {
   return (
     <div className={styles.container}>
-      {/* <Image src={heroImage} alt="Hero Image" /> */}
       <Image className={styles.stars} src={stars} alt="" />
       <Image
         className={styles.calender_girl}
@@ -16,7 +15,12 @@ function AppointmentHeroImage() {
         alt="girl sitting on a calender"
       />
       <div className={styles.hero_background}>
-        Make your schedules <span>with<Image src={ring} alt="" /></span> <br /> our experts doctors
+        Make your schedules{" "}
+        <span>
+          with
+          <Image src={ring} alt="" />
+        </span>{" "}
+        <br /> our experts doctors
       </div>
 
       <Image className={styles.clock} src={clock} alt="" />

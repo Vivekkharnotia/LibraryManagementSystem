@@ -15,44 +15,32 @@ import {
 } from "components/app/profile/Profile/constants";
 import { db } from "components/general/firebase-config";
 import { Timestamp, addDoc, collection } from "firebase/firestore";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import style from "./NewAppointmentForm.module.css";
-
-interface Profile {
-  fname?: string;
-  lname?: string;
-  email?: string;
-  age?: number;
-  gender?: string;
-  occupation?: string;
-  referredBy?: string;
-  painType?: string[];
-  chiefComplaint?: string;
-  diurnal?: string[];
-  otherComplaints?: string[];
-  problemInGait?: string;
-  medicalHistory?: string[];
-  personalHistory?: string[];
-  familyHistory?: string[];
-  surgicalHistory?: string[];
-  whenBad?: string;
-  whenBetter?: string;
-  slots?: string[];
-  caseName?: string;
-}
+import { NewAppointmentFormData } from "types/appointments";
 
 export default function NewAppointmentForm({
   handleClose,
-  setSnackbarOpen,
+  setSnackbarMessage,
   getAppointmentData,
 }: {
   handleClose: () => void;
-  setSnackbarOpen: (value: boolean) => void;
+  setSnackbarMessage: Dispatch<SetStateAction<string>>;
   getAppointmentData: () => void;
 }) {
-  const [formData, setFormData] = useState<Profile | null>({});
+  const { user } = useUser();
+
+  const initialState: NewAppointmentFormData = {
+    caseName: "",
+    painType: [],
+    diurnal: [],
+    whenBad: "",
+    whenBetter: "",
+  };
+
+  const [formData, setFormData] =
+    useState<NewAppointmentFormData>(initialState);
   const [loading, setLoading] = useState(false);
-  const { user, userLoading } = useUser();
   const [error, setError] = useState(false);
 
   const onChangePainOptions = (newCheckedValues: string[]) => {
@@ -92,26 +80,29 @@ export default function NewAppointmentForm({
   };
 
   const handleProfileSave = async () => {
-    if (formData?.caseName && formData?.caseName.length > 0) {
-      try {
-        setLoading(true);
-        await addDoc(collection(db, `Userdata/${user.uid}/cases`), {
-          ...formData,
-          createdAt: Timestamp.now(),
-          numberOfSessions: 0,
-        });
-        setSnackbarOpen(true);
-        setLoading(false);
-        handleClose();
-        getAppointmentData();
-      } catch (error) {
-        console.log(error);
+    try {
+      if (formData.caseName.trim().length === 0) {
+        setError(true);
+        alert("Please enter a case name");
+        return;
       }
-    } else {
-      alert("Please enter a case name");
-      setError(true);
+
+      setLoading(true);
+
+      // create a new case
+      await addDoc(collection(db, `Userdata/${user.uid}/cases`), {
+        ...formData,
+        createdAt: Timestamp.now(),
+        numberOfSessions: 0,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      getAppointmentData();
+      setLoading(false);
+      setSnackbarMessage("New case created successfully");
+      handleClose();
     }
-    // await setDoc(doc(db, `Userdata/${user.uid}/`, user.uid), formData, { merge: true });
   };
 
   return (
@@ -147,12 +138,6 @@ export default function NewAppointmentForm({
                 style={{ marginBottom: "3rem" }}
               />
               <div className="grid justify-between align-start grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8">
-                {/* <FormTextarea
-                  label="Case name"
-                  value={formData?.caseName || ""}
-                  onChange={onChangeCaseName}
-                /> */}
-
                 <FormCheckbox
                   options={painOptions}
                   label="Type"
