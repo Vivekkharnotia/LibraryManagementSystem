@@ -1,4 +1,4 @@
-import AppointmentsPage from "components/app/Appointments/AppointmentsPage/AppointmentsPage";
+import AppointmentsPage from "components/app/AppointmentsPage/AppointmentsPage";
 
 const app = () => {
   return <AppointmentsPage />;
