@@ -1,5 +1,4 @@
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
+import { Box, CssBaseline } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useUser } from "components/UserContext";
 import Loading from "components/general/Loading/Loading";
@@ -8,9 +7,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import AppStructure from "components/app/AppStructure/AppStructure";
 
-interface LayoutProps {
+interface AppLayoutProps {
   children: React.ReactNode;
-  isAdmin?: boolean;
 }
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -22,7 +20,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 
-export default function Layout(props: LayoutProps) {
+export default function AppLayout(props: AppLayoutProps) {
   const { userLoading } = useUser();
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);

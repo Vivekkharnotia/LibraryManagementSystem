@@ -32,36 +32,33 @@ const AppBar = styled(MuiAppBar, {
 
 export default function AppNavBar({ open }: { open: boolean }) {
   return (
-    <>
-      <AppBar
-        position="fixed"
-        open={open}
-        sx={{ backgroundColor: "white", borderBottom: "1px solid #0000001f" }}
-        elevation={0}
-        className={sidebar.testBar}
-      >
-        <Toolbar>
-          <div className={sidebar.allNavContent}>
-            <Typography
-              variant="h6"
-              id="NavLogo"
-              className={sidebar.navLogo}
-              sx={{ color: "black", position: "relative" }}
-            >
-              R
-            </Typography>
-            <div
-              style={{ color: "black" }}
-              id="NavTitle"
-              className={sidebar.navBarContent}
-            >
-              <SearchBar />
-              <Avatar />
-            </div>
+    <AppBar
+      position="fixed"
+      open={open}
+      sx={{ backgroundColor: "white", borderBottom: "1px solid #0000001f" }}
+      elevation={0}
+      className={sidebar.testBar}
+    >
+      <Toolbar>
+        <div className={sidebar.allNavContent}>
+          <Typography
+            variant="h6"
+            id="NavLogo"
+            className={sidebar.navLogo}
+            sx={{ color: "black", position: "relative" }}
+          >
+            R
+          </Typography>
+          <div
+            style={{ color: "black" }}
+            id="NavTitle"
+            className={sidebar.navBarContent}
+          >
+            <SearchBar />
+            <Avatar />
           </div>
-          {/*--------------------------------------Navbar content -------------------------------------  */}
-        </Toolbar>
-      </AppBar>
-    </>
+        </div>
+      </Toolbar>
+    </AppBar>
   );
 }

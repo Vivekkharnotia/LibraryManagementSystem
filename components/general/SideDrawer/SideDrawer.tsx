@@ -1,5 +1,4 @@
-import CloseIcon from "@mui/icons-material/Close";
-import LogoutIcon from "@mui/icons-material/Logout";
+import { Close, Logout } from "@mui/icons-material";
 import {
   Box,
   Divider,
@@ -15,35 +14,30 @@ import {
 import { auth } from "components/general/firebase-config";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import Avatar from "../Avatar/Avatar";
+import { AppDrawerList } from "types/app";
 
-interface drawerList {
-  name: string;
-  icon: any;
-  link: string;
-}
-
-interface Props {
-  window?: () => Window;
-  setMobieOpen: React.Dispatch<React.SetStateAction<boolean>>;
+interface SideDrawerProps {
   mobileOpen: boolean;
+  setMobileOpen: Dispatch<SetStateAction<boolean>>;
   handleDrawerToggle: () => void;
-  drawerList: drawerList[];
+  drawerList: AppDrawerList[];
 }
 
-export default function SideDrawer(props: any) {
+export default function SideDrawer({
+  mobileOpen,
+  setMobileOpen,
+  handleDrawerToggle,
+  drawerList,
+}: SideDrawerProps) {
   const router = useRouter();
-  const id = router.query.id;
-  const { window } = props;
-  const { mobileOpen, setMobileOpen, handleDrawerToggle, drawerList } = props;
-
   const drawerWidth = 240;
 
   const handleLogOutClick = async () => {
     try {
       await auth.signOut();
-      if (window) {
+      if (typeof window !== "undefined") {
         // @ts-ignore
         window.localStorage.setItem("loggedIn", "false");
       }
@@ -58,7 +52,7 @@ export default function SideDrawer(props: any) {
   }, [router.pathname]);
 
   const container =
-    window !== undefined ? () => window().document.body : undefined;
+    typeof window !== "undefined" ? () => window.document.body : undefined;
 
   return (
     <>
@@ -84,7 +78,7 @@ export default function SideDrawer(props: any) {
             sx={{ justifyContent: "space-between", paddingBlock: "1.5rem" }}
           >
             <IconButton onClick={handleDrawerToggle}>
-              <CloseIcon />
+              <Close />
             </IconButton>
             <Link href="/app/profile">
               <Avatar withPopOver={false} />
@@ -94,12 +88,12 @@ export default function SideDrawer(props: any) {
           <Divider />
 
           <List>
-            {drawerList.map((item: drawerList, index: number) => (
+            {drawerList.map((item, index) => (
               <Link href={item.link} key={`drawer-${index}`}>
                 <ListItem disablePadding>
                   <ListItemButton sx={{ paddingBlock: "1rem" }}>
                     <ListItemIcon sx={{ color: "black!important" }}>
-                      {item.icon}
+                      <item.icon />
                     </ListItemIcon>
                     <ListItemText primary={item.name} />
                   </ListItemButton>
@@ -113,7 +107,7 @@ export default function SideDrawer(props: any) {
                 onClick={handleLogOutClick}
               >
                 <ListItemIcon sx={{ color: "black!important" }}>
-                  <LogoutIcon />
+                  <Logout />
                 </ListItemIcon>
                 <ListItemText primary="Logout" />
               </ListItemButton>
