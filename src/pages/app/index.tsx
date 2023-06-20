@@ -1,5 +1,5 @@
-import AppointmentHeroImage from "components/general/Appointments/AppointmentHeroImage/AppointmentHeroImage";
-import Appointments from "components/general/Appointments/Appointments";
+import AppointmentHeroImage from "components/app/Appointments/AppointmentHeroImage/AppointmentHeroImage";
+import Appointments from "components/app/Appointments/Appointments";
 
 const app = () => {
   return (

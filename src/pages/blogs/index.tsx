@@ -1,4 +1,4 @@
-import Blogs from "components/general/Blogs/Blogs";
+import Blogs from "components/blogs/Blogs/Blogs";
 import { db } from "components/general/firebase-config";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { MetaBlog } from "types/blogs";
