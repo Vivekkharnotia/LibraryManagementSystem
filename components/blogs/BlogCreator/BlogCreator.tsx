@@ -14,16 +14,15 @@ import BlogPartition from "../BlogComponents/BlogPartition/BlogPartition";
 import HeadTitle from "../BlogComponents/HeadTitle/HeadTitle";
 import HeroImage from "../BlogComponents/HeroImage/HeroImage";
 import GPBackdrop from "../../general/GeneralPurpose/GPBackdrop";
-import style from "./VisitBlog.module.css";
+import style from "./BlogCreator.module.css";
+import { BlogCreateData } from "types/blogs";
 
 export default function BlogCreator({ dataString }: { dataString: string }) {
   const data = JSON.parse(dataString);
   const [titles, setTitles] = useState([]);
   const container = useRef(null);
   const [headTitle, setHeadTitle] = useState("Click to Edit Title");
-  const [blogData, setBlogData] = useState<
-    { title: string; src?: File; content?: string }[]
-  >([]);
+  const [blogData, setBlogData] = useState<BlogCreateData[]>([]);
   const displayName = `${data.fname} ${data.lname}`;
   const date = new Date();
   const userBlogs = data.blogs;
@@ -226,7 +225,7 @@ export default function BlogCreator({ dataString }: { dataString: string }) {
                   <BlogPartition
                     key={index}
                     anchorId={index}
-                    data={item}
+                    data={{ title: item.title, content: item.content }}
                     index={index}
                     length={blogData.length}
                     setBlogData={setBlogData}

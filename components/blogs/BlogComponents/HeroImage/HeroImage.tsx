@@ -3,7 +3,7 @@ import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternate
 import { IconButton, Tooltip, Zoom } from "@mui/material";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { returnFileSize, validFileType } from "utils/ExtendedUtils";
-import style from "../../BlogCreator/VisitBlog.module.css";
+import style from "../../BlogCreator/BlogCreator.module.css";
 import Image from "next/image";
 
 export default function HeroImage({

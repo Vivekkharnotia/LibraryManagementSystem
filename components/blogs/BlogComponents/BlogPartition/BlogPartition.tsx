@@ -3,6 +3,25 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { IconButton } from "@mui/material";
 import styles from "./BlogPartition.module.css";
+import { Dispatch, SetStateAction } from "react";
+import { BlogCreateData, BlogEditData } from "types/blogs";
+
+// the partition data only needs title and content
+interface BlogPartitionData {
+  title: string;
+  content?: string;
+}
+
+interface BlogPartitionProps {
+  anchorId: number;
+  index: number;
+  length: number;
+  data: BlogPartitionData;
+  setBlogData:
+    | Dispatch<SetStateAction<(BlogCreateData | BlogEditData)[]>>
+    | Dispatch<SetStateAction<BlogCreateData[]>>
+    | Dispatch<SetStateAction<BlogEditData[]>>;
+}
 
 export default function BlogPartition({
   anchorId,
@@ -10,19 +29,19 @@ export default function BlogPartition({
   index,
   length,
   setBlogData,
-}) {
-  const handleTitleChange = (e) => {
+}: BlogPartitionProps) {
+  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const title = e.target.value;
-    setBlogData((current) => {
+    setBlogData((current: any) => {
       const newData = [...current];
       newData[index].title = title;
       return newData;
     });
   };
 
-  const handleContentChange = (e) => {
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const content = e.target.value;
-    setBlogData((current) => {
+    setBlogData((current: any) => {
       const newData = [...current];
       newData[index].content = content;
       return newData;
@@ -30,7 +49,7 @@ export default function BlogPartition({
   };
 
   const handleDeleteClick = () => {
-    setBlogData((current) => {
+    setBlogData((current: any) => {
       const newData = [...current];
       newData.splice(index, 1);
       return newData;
@@ -41,7 +60,7 @@ export default function BlogPartition({
   const handleUpClick = () => {
     if (length === 0) return;
     if (index === 0) return;
-    setBlogData((current) => {
+    setBlogData((current: any) => {
       const newData = [...current];
       const temp = newData[index];
       newData[index] = newData[index - 1];
@@ -53,7 +72,7 @@ export default function BlogPartition({
   const handleDownClick = () => {
     if (length === 0) return;
     if (index === length - 1) return;
-    setBlogData((current) => {
+    setBlogData((current: any) => {
       const newData = [...current];
       const temp = newData[index];
       newData[index] = newData[index + 1];
@@ -63,16 +82,16 @@ export default function BlogPartition({
   };
 
   return (
-    <div className={styles.block} id={anchorId}>
+    <div className={styles.block} id={anchorId.toString()}>
       <div style={{ position: "relative" }}>
         <textarea
-          type="text"
           className={styles.title}
           value={data.title}
           onChange={handleTitleChange}
           onInput={(e) => {
-            e.target.style.height = "auto";
-            e.target.style.height = e.target.scrollHeight + "px";
+            const target = e.target as HTMLTextAreaElement;
+            target.style.height = "auto";
+            target.style.height = target.scrollHeight + "px";
           }}
         />
         <div className={styles.buttonGroup}>
@@ -89,18 +108,16 @@ export default function BlogPartition({
           </IconButton>
         </div>
       </div>
-      <div>
-        <textarea
-          type="text"
-          className={styles.text}
-          onChange={handleContentChange}
-          onInput={(e) => {
-            e.target.style.height = "auto";
-            e.target.style.height = e.target.scrollHeight + "px";
-          }}
-          value={data.content}
-        />
-      </div>
+      <textarea
+        className={styles.text}
+        onChange={handleContentChange}
+        onInput={(e) => {
+          const target = e.target as HTMLTextAreaElement;
+          target.style.height = "auto";
+          target.style.height = target.scrollHeight + "px";
+        }}
+        value={data.content}
+      />
     </div>
   );
 }

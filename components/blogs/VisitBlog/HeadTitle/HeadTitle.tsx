@@ -1,10 +1,19 @@
 import { Avatar, Typography } from "@mui/material";
-import { HeadTitleProps } from "../BlogInterface/Blog.interface";
 import style from "./HeadTitle.module.css";
 
-function HeadTitle(props: HeadTitleProps) {
-  const { headTitle, displayName } = props;
-  const date = new Date(props.date.seconds * 1000);
+interface HeadTitleProps {
+  displayName: string;
+  headTitle: string;
+  date: FirebaseTimestamp;
+}
+
+interface FirebaseTimestamp {
+  nanoseconds: number;
+  seconds: number;
+}
+
+function HeadTitle({ displayName, headTitle, date }: HeadTitleProps) {
+  const blogCreatedDate = new Date(date.seconds * 1000);
 
   return (
     <div className={style.head}>
@@ -26,13 +35,14 @@ function HeadTitle(props: HeadTitleProps) {
         ></Avatar>
 
         <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-          Written By {displayName} &nbsp; &nbsp;
+          Written By {displayName}
+          {"  "}
         </Typography>
 
         <Typography variant="body1">
-          {`${date.toLocaleString("default", {
+          {`${blogCreatedDate.toLocaleString("default", {
             month: "long",
-          })} ${date.getDate()}, ${date.getFullYear()}`}
+          })} ${blogCreatedDate.getDate()}, ${blogCreatedDate.getFullYear()}`}
         </Typography>
       </div>
     </div>

@@ -1,10 +1,20 @@
 import { Avatar, Typography } from "@mui/material";
-import { useEffect, useRef } from "react";
-import { HeadTitleProps } from "../../BlogCreator/BlogCreator.interface";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import style from "./HeadTitle.module.css";
 
-function HeadTitle(props: HeadTitleProps) {
-  const { headTitle, setHeadTitle, displayName, date } = props;
+interface HeadTitleProps {
+  displayName: string;
+  date: Date;
+  headTitle: string;
+  setHeadTitle: Dispatch<SetStateAction<string>>;
+}
+
+function HeadTitle({
+  headTitle,
+  displayName,
+  date,
+  setHeadTitle,
+}: HeadTitleProps) {
   const titleRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {

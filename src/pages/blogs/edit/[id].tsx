@@ -1,9 +1,8 @@
 import { withAdmin } from "ProtectedRoutes/AdminRoute";
 import BlogEditor from "components/blogs/BlogEditor/BlogEditor";
-import { BlogData } from "components/blogs/VisitBlog/BlogInterface/Blog.interface";
 import { db } from "components/general/firebase-config";
 import { collection, doc, getDoc } from "firebase/firestore";
-import { MetaBlog } from "types/blogs";
+import { BlogData, MetaBlog } from "types/blogs";
 
 function index({
   metaBlogDataString,

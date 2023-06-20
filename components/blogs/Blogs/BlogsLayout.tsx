@@ -1,9 +1,13 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import Footer from "../../home/Footer/Footer";
 import { auth } from "../../general/firebase-config";
 import BlogsNav from "./BlogsNav/BlogsNav";
 
-function BlogsLayout(props: any) {
+interface BlogsLayoutProps {
+  children: ReactNode
+}
+
+function BlogsLayout({ children }: BlogsLayoutProps) {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
@@ -26,7 +30,7 @@ function BlogsLayout(props: any) {
   return (
     <>
       <BlogsNav isAdmin={isAdmin} isLoggedIn={isLoggedIn} />
-      {props.children}
+      {children}
       <Footer />
     </>
   );
