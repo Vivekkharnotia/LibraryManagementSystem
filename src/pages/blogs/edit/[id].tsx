@@ -1,25 +1,41 @@
 import { withAdmin } from "ProtectedRoutes/AdminRoute";
-import BlogEditor from "components/general/BlogEditor/BlogEditor";
+import BlogEditor from "components/blogs/BlogEditor/BlogEditor";
+import { BlogData } from "components/blogs/VisitBlog/BlogInterface/Blog.interface";
 import { db } from "components/general/firebase-config";
 import { collection, doc, getDoc } from "firebase/firestore";
+import { MetaBlog } from "types/blogs";
 
-
-function index(props:any) {
-
-  const metaBlogData = JSON.parse(props.metaBlogDataString);
-  const blogData = JSON.parse(props.blogDataString);
-  const blogID = props.blogID;
+function index({
+  metaBlogDataString,
+  blogDataString,
+  blogID,
+}: {
+  metaBlogDataString: string;
+  blogDataString: string;
+  blogID: string;
+}) {
+  const metaBlogData: MetaBlog = JSON.parse(metaBlogDataString);
+  const blogData: { published: boolean; uid: string; blogData: BlogData[] } =
+    JSON.parse(blogDataString);
 
   return (
-    <>
-     <BlogEditor metaBlogData={metaBlogData} blogData={blogData.blogData} blogID={blogID}/>
-    </>
+    <BlogEditor
+      metaBlogData={metaBlogData}
+      blogData={blogData.blogData}
+      blogID={blogID}
+    />
   );
 }
 
-export async function getServerSideProps(context:any) {
-  const blogID = context.params.id;
-  
+export async function getServerSideProps({
+  params,
+}: {
+  params: {
+    id: string;
+  };
+}) {
+  const blogID = params.id;
+
   const metaBlogSnap = await getDoc(doc(collection(db, "metaBlogs"), blogID));
   const metaBlogData = metaBlogSnap.data();
   const metaBlogDataString = JSON.stringify(metaBlogData);
@@ -32,7 +48,7 @@ export async function getServerSideProps(context:any) {
     props: {
       metaBlogDataString,
       blogDataString,
-      blogID
+      blogID,
     }, // will be passed to the page component as props
   };
 }

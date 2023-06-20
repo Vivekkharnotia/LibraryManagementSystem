@@ -2,11 +2,11 @@ import { Delete } from "@material-ui/icons";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
-  Button,
-  IconButton,
-  Modal,
-  Popover,
-  Typography
+    Button,
+    IconButton,
+    Modal,
+    Popover,
+    Typography
 } from "@mui/material";
 import { deleteDoc, doc } from "firebase/firestore";
 import Image from "next/image";
@@ -266,3 +266,4 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
 };
 
 export default AppointmentCard;
+

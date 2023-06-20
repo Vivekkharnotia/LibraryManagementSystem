@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 
-export function scrollTrigger(): [boolean] {
+export function useScrollTrigger(): boolean {
   const [triggered, setTriggered] = useState(false);
 
   const onScroll = () => {
-    const navTrigger = document.querySelector(".navTrigger")!;
-    const triggerTop = navTrigger.getBoundingClientRect().top;
+    const scrollPosition = window.scrollY;
 
-    if (triggerTop <= 0) setTriggered(true);
-    else setTriggered(false)
+    if (scrollPosition > 100) {
+      setTriggered(true);
+    } else {
+      setTriggered(false);
+    }
+
   };
 
   useEffect(() => {
@@ -17,5 +20,5 @@ export function scrollTrigger(): [boolean] {
     return () => document.removeEventListener("scroll", onScroll, true);
   }, []);
 
-  return [triggered];
+  return triggered
 }

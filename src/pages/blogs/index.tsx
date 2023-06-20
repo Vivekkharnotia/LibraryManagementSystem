@@ -1,26 +1,12 @@
-import Blogs from "components/general/Blogs/Blogs";
+import Blogs from "components/blogs/Blogs/Blogs";
 import { db } from "components/general/firebase-config";
 import { collection, getDocs, query, where } from "firebase/firestore";
-
-interface MetaBlog {
-  id: string;
-  date: Date;
-  displayName: string;
-  headTitle: string;
-  heroImageSrc: string;
-  published: boolean;
-  uid: string;
-}
+import { MetaBlog } from "types/blogs";
 
 const index = ({ metaBlogsString }: { metaBlogsString: string }) => {
-
   const metaBlogs: MetaBlog[] = JSON.parse(metaBlogsString);
 
-  return (
-    <>
-      <Blogs metaBlogs={metaBlogs} />
-    </>
-  );
+  return <Blogs metaBlogs={metaBlogs} />;
 };
 
 export default index;
@@ -34,11 +20,10 @@ export const getServerSideProps = async () => {
 
   const metaBlogsQuerySnapshot = await getDocs(metaBlogsQuery);
 
-  const metaBlogs = metaBlogsQuerySnapshot.docs.map((doc) => {
-    const data = doc.data();
-    data.id = doc.id;
-    return data;
-  });
+  const metaBlogs = metaBlogsQuerySnapshot.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
 
   const metaBlogsString = JSON.stringify(metaBlogs);
 

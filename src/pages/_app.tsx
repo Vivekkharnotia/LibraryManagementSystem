@@ -2,11 +2,11 @@ import "@/styles/Main.css";
 import "@/styles/globals.css";
 import { MeetingProvider } from "components/MeetingContext";
 import { UserProvider } from "components/UserContext";
-import BlogsLayout from "components/general/Blogs/BlogsLayout";
+import AppLayout from "components/app/AppLayout/AppLayout";
+import BlogsLayout from "components/blogs/Blogs/BlogsLayout";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { Suspense } from "react";
-import Layout from "./Layout";
 
 const Loading = () => <div className="bg-[#000]">Loading...</div>;
 
@@ -18,9 +18,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Suspense fallback={<Loading />}>
         <UserProvider>
           <MeetingProvider>
-            <Layout>
+            <AppLayout>
               <Component {...pageProps} />
-            </Layout>
+            </AppLayout>
           </MeetingProvider>
         </UserProvider>
       </Suspense>

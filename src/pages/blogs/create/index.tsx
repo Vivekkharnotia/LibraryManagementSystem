@@ -1,23 +1,16 @@
-import BlogCreator from "components/general/BlogCreator/BlogCreator";
+import { withAdmin } from "ProtectedRoutes/AdminRoute";
+import BlogCreator from "components/blogs/BlogCreator/BlogCreator";
 import { db } from "components/general/firebase-config";
 import { collection, doc, getDoc } from "firebase/firestore";
 import { GetServerSidePropsContext } from "next";
 
-
-function index({dataString}: {dataString: string}) {
-
-  return (
-    <>
-     <BlogCreator dataString={dataString} />
-    </>
-  );
+function index({ dataString }: { dataString: string }) {
+  return <BlogCreator dataString={dataString} />;
 }
 
-export default index;
+export default withAdmin(index);
 
-
-
-export const getServerSideProps = (async (ctx: GetServerSidePropsContext) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   // get cookies from Context
   const cookieString = ctx.req.headers.cookie;
   // convert cookies to object
@@ -29,23 +22,23 @@ export const getServerSideProps = (async (ctx: GetServerSidePropsContext) => {
 
   const userId = cookies?.uid;
 
-  if(!userId) return {
-    redirect: {
-      destination: "/signin",
-      permanent: false,
-    },
-  };
+  if (!userId)
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
+      },
+    };
 
   const userSnap = await getDoc(doc(collection(db, "Userdata"), userId));
   const data = {
     uid: userSnap.id,
     ...userSnap.data(),
-  }
+  };
   const dataString = JSON.stringify(data);
   return {
     props: {
       dataString,
     },
   };
-}
-);
+};
