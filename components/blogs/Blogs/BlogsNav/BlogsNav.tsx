@@ -34,17 +34,17 @@ export default function BlogsNav({
     {
       name: "Home",
       link: "/app",
-      icon: <CottageIcon />,
+      icon: CottageIcon,
     },
     {
       name: "Book Appointment",
       link: "/app",
-      icon: <BookIcon />,
+      icon: BookIcon,
     },
     {
       name: "Edit",
       link: `/blogs/edit/${id}`,
-      icon: <EditIcon />,
+      icon: EditIcon,
     },
   ];
 
