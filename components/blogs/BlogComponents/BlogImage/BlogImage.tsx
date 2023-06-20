@@ -3,32 +3,20 @@ import EditIcon from "@mui/icons-material/Edit";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Container, IconButton } from "@mui/material";
-import style from "../../BlogCreator/VisitBlog.module.css";
+import style from "../../BlogCreator/BlogCreator.module.css";
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { validFileType } from "utils/ExtendedUtils";
-
-// BlogCreator - sends a file for image
-interface BlogData {
-  title: string;
-  src?: File | undefined;
-  content?: string | undefined;
-}
-
-// BlogEditor - sends a firebase storage url for image
-interface BlogDataWithImage {
-  title: string;
-  src?: string;
-  content?: string;
-}
+import { BlogCreateData, BlogEditData } from "types/blogs";
+import Image from "next/image";
 
 interface BlogImageProps {
   index: number;
-  data: BlogData | BlogDataWithImage;
+  data: BlogCreateData | BlogEditData;
   length: number;
   setBlogData:
-    | Dispatch<SetStateAction<(BlogData | BlogDataWithImage)[]>>
-    | Dispatch<SetStateAction<BlogData[]>>
-    | Dispatch<SetStateAction<BlogDataWithImage[]>>;
+    | Dispatch<SetStateAction<(BlogCreateData | BlogEditData)[]>>
+    | Dispatch<SetStateAction<BlogCreateData[]>>
+    | Dispatch<SetStateAction<BlogEditData[]>>;
 }
 
 export default function BlogImage({
@@ -75,12 +63,9 @@ export default function BlogImage({
   };
 
   const handleEditClick = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("change");
     if (!e?.target?.files) return;
 
     const file = e.target?.files[0];
-    console.log(file);
-
     if (file) {
       if (!validFileType(file)) {
         alert("Invalid File Type");
@@ -101,8 +86,13 @@ export default function BlogImage({
   return (
     <>
       <div className={style.image1} style={{ marginBottom: "70px" }}>
-        <div style={{ width: "min(25rem, 94vw)" }}>
-          <img src={src} alt="" />
+        <div className="relative flex w-full rounded-[10px] overflow-hidden h-[210px] md:h-[280px] lg:h-[350px]">
+          <Image
+            src={src}
+            fill={true}
+            alt=""
+            className="object-cover rounded-[10px]"
+          />
         </div>
         <IconButton className={style.editIcon}>
           <label

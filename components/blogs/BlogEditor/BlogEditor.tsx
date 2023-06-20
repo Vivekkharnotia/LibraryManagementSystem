@@ -12,10 +12,9 @@ import BlogImage from "../BlogComponents/BlogImage/BlogImage";
 import BlogPartition from "../BlogComponents/BlogPartition/BlogPartition";
 import HeadTitle from "../BlogComponents/HeadTitle/HeadTitle";
 import HeroImage from "../BlogComponents/HeroImage/HeroImage";
-import style from "../BlogCreator/VisitBlog.module.css";
+import style from "../BlogCreator/BlogCreator.module.css";
 import GPBackdrop from "../../general/GeneralPurpose/GPBackdrop";
-import { BlogData } from "../VisitBlog/BlogInterface/Blog.interface";
-import { MetaBlog } from "types/blogs";
+import { MetaBlog, BlogData, BlogEditData } from "types/blogs";
 
 export default function BlogEditor(props: {
   metaBlogData: MetaBlog;
@@ -26,12 +25,7 @@ export default function BlogEditor(props: {
   const container = useRef(null);
   const blogImageInput = useRef<HTMLInputElement>(null);
   const [headTitle, setHeadTitle] = useState(props.metaBlogData.headTitle);
-  const [blogData, setBlogData] = useState<
-    (
-      | { title: string; src?: string; content?: string }
-      | { title: string; src?: File; content?: string }
-    )[]
-  >(props.blogData);
+  const [blogData, setBlogData] = useState<BlogEditData[]>(props.blogData);
   const date = props.metaBlogData.date;
   const [loading, setLoading] = useState(false);
   const blogID = props.blogID;
@@ -242,7 +236,7 @@ export default function BlogEditor(props: {
                 return (
                   <BlogPartition
                     key={index}
-                    data={item}
+                    data={{ title: item.title, content: item.content }}
                     index={index}
                     anchorId={index}
                     length={blogData.length}

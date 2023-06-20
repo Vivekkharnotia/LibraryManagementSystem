@@ -11,7 +11,6 @@ export default function HeroImage({ heroImageSrc }: { heroImageSrc: string }) {
         fill={true}
         alt="Blog Cover Image"
         className="object-cover cursor-pointer rounded-[10px]"
-
       />
     </div>
   );
