@@ -1,13 +1,7 @@
-import AppointmentHeroImage from "components/app/Appointments/AppointmentHeroImage/AppointmentHeroImage";
-import Appointments from "components/app/Appointments/Appointments";
+import AppointmentsPage from "components/app/AppointmentsPage/AppointmentsPage";
 
 const app = () => {
-  return (
-    <>
-      <AppointmentHeroImage />
-      <Appointments />
-    </>
-  );
+  return <AppointmentsPage />;
 };
 
 export default app;

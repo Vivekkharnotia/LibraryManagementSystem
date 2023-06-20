@@ -1,7 +1,6 @@
 import { Button } from "@mui/material";
 import Badge from "@mui/material/Badge";
 import CircularProgress from "@mui/material/CircularProgress";
-import Grow from "@mui/material/Grow";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
@@ -9,31 +8,35 @@ import GPDialog from "components/general/GeneralPurpose/GPDialog";
 import { db } from "components/general/firebase-config.js";
 import { doc, getDoc, writeBatch } from "firebase/firestore";
 import Image from "next/image";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { timeMiner } from "utils/ExtendedUtils";
 import calander from "../../../../public/calander.png";
 import { useUser } from "../../../UserContext";
 import slotcss from "./SlotBooking.module.css";
 
-function GrowTransition(props) {
-  return <Grow {...props} />;
+interface SlotBookingProps {
+  id: string;
+  setErrorMsg: Dispatch<SetStateAction<string>>;
+  setErrorDialog: Dispatch<SetStateAction<boolean>>;
+  setSnackbarMessage: Dispatch<SetStateAction<string>>;
+  setSlot: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function SlotBooking({
   id,
   setSlot,
-  setState,
   setErrorDialog,
   setErrorMsg,
   setSnackbarMessage,
-}) {
-  const [open, setOpen] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState("");
-  const [date, setDate] = useState("");
-  const [allSlots, setAllSlots] = useState([]);
-  const [loading, setLoading] = useState(false);
+}: SlotBookingProps) {
+  const [open, setOpen] = useState<boolean>(false);
+  const [selectedSlot, setSelectedSlot] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+  const [allSlots, setAllSlots] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const { user } = useUser();
 
+  // @ts-ignore
   const handleChange = async (e) => {
     setLoading(true);
     if (e == null) {
@@ -55,85 +58,84 @@ export default function SlotBooking({
     }
   };
 
-
   const handleClick = async () => {
-
     const slotRef = doc(db, "Slots", date);
     const slotsDoc = await getDoc(slotRef);
     const caseRef = doc(db, `Userdata/${user.uid}/cases`, id);
     const caseData = await getDoc(caseRef);
 
     // find index of selected slot in slots array
-    const index = slotsDoc.data().slots.findIndex((slot) => slot.split(" ")[0] === selectedSlot)
-    if(index === -1) {
+    const index = slotsDoc
+      .data()!
+      .slots.findIndex((slot: string) => slot.split(" ")[0] === selectedSlot);
+    if (index === -1) {
       setSlot(false);
       setOpen(false);
       setErrorDialog(true);
-      setErrorMsg("Sorry, the slot you selected is not available. Please try again");
-      return
+      setErrorMsg(
+        "Sorry, the slot you selected is not available. Please try again"
+      );
+      return;
     }
-    if(caseData.data().slot) {
+    if (caseData.data()!.slot) {
       setSlot(false);
       setOpen(false);
       setErrorDialog(true);
-      setErrorMsg("Sorry, you have already booked a slot for this case. Please cancel the previous slot to book a new one");
-      return
+      setErrorMsg(
+        "Sorry, you have already booked a slot for this case. Please cancel the previous slot to book a new one"
+      );
+      return;
     }
-    
+
     // update the slot in the slots array
-    const slots = slotsDoc.data().slots;
-    const noOfSlotsLeft = slots[index].split(" ")[1]-1;
-    if(noOfSlotsLeft === 0) {
-      slots.splice(index, 1)
-    } else{
+    const slots = slotsDoc.data()!.slots;
+    const noOfSlotsLeft = slots[index].split(" ")[1] - 1;
+    if (noOfSlotsLeft === 0) {
+      slots.splice(index, 1);
+    } else {
       slots[index] = `${selectedSlot} ${noOfSlotsLeft}`;
     }
 
     // create a batch and update the slots array and the case status
     const batch = writeBatch(db);
-    batch.update(slotRef, { slots })
-    batch.set(caseRef, { slot: `${date} ${selectedSlot}` }, { merge: true })
-    try{
-      await batch.commit()
+    batch.update(slotRef, { slots });
+    batch.set(caseRef, { slot: `${date} ${selectedSlot}` }, { merge: true });
+    try {
+      await batch.commit();
       setOpen(false);
       setSlot(false);
       setSnackbarMessage("Slot booked successfully");
-    }
-    catch(err) {
-      console.log(err)
+    } catch (err) {
+      console.log(err);
       setSlot(false);
       setOpen(false);
       setErrorDialog(true);
       setErrorMsg("Sorry, something went wrong. Please try again");
-      return
+      return;
     }
-
   };
-
-
 
   return (
     <>
-
       <GPDialog
         open={open}
         setOpen={setOpen}
         title="Are you sure you want to book this slot?"
-        contentText={`Slot will be scheduled on ${date} between ${selectedSlot} ${timeMiner(selectedSlot)}`}
+        contentText={`Slot will be scheduled on ${date} between ${selectedSlot} ${timeMiner(
+          selectedSlot
+        )}`}
         buttons={[
           {
             text: "No",
-            onClick: ()=> setOpen(false),
+            onClick: () => setOpen(false),
             color: "warning",
           },
           {
             text: "Yes",
             onClick: handleClick,
           },
-
         ]}
       />
-
 
       <div
         style={{ height: "100%", width: "100%", color: "black" }}
@@ -188,6 +190,7 @@ export default function SlotBooking({
                   height={250}
                   style={{ marginTop: "2rem" }}
                   src={calander}
+                  alt=""
                 />
                 <div
                   style={{ color: "rgb(135, 135, 135)", fontSize: "1.5rem" }}
@@ -205,7 +208,7 @@ export default function SlotBooking({
               allSlots[0] !== "#" &&
               loading === false && (
                 <div className={slotcss.slotBox}>
-                  {allSlots.map((slot, index) => {
+                  {allSlots.map((slot: string, index) => {
                     let slotArr = slot.split(" ");
                     return (
                       <Badge

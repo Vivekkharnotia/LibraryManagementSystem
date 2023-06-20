@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/material/styles";
-import Avatar from "../../general/Avatar/Avatar";
+import Avatar from "../../../general/Avatar/Avatar";
 import SearchBar from "../SearchBar/SearchBar";
 import sidebar from "./AppNavBar.module.css";
 
