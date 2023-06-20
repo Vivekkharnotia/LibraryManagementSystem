@@ -1,25 +1,6 @@
 import { TfiFacebook, TfiLinkedin, TfiTwitterAlt } from "react-icons/tfi";
-
-const FooterList = ({ title, links }) => {
-  return (
-    <div className="flex flex-col gap-3 text-[#FFF] md:py-6 ml-10 md:ml-0">
-      <h4 className="font-bold">{title}</h4>
-      {links?.map((link) => (
-        <p key={link.name} className="hover:text-[#aaa] cursor-pointer">
-          {link.name}
-        </p>
-      ))}
-    </div>
-  );
-};
-
-const FooterIcon = ({ Icon }) => {
-  return (
-    <div className="rounded-full border-[1.5px] border-[#aaa] w-[35px] h-[35px] flex flex-row items-center justify-center hover:bg-[#fff] text-[#aaa] hover:border-[#fff] cursor-pointer">
-      {Icon && <Icon />}
-    </div>
-  );
-};
+import FooterList from "./FooterList";
+import FooterIcon from "./FooterIcon";
 
 const Footer = () => {
   return (
@@ -54,7 +35,6 @@ const Footer = () => {
               { name: "Lift Media", link: "" },
             ]}
           />
-          
         </div>
         <div className="h-[1px] bg-[#eee] border-none"></div>
         <div className="text-[#FFF] flex flex-col md:flex-row items-center justify-between gap-10">
