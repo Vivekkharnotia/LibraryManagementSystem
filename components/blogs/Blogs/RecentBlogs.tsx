@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import BlogCard from "./BlogsCard/BlogsCard";
+import BlogCard from "./BlogCard";
 import { MetaBlog } from "types/blogs";
 
 const RecentBlogs = ({

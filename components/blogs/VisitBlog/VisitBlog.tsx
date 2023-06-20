@@ -1,13 +1,13 @@
 import { AiOutlineInstagram, AiOutlineTwitter } from "react-icons/ai";
 import { CgFacebook } from "react-icons/cg";
 import { MdOutlineEmail } from "react-icons/md";
-import { Data } from "./BlogInterface/Blog.interface";
 import BlogPartition from "./BlogPartition/BlogPartition";
 import HeadTitle from "./HeadTitle/HeadTitle";
 import HeroImage from "./HeroImage/HeroImage";
 import visblog from "./VisitBlog.module.css";
+import { Blog } from "types/blogs"
 
-export default function VisitBlog({ data }: { data: Data }) {
+export default function VisitBlog({ data }: { data: Blog }) {
   return (
     <>
       <HeadTitle

@@ -1,17 +1,27 @@
 import React from "react";
 import blogpart from "./BlogPartition.module.css";
 import sanitize from "sanitize-html";
+import Image from "next/image";
 
-export default function BlogPartition({ text, title, index, imageUrl }) {
+interface BlogPartitionProps {
+  text: string
+  title: string
+  index: number
+  imageUrl?: string
+}
+
+export default function BlogPartition({ text, title, index, imageUrl }: BlogPartitionProps) {
   const sanitized = sanitize(text);
 
   return (
     <>
       <div className={blogpart.block}>
         {title === "Image" ? (
-          <div className="relative flex w-full rounded-[10px] overflow-hidden max-h-[210px] md:max-h-[280px] lg:max-h-[350px]">
-            <img
-              src={imageUrl}
+          <div className="relative flex w-full rounded-[10px] overflow-hidden h-[210px] md:h-[280px] lg:h-[350px]">
+            <Image
+              // imageUrl will exist as it contains an image
+              src={imageUrl!}
+              fill={true}
               alt=""
               className="object-cover rounded-[10px]"
             />
@@ -23,7 +33,7 @@ export default function BlogPartition({ text, title, index, imageUrl }) {
             </div>
             <div className={blogpart.text}>
               <p
-                contentEditable="true"
+                contentEditable="false"
                 dangerouslySetInnerHTML={{ __html: sanitized }}
               />
             </div>
