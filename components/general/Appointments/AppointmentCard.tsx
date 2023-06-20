@@ -10,10 +10,8 @@ import {
 } from "@mui/material";
 import { deleteDoc, doc } from "firebase/firestore";
 import Image from "next/image";
-import React, { FC, useState } from "react";
-import GPBackdrop from "../GeneralPurpose/GPBackdrop";
+import React, { Dispatch, FC, SetStateAction, useState } from "react";
 import GPDialog from "../GeneralPurpose/GPDialog";
-import GPSnackbar from "../GeneralPurpose/GPSnackbar";
 import { db } from "../firebase-config";
 import appoinmentcss from "./Appoinments.module.css";
 import CurrentCaseContent from "./CurrentCaseContent/CurrentCaseContent";
@@ -26,12 +24,14 @@ interface AppointmentCardProps {
   name: string;
   time?: string;
   date?: string;
-  setState: any;
   setErrorDialog: any;
   setErrorMsg: any;
   user: any;
   numberOfSessions: number;
   getAppointmentData: () => void;
+  setCardDeleteLoading: Dispatch<SetStateAction<boolean>>;
+  setSnackbarMessage: Dispatch<SetStateAction<string>>;
+  setDialogProps: Dispatch<SetStateAction<any>>;
 }
 
 const AppointmentCard: FC<AppointmentCardProps> = ({
@@ -39,12 +39,14 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
   id,
   name,
   date,
-  setState,
   setErrorDialog,
   setErrorMsg,
   user,
   numberOfSessions,
   getAppointmentData,
+  setCardDeleteLoading,
+  setSnackbarMessage,
+  setDialogProps
 }) => {
   const [open, setOpen] = React.useState(false);
   const [slot, setSlot] = React.useState(false);
@@ -55,8 +57,6 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
   const toggleSlot = () => setSlot((prev) => !prev);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const handleCopyButton = () => {
     navigator.clipboard.writeText("sampelupiid@oksbi");
@@ -80,29 +80,39 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
 
   const handleCaseDelete = async () => {
     setAnchorEl(null);
-    setLoading(true);
-    setDialogOpen(false);
+    setCardDeleteLoading(true);
+    setDialogProps({open: false});
     try {
       await deleteDoc(doc(db, `Userdata/${user.uid}/cases`, id));
-      await getAppointmentData();
+      getAppointmentData();
+      setCardDeleteLoading(false);
+      setSnackbarMessage("Case Deleted successfully");
     } catch (err: any) {
+      setCardDeleteLoading(false);
       setErrorMsg(err.message);
       setErrorDialog(true);
     }
-    setLoading(false);
   };
 
   const handleDialogClose = () => {
     handlePopoverClose();
-    setDialogOpen(false);
+    setDialogProps({open: false});
   };
+
+  const handleDeleteClick = () => {
+    setDialogProps({
+      open: true,
+      title: "Are you sure you want to delete this case?",
+      contentText: `Delete case name, ${name}?`,
+      handleClose: handleDialogClose,
+      primaryAction: handleCaseDelete,
+    });
+  };
+
 
   return (
     <>
-      <GPBackdrop loading={loading} message="Deleting..."/>
-
-      <GPSnackbar message={snackbarMessage} />
-
+    
       <GPDialog
         open={dialogOpen}
         setOpen={handleDialogClose}
@@ -122,7 +132,7 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
       />
 
 
-      <div className="hover:outline hover:outline-[1px] transition ease-in-out flex flex-col w-[240px] h-[270px] border-[1px] border-[#000] rounded-[15px] cursor-pointer px-5 py-5 relative justify-items-start">
+      <div className="hover:outline hover:outline-[1px] transition ease-in-out flex flex-col w-[240px] border-[1px] border-[#000] rounded-[15px] cursor-pointer px-5 py-5 relative justify-items-start">
         <IconButton
           onClick={handlePopoverClick}
           className="!absolute top-4 right-1 z-50"
@@ -144,7 +154,7 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
             horizontal: "left",
           }}
         >
-          <Button sx={{ m: 2 }} onClick={() => setDialogOpen(true)}>
+          <Button sx={{ m: 2 }} onClick={handleDeleteClick}>
             <Delete color="error" />
             <Typography sx={{ px: 2, py: 1 }} color={"black"}>
               Delete
@@ -158,10 +168,10 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
             <span className="text-[26px] mr-2">{name}</span>
           </div>
 
-          <div className="font-light mb-2">Sessions left: {numberOfSessions}</div>
+          <div className="font-light mb-2">No. of Meetings Left: {numberOfSessions}</div>
           <div className="font-light mb-2">
-            Created at:
-            <span className="font-light">{date || "2nd of January, 2023"}</span>
+            Created at: &nbsp;
+            <span className="font-light">{date || ""}</span>
           </div>
           <Image
             src="/appointmentCardBg.svg"
@@ -246,7 +256,6 @@ const AppointmentCard: FC<AppointmentCardProps> = ({
             id={id}
             setErrorMsg={setErrorMsg}
             setErrorDialog={setErrorDialog}
-            setState={setState}
             setSnackbarMessage={setSnackbarMessage}
             setSlot={setSlot}
           />

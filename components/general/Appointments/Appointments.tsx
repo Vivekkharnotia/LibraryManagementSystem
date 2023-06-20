@@ -1,46 +1,32 @@
-import React, { useEffect, useState } from "react";
-import AppointmentCard from "./AppointmentCard";
-import NewAppointmentCard from "./NewAppointmentCard";
+import { Box, CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
-import Snackbar from "@mui/material/Snackbar";
-import Grow from "@mui/material/Grow";
-import { TransitionProps } from "@mui/material/transitions";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Alert, CircularProgress } from "@mui/material";
-import { collection, getDoc, getDocs } from "firebase/firestore";
-import { db } from "../firebase-config";
 import { useUser } from "components/UserContext";
+import { collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import GPBackdrop from "../GeneralPurpose/GPBackdrop";
+import GPDialog from "../GeneralPurpose/GPDialog";
+import GPSnackbar from "../GeneralPurpose/GPSnackbar";
+import { db } from "../firebase-config";
+import AppointmentCard from "./AppointmentCard";
+import NewAppointmentCard from "./NewAppointmentCard";
 
 const Appointments = () => {
-  const [state, setState] = React.useState<{
-    openSnackbar: boolean;
-    Transition: React.ComponentType<
-      TransitionProps & {
-        children: React.ReactElement<any, any>;
-      }
-    >;
-  }>({
-    openSnackbar: false,
-    Transition: Grow,
-  });
   const [errorDialog, setErrorDialog] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const { user, userLoading } = useUser();
   const [appointmentsData, setAppointmentsData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [cardDeleteLoading, setCardDeleteLoading] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [dialogProps, setDialogProps] = useState<any>({});
 
   const handleErrorDialog = () => {
     setErrorDialog(false);
-  };
-  const handleClose = () => {
-    setState({
-      ...state,
-      openSnackbar: false,
-    });
   };
 
   const getAppointmentData = async () => {
@@ -60,12 +46,52 @@ const Appointments = () => {
   useEffect(() => {
     getAppointmentData();
   }, []);
+
   return loading ? (
     <div className="flex justify-center items-center h-[80vh]">
       <CircularProgress />
     </div>
   ) : (
     <>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start",
+          flexWrap: "wrap",
+          gap: "2rem",
+          marginTop: "2.5rem",
+          marginLeft: "2rem",
+          "@media (max-width: 786px)": {
+            marginLeft: "0",
+            justifyContent: "center",
+          },
+        }}
+      >
+        {appointmentsData?.map((appointment, index) => {
+          const dateString = appointment.createdAt.toDate().toDateString().split(" ");
+          const date = `${dateString[1]} ${dateString[2]}, ${dateString[3]}`;
+
+          return (
+            <AppointmentCard
+              key={index + 1}
+              id={appointment.id}
+              user={user}
+              number={index + 1}
+              name={appointment.caseName}
+              date={date}
+              numberOfSessions={appointment.numberOfSessions}
+              setErrorDialog={setErrorDialog}
+              setErrorMsg={setErrorMsg}
+              getAppointmentData={getAppointmentData}
+              setCardDeleteLoading={setCardDeleteLoading}
+              setSnackbarMessage={setSnackbarMessage}
+              setDialogProps={setDialogProps}
+            />
+          );
+        })}
+        <NewAppointmentCard getAppointmentData={getAppointmentData} />
+      </Box>
+
       <Dialog
         open={errorDialog}
         onClose={handleErrorDialog}
@@ -83,41 +109,25 @@ const Appointments = () => {
         </DialogActions>
       </Dialog>
 
-      <Snackbar
-        open={state.openSnackbar}
-        onClose={handleClose}
-        TransitionComponent={state.Transition}
-        // message="Your slot is booked successfully..."
-        key={state.Transition.name}
-        autoHideDuration={3000}
-      >
-        <Alert variant="filled" severity="success">
-          Your slot is booked successfully...
-        </Alert>
-      </Snackbar>
-
-      <div
-        className={`flex flex-row flex-wrap justify-center md:justify-start gap-8 text-[#000] px-8 py-8`}
-      >
-        {appointmentsData?.map((appointment, index) => {
-          return (
-            <AppointmentCard
-              key={index + 1}
-              id={appointment.id}
-              user={user}
-              number={index + 1}
-              name={appointment.caseName}
-              date={appointment.createdAt.toDate().toDateString()}
-              numberOfSessions={appointment.numberOfSessions}
-              setState={setState}
-              setErrorDialog={setErrorDialog}
-              setErrorMsg={setErrorMsg}
-              getAppointmentData={getAppointmentData}
-            />
-          );
-        })}
-        <NewAppointmentCard getAppointmentData={getAppointmentData} />
-      </div>
+      <GPBackdrop loading={cardDeleteLoading} message="Deleting..." />
+      <GPSnackbar message={snackbarMessage} />
+      <GPDialog
+        open={dialogProps.open}
+        setOpen={dialogProps.handleClose}
+        title={dialogProps.title}
+        contentText={dialogProps.contentText}
+        buttons={[
+          {
+            text: "Cancel",
+            onClick: dialogProps.handleClose,
+          },
+          {
+            text: "Delete",
+            onClick: dialogProps.primaryAction,
+            color: "error",
+          },
+        ]}
+      />
     </>
   );
 };

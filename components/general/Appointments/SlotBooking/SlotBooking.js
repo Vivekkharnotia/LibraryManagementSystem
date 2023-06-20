@@ -22,7 +22,6 @@ function GrowTransition(props) {
 export default function SlotBooking({
   id,
   setSlot,
-  setState,
   setErrorDialog,
   setErrorMsg,
   setSnackbarMessage,
