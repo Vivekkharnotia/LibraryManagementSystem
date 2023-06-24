@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export function useScrollTrigger(): boolean {
   const [triggered, setTriggered] = useState(false);
+  const router = useRouter();
 
   const onScroll = () => {
     const scrollPosition = window.scrollY;
@@ -15,10 +17,16 @@ export function useScrollTrigger(): boolean {
   };
 
   useEffect(() => {
-    document.addEventListener("scroll", onScroll, true);
+    if(router.pathname !== "/blogs") {
+      setTriggered(false);
+      return;
+    }else{
+      document.addEventListener("scroll", onScroll, true);
+      return () => document.removeEventListener("scroll", onScroll, true);
+    }
 
-    return () => document.removeEventListener("scroll", onScroll, true);
-  }, []);
+  }, [router.pathname]);
+
 
   return triggered
 }

@@ -23,8 +23,7 @@ export default function BlogsNav({
   const router = useRouter();
   const id = router.query.id;
   const uid = getCookie("uid");
-
-  const triggered = useScrollTrigger();
+  let triggered = useScrollTrigger();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
