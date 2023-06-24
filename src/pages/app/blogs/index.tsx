@@ -33,6 +33,7 @@ export const getServerSideProps = async () => {
     id: doc.id,
   }));
   const metaBlogsDataString = JSON.stringify(metaBlogsData);
+  console.log(metaBlogsData);
 
   return {
     props: {

@@ -171,6 +171,7 @@ const App = ({ metaBlogsDataString }: { metaBlogsDataString: string }) => {
 
         <Grid container spacing={5}>
           {metaBlogsData.map((blog: MetaBlog) => (
+            
             <Grid
               item
               xs={12}
@@ -278,6 +279,14 @@ export const getServerSideProps = async ({
   res: NextApiResponse;
 }) => {
   const uid = getCookie("uid", { req, res });
+  if (!uid) {
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
+      },
+    };
+  }
 
   const userSnap = await getDoc(doc(collection(db, "Userdata"), `${uid}`));
   const user = userSnap.data();

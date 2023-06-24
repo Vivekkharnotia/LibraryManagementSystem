@@ -1,6 +1,6 @@
 export interface MetaBlog {
   id: string;
-  date: Date;
+  date: FirebaseTimestamp;
   displayName: string;
   headTitle: string;
   heroImageSrc: string;
