@@ -1,3 +1,4 @@
+import { withAdmin } from "ProtectedRoutes/AdminRoute";
 import SlotGrid from "components/app/createSlots/SlotGrid/SlotGrid";
 import { db } from "components/general/firebase-config";
 import { doc, getDoc } from "firebase/firestore";
@@ -8,8 +9,19 @@ import {
   getTimings,
 } from "utils/ExtendedUtils";
 
-function index(props: any) {
-  const { slotsString, timings, daysOfWeekString, dateArray } = props;
+interface CreateSlotsProps {
+  slotsString: string;
+  timings: string[];
+  daysOfWeekString: string;
+  dateArray: string[];
+}
+
+function CreateSlotsPage({
+  slotsString,
+  timings,
+  daysOfWeekString,
+  dateArray,
+}: CreateSlotsProps) {
   const slots = JSON.parse(slotsString);
   const daysOfWeek = JSON.parse(daysOfWeekString);
   const slotMatrix = getSlotMatrix(slots, timings);
@@ -23,7 +35,7 @@ function index(props: any) {
   );
 }
 
-export default index;
+export default withAdmin(CreateSlotsPage);
 
 export async function getStaticProps() {
   const date = new Date();
