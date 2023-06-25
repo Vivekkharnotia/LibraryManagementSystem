@@ -1,9 +1,9 @@
-import Hero from "../../components/home/Hero/Hero";
-import Footer from "../../components/home/Footer/Footer";
-import SignIn from "../../components/signin/SignIn/SignInPage";
-import Services from "../../components/home/Services/Services";
 import Main from "components/home/Main/Main";
 import { useEffect } from "react";
+import Footer from "../../components/home/Footer/Footer";
+import Hero from "../../components/home/Hero/Hero";
+import Services from "../../components/home/Services/Services";
+import SignIn from "../../components/signin/SignIn/SignInPage";
 
 export default function Home() {
   useEffect(() => {
@@ -22,3 +22,5 @@ export default function Home() {
     </>
   );
 }
+
+
