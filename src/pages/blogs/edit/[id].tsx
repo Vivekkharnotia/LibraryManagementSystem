@@ -26,7 +26,7 @@ function index({
   );
 }
 
-export async function getStaticProps({
+export async function getServerSideProps({
   params,
 }: {
   params: {
@@ -34,22 +34,40 @@ export async function getStaticProps({
   };
 }) {
   const blogID = params.id;
+  try {
+    const metaBlogSnap = await getDoc(doc(collection(db, "metaBlogs"), blogID));
+    const metaBlogData = metaBlogSnap.data();
+    const metaBlogDataString = JSON.stringify(metaBlogData);
 
-  const metaBlogSnap = await getDoc(doc(collection(db, "metaBlogs"), blogID));
-  const metaBlogData = metaBlogSnap.data();
-  const metaBlogDataString = JSON.stringify(metaBlogData);
+    if (!metaBlogData) {
+      return {
+        redirect: {
+          destination: "/error404",
+          permanent: false,
+        },
+      };
+    }
 
-  const blogSnap = await getDoc(doc(collection(db, "blogs"), blogID));
-  const blogData = blogSnap.data();
-  const blogDataString = JSON.stringify(blogData);
+    const blogSnap = await getDoc(doc(collection(db, "blogs"), blogID));
+    const blogData = blogSnap.data();
+    const blogDataString = JSON.stringify(blogData);
 
-  return {
-    props: {
-      metaBlogDataString,
-      blogDataString,
-      blogID,
-    }, // will be passed to the page component as props
-  };
+    return {
+      props: {
+        metaBlogDataString,
+        blogDataString,
+        blogID,
+      }, // will be passed to the page component as props
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      redirect: {
+        destination: "/error404",
+        permanent: false,
+      },
+    };
+  }
 }
 
 export default withAdmin(index);

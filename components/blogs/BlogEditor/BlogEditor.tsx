@@ -6,15 +6,15 @@ import { db } from "components/general/firebase-config";
 import { collection, doc, writeBatch } from "firebase/firestore";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { BlogData, BlogEditData, MetaBlog } from "types/blogs";
 import { uploadFileToFirebaseAndGetUrl } from "utils/ExtendedUtils";
 import emptyHere from "../../../public/emptyHere.jpg";
+import GPBackdrop from "../../general/GeneralPurpose/GPBackdrop";
 import BlogImage from "../BlogComponents/BlogImage/BlogImage";
 import BlogPartition from "../BlogComponents/BlogPartition/BlogPartition";
 import HeadTitle from "../BlogComponents/HeadTitle/HeadTitle";
 import HeroImage from "../BlogComponents/HeroImage/HeroImage";
 import style from "../BlogCreator/BlogCreator.module.css";
-import GPBackdrop from "../../general/GeneralPurpose/GPBackdrop";
-import { MetaBlog, BlogData, BlogEditData } from "types/blogs";
 
 export default function BlogEditor(props: {
   metaBlogData: MetaBlog;
