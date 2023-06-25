@@ -10,7 +10,7 @@ function index({ blogDataString }: { blogDataString: string }) {
 
 export default index;
 
-export const getStaticProps = async ({
+export const getServerSideProps = async ({
   params,
 }: {
   params: {
