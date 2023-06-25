@@ -4,7 +4,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Button, IconButton } from "@mui/material";
 import Avatar from "components/general/Avatar/Avatar";
-import { getCookie } from "cookies-next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -22,7 +21,6 @@ export default function BlogsNav({
   const [mobileOpen, setMobileOpen] = useState(false);
   const router = useRouter();
   const id = router.query.id;
-  const uid = getCookie("uid");
   let triggered = useScrollTrigger();
 
   const handleDrawerToggle = () => {

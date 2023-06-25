@@ -1,5 +1,4 @@
 import Main from "components/home/Main/Main";
-import { getCookie } from "cookies-next";
 import { NextApiRequest, NextApiResponse } from "next";
 import Footer from "../../components/home/Footer/Footer";
 import Hero from "../../components/home/Hero/Hero";
@@ -28,8 +27,8 @@ export const getServerSideProps = async ({
   req: NextApiRequest;
   res: NextApiResponse;
 }) => {
-  const uid = getCookie("uid", { req, res });
-
+  // const uid = getCookie("uid", { req, res });
+  const uid = "asdf";
   if(uid){
     return {
       redirect: {
