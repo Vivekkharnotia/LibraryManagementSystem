@@ -11,7 +11,7 @@ const index = ({ metaBlogsString }: { metaBlogsString: string }) => {
 
 export default index;
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   const metaBlogsCollectionRef = collection(db, "metaBlogs");
   const metaBlogsQuery = query(
     metaBlogsCollectionRef,
