@@ -26,7 +26,7 @@ function index({
   );
 }
 
-export async function getServerSideProps({
+export async function getStaticProps({
   params,
 }: {
   params: {

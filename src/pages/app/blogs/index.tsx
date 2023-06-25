@@ -37,7 +37,7 @@ const app = () => {
 
 export default app;
 
-// export const getServerSideProps = async () => {
+// export const getStaticProps = async () => {
 //   // get the latest 10 blogs from firestore
 //   try{
 //     console.log("fetching data")

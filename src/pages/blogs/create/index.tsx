@@ -1,8 +1,9 @@
 import { withAdmin } from "ProtectedRoutes/AdminRoute";
 import BlogCreator from "components/blogs/BlogCreator/BlogCreator";
 import { db } from "components/general/firebase-config";
+import { getCookie } from "cookies-next";
 import { collection, doc, getDoc } from "firebase/firestore";
-import { GetServerSidePropsContext } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 function index({ dataString }: { dataString: string }) {
   return <BlogCreator dataString={dataString} />;
@@ -10,32 +11,32 @@ function index({ dataString }: { dataString: string }) {
 
 export default withAdmin(index);
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  // get cookies from Context
-  const cookieString = ctx.req.headers.cookie;
-  // convert cookies to object
-  const cookies = cookieString?.split(";").reduce((acc, curr) => {
-    const [key, value] = curr.split("=");
-    acc[key.trim()] = value;
-    return acc;
-  }, {} as { [key: string]: string });
 
-  const userId = cookies?.uid;
 
-  if (!userId)
-    return {
-      redirect: {
-        destination: "/signin",
-        permanent: false,
-      },
-    };
+export const getStaticProps = async ({
+    req,
+    res,
+  }: {
+    req: NextApiRequest;
+    res: NextApiResponse;
+  }) => {
 
-  const userSnap = await getDoc(doc(collection(db, "Userdata"), userId));
+    const uid = getCookie("uid", { req, res }) as string;
+    if (!uid)
+      return {
+        redirect: {
+          destination: "/signin",
+          permanent: false,
+        },
+      };
+
+  const userSnap = await getDoc(doc(collection(db, "Userdata"), uid));
   const data = {
     uid: userSnap.id,
     ...userSnap.data(),
   };
   const dataString = JSON.stringify(data);
+  
   return {
     props: {
       dataString,

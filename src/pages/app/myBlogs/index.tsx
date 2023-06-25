@@ -272,7 +272,7 @@ const App = ({ metaBlogsDataString }: { metaBlogsDataString: string }) => {
 
 export default withAdmin(App);
 
-export const getServerSideProps = async ({
+export const getStaticProps = async ({
   req,
   res,
 }: {

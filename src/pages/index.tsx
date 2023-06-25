@@ -1,5 +1,4 @@
 import Main from "components/home/Main/Main";
-import { NextApiRequest, NextApiResponse } from "next";
 import Footer from "../../components/home/Footer/Footer";
 import Hero from "../../components/home/Hero/Hero";
 import Services from "../../components/home/Services/Services";
@@ -20,21 +19,21 @@ export default function Home() {
   );
 }
 
-export const getServerSideProps = async ({
-  req,
-  res,
-}: {
-  req: NextApiRequest;
-  res: NextApiResponse;
-}) => {
-  // const uid = getCookie("uid", { req, res });
-  const uid = "asdf";
+export const getServerSideProps = async () => {
+  const uid = "asflsadfj";
+  console.log(uid)
+  
   if(uid){
     return {
       redirect: {
         destination: "/app",
         permanent: false,
       },
+    };
+  }
+  else{
+    return {
+      props: {},
     };
   }
 };
