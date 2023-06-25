@@ -13,7 +13,7 @@ export default withAdmin(index);
 
 
 
-export const getStaticProps = async ({
+export const getServerSideProps = async ({
     req,
     res,
   }: {
