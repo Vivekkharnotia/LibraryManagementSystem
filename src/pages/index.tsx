@@ -1,15 +1,13 @@
 import Main from "components/home/Main/Main";
-import { useEffect } from "react";
+import { getCookie } from "cookies-next";
+import { NextApiRequest, NextApiResponse } from "next";
 import Footer from "../../components/home/Footer/Footer";
 import Hero from "../../components/home/Hero/Hero";
 import Services from "../../components/home/Services/Services";
 import SignIn from "../../components/signin/SignIn/SignInPage";
 
 export default function Home() {
-  useEffect(() => {
-    window.localStorage.getItem("loggedIn") == "true" &&
-      window.location.replace("/app");
-  }, []);
+  
   return (
     <>
       <Hero />
@@ -23,4 +21,21 @@ export default function Home() {
   );
 }
 
+export const getServerSideProps = async ({
+  req,
+  res,
+}: {
+  req: NextApiRequest;
+  res: NextApiResponse;
+}) => {
+  const uid = getCookie("uid", { req, res });
 
+  if(uid){
+    return {
+      redirect: {
+        destination: "/app",
+        permanent: false,
+      },
+    };
+  }
+};

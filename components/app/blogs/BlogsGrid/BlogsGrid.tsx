@@ -1,8 +1,8 @@
 import { Typography } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import styles from "./BlogsGrid.module.css";
 import { MetaBlog } from "types/blogs";
+import styles from "./BlogsGrid.module.css";
 
 function BlogsGrid({ data }: { data: MetaBlog[] }) {
   const router = useRouter();
@@ -10,10 +10,6 @@ function BlogsGrid({ data }: { data: MetaBlog[] }) {
     router.push("/blogs");
   };
 
-  const firstMetaBlog = data[0];
-
-  // only show 6 blogs in the grid
-  const remainingMetaBlogs = data.slice(1, 7);
 
   return data.length === 0 ? (
     <Typography
@@ -27,26 +23,13 @@ function BlogsGrid({ data }: { data: MetaBlog[] }) {
     <>
       <div className={styles.container}>
         <div className={styles.grid_container}>
-          <Link
-            href={`/blogs/read/${firstMetaBlog.id}`}
-            passHref
-            className={styles.hero}
-          >
-            <img src={firstMetaBlog.heroImageSrc} alt="" />
-
-            <div className={styles.hero_text}>
-              <h1>{firstMetaBlog.headTitle}</h1>
-              <p>- {firstMetaBlog.displayName}</p>
-            </div>
-          </Link>
-
-          {remainingMetaBlogs.map((blog) => {
+          {data.map((blog, index) => {
             return (
               <Link
                 href={`/blogs/read/${blog.id}`}
                 passHref
                 key={blog.id}
-                className={styles.normal}
+                className={index === 0 ? styles.hero : styles.normal}
               >
                 <img src={blog.heroImageSrc} alt="" className="w-full" />
                 <div className={styles.hero_text}>
