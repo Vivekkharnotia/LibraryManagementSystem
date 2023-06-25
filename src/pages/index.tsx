@@ -5,6 +5,7 @@ import Services from "../../components/home/Services/Services";
 import SignIn from "../../components/signin/SignIn/SignInPage";
 
 export default function Home({random}: {random: number}) {
+  console.log(random)
   
   return (
     <>
@@ -19,7 +20,7 @@ export default function Home({random}: {random: number}) {
   );
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = () => {
   const random = "ME";
   console.log(random)
 
