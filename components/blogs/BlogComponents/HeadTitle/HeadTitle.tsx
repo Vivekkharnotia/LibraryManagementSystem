@@ -58,7 +58,7 @@ function HeadTitle({
         ></Avatar>
 
         <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-          Written By {displayName} &nbsp; &nbsp;
+          Written By {displayName} &#160;
         </Typography>
 
         <Typography variant="body1">{`${date.toLocaleString("default", {
