@@ -2,20 +2,20 @@ import { Delete } from "@material-ui/icons";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
-  Button,
-  IconButton,
-  Modal,
-  Popover,
-  Typography
+    Button,
+    IconButton,
+    Modal,
+    Popover,
+    Typography
 } from "@mui/material";
 import { deleteDoc, doc } from "firebase/firestore";
 import Image from "next/image";
 import React, { Dispatch, FC, SetStateAction, useState } from "react";
-import CurrentCaseContent from "../../app/AppointmentsPage/CurrentCaseContent/CurrentCaseContent";
-import SlotBooking from "../../app/AppointmentsPage/SlotBooking/SlotBooking";
 import GPDialog from "../GeneralPurpose/GPDialog";
 import { db } from "../firebase-config";
 import appoinmentcss from "./Appoinments.module.css";
+import CurrentCaseContent from "./CurrentCaseContent/CurrentCaseContent";
+import SlotBooking from "./SlotBooking/SlotBooking.js";
 import qrSample from "./qrSample.png";
 
 interface AppointmentCardProps {
