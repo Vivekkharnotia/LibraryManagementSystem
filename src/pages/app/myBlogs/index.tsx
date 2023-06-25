@@ -40,7 +40,7 @@ import { MetaBlog } from "types/blogs";
 
 const App = ({ metaBlogsDataString }: { metaBlogsDataString: string }) => {
   const [metaBlogsData, setMetaBlogsData] = useState<MetaBlog[]>(
-    JSON.parse(metaBlogsDataString) || []
+    JSON.parse(metaBlogsDataString)
   );
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -174,7 +174,6 @@ const App = ({ metaBlogsDataString }: { metaBlogsDataString: string }) => {
             
             <Grid
               item
-
               xs={12}
               sm={6}
               md={6}
