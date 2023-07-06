@@ -25,8 +25,7 @@ const FormTextarea: FC<Props> = ({
           {label}
           {isRequired && <span className="text-red-500 ml-1">*</span>}
         </div>
-        <div className="w-full sm:max-w-[400px]">
-          <div className="flex flex-row items-center justify-between relative">
+        <div className="w-full">
             <textarea
               className={`w-full p-4 rounded-[10px] resize-none border-[1px] border-[#B4B4B4] outline-[#B4B4B4]`}
               value={value}
@@ -41,7 +40,6 @@ const FormTextarea: FC<Props> = ({
                 {value ? value?.length : 0}/{maxLength}
               </div>
             )}
-          </div>
         </div>
       </label>
     </div>

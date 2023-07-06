@@ -1,11 +1,11 @@
 import { Box, CssBaseline } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useUser } from "components/UserContext";
+import AppStructure from "components/app/AppLayout/AppStructure/AppStructure";
 import Loading from "components/general/Loading/Loading";
 import { auth } from "components/general/firebase-config";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import AppStructure from "components/app/AppLayout/AppStructure/AppStructure";
 
 interface AppLayoutProps {
   children: React.ReactNode;

@@ -1,17 +1,17 @@
-import Link from "next/link";
-import { styled } from "@mui/material/styles";
+import { Theme } from "@material-ui/core";
+import { ArrowForwardOutlined } from "@mui/icons-material";
 import {
   Divider,
-  Drawer as MuiDrawer,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Drawer as MuiDrawer,
   Typography,
 } from "@mui/material";
-import { ArrowForwardOutlined } from "@mui/icons-material";
-import { Theme } from "@material-ui/core";
+import { styled } from "@mui/material/styles";
+import Link from "next/link";
 import { AppNavList } from "types/app";
 
 interface AppDrawerProps {
@@ -80,8 +80,10 @@ const AppDrawer = ({
   return (
     <Drawer variant="permanent" open={open} className="hidden md:block">
       <DrawerHeader>
-        <Typography className="m-auto" variant="h5">
-          R-A
+        <Typography className="m-auto" variant="h6">
+          {
+            open? "Competitiors Community" : "CC"
+          }
         </Typography>
       </DrawerHeader>
       <Divider />

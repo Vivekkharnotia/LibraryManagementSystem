@@ -1,19 +1,21 @@
 import { Modal } from "@mui/material";
-import React, { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import NewAppointmentForm from "../NewAppointmentForm/NewAppointmentForm";
 
 interface NewAppointmentCardModalProps {
   modalOpen: boolean;
   handleModalClose: () => void;
   setSnackbarMessage: Dispatch<SetStateAction<string>>;
-  getAppointmentData: () => void
+  data: any;
+  setEventsData: Dispatch<SetStateAction<any>>;
 }
 
 const NewAppointmentCardModal = ({
   modalOpen,
   handleModalClose,
   setSnackbarMessage,
-  getAppointmentData
+  data,
+  setEventsData
 }: NewAppointmentCardModalProps) => {
   return (
     <Modal
@@ -26,7 +28,8 @@ const NewAppointmentCardModal = ({
         <NewAppointmentForm
           handleClose={handleModalClose}
           setSnackbarMessage={setSnackbarMessage}
-          getAppointmentData={getAppointmentData}
+          data={data}
+          setEventsData={setEventsData}
         />
       </div>
     </Modal>

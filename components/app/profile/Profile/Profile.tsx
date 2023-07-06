@@ -6,20 +6,7 @@ import { AiOutlineCamera } from "react-icons/ai";
 import { uploadFileToFirebaseAndGetUrl } from "utils/ExtendedUtils";
 import GPBackdrop from "../../../general/GeneralPurpose/GPBackdrop";
 import { db } from "../../../general/firebase-config.js";
-import FormCheckbox from "./FormCheckbox";
-import FormRadio from "./FormRadio";
-import FormTextarea from "./FormTextarea";
 import Input from "./Input";
-import {
-  familyHistoryOptions,
-  genderOptions,
-  medicalHistoryOptions,
-  occupationOptions,
-  otherComplaintsOptions,
-  personalHistoryOptions,
-  referrerOptions,
-  surgicalHistoryOptions,
-} from "./constants";
 
 interface Profile {
   fname?: string;
@@ -337,85 +324,13 @@ const Profile = () => {
                   max="150"
                 />
               </div>
-              <FormRadio
-                options={genderOptions}
-                label="Gender"
-                name="gender"
-                checkedValue={formData?.gender || ""}
-                onChange={onChangeGender}
-              />
-              <FormRadio
-                options={occupationOptions}
-                label="Occupation"
-                name="occupation"
-                checkedValue={formData?.occupation || ""}
-                onChange={onChangeOccupation}
-              />
-              <FormRadio
-                options={referrerOptions}
-                label="Referred By"
-                name="referrer"
-                checkedValue={formData?.referredBy || ""}
-                onChange={onChangeReferrer}
-              />
-              <FormTextarea
-                label="Chief Complaint"
-                value={formData?.chiefComplaint || ""}
-                onChange={onChangeChiefComplaint}
-              />
+              
             </div>
           </div>
         </div>
 
-        <div className="mb-4">
-          <h3 className="text-[20px] font-semibold mb-2">HISTORY</h3>
-          <div className="grid border-[2px] p-4 justify-between align-start grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-8">
-            <FormCheckbox
-              options={medicalHistoryOptions}
-              label="Medical History"
-              checkedValues={formData?.medicalHistory || []}
-              onChange={onChangeMedicalHistory}
-              otherOption={true}
-            />
-            <FormCheckbox
-              options={personalHistoryOptions}
-              label="Personal History"
-              checkedValues={formData?.personalHistory || []}
-              onChange={onChangePersonalHistory}
-              otherOption={true}
-            />
-            <FormCheckbox
-              options={familyHistoryOptions}
-              label="Family History"
-              checkedValues={formData?.familyHistory || []}
-              onChange={onChangeFamilyHistory}
-              otherOption={true}
-            />
-            <FormCheckbox
-              options={surgicalHistoryOptions}
-              label="Surgical History"
-              checkedValues={formData?.surgicalHistory || []}
-              onChange={onChangeSurgicalHistory}
-              otherOption={true}
-            />
-          </div>
-        </div>
-        <div className="mb-4">
-          <h3 className="text-[20px] font-semibold mb-2">OTHER</h3>
-          <div className="grid border-[2px] p-4 justify-between align-start grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-8">
-            <FormCheckbox
-              options={otherComplaintsOptions}
-              label="Other Complaints"
-              checkedValues={formData?.otherComplaints || []}
-              onChange={onChangeOtherComplaints}
-            />
-            <FormTextarea
-              label="Problem in Gait"
-              value={formData?.problemInGait || ""}
-              onChange={onChangeProblemInGait}
-            />
-          </div>
-        </div>
+        
+        
       </div>
       {isEditing && (
         <div className="sticky bottom-[60px] md:bottom-[20px] right-0 flex gap-2 justify-end">

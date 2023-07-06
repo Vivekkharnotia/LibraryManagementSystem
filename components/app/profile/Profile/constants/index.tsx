@@ -18,22 +18,24 @@ export const referrerOptions = [
 ];
 
 export const painOptions = [
-  { value: "cramping", label: "Cramping" },
-  { value: "dull", label: "Dull" },
-  { value: "aching", label: "Aching" },
-  { value: "sharp", label: "Sharp" },
-  { value: "shooting", label: "Shooting" },
-  { value: "burning", label: "Burning" },
-  { value: "severe", label: "Severe/Intolerable" },
-  { value: "throbbing", label: "Throbbing" },
+  { value: "Workshops and Seminars", label: "Workshops and Seminars" },
+  { value: "Social Networking Events: Connect", label: "Social Networking Events: Connect" },
+  { value: "Hackathon: Innovate", label: "Hackathon: Innovate" },
+  { value: "Competitions: Challenge", label: "Competitions: Challenge" },
+  { value: "Performances: Showcase", label: "Performances: Showcase" },
+  { value: "Sports Events: Compete", label: "Sports Events: Compete" },
+  { value: "Community Service: Serve", label: "Community Service: Serve" },
+  { value: "Guest Lectures: Inspire", label: "Guest Lectures: Inspire" },
 ];
 
 export const diurnalOptions = [
-  { value: "morning", label: "Morning" },
-  { value: "afternoon", label: "Afternoon" },
-  { value: "evening", label: "Evening" },
-  { value: "night", label: "Night" },
-  { value: "activity", label: "During activity" },
+  { value: "Beginner", label: "Beginner" },
+  { value: "Intermediate", label: "Intermediate" },
+  { value: "Advanced", label: "Advanced" },
+  { value: "Open to All", label: "Open to All" },
+  { value: "Collegiate Level", label: "Collegiate Level" },
+  { value: "National Level", label: "National Level" },
+  { value: "Invitational", label: "Invitational" },
 ];
 
 export const otherComplaintsOptions = [

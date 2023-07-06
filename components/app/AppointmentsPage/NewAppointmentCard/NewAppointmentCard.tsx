@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import GPSnackbar from "components/general/GeneralPurpose/GPSnackbar";
+import { useState } from "react";
 import { BsPlus } from "react-icons/bs";
 import useDevice from "utils/useDevice";
-import GPSnackbar from "components/general/GeneralPurpose/GPSnackbar";
 import NewAppointmentCardModal from "../NewAppointmentCardModal/NewAppointmentCardModal";
 
 const NewAppointmentCard = ({
@@ -39,7 +39,6 @@ const NewAppointmentCard = ({
         modalOpen={modalOpen}
         handleModalClose={handleModalClose}
         setSnackbarMessage={setSnackbarMessage}
-        getAppointmentData={getAppointmentData}
       />
 
       {/* case creation success snackbar */}

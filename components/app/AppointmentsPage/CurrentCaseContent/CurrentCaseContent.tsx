@@ -3,8 +3,7 @@ import {
   Box,
   Button,
   CircularProgress,
-  Container,
-  IconButton,
+  IconButton
 } from "@mui/material";
 import { useUser } from "components/UserContext";
 import FormCheckbox from "components/app/profile/Profile/FormCheckbox";
@@ -15,11 +14,8 @@ import {
 } from "components/app/profile/Profile/constants";
 import { db } from "components/general/firebase-config";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import EmptyHere from "../../../../public/emptyHere.jpg";
 import style from "./CurrentCaseContent.module.css";
-import Session from "./Session/Session";
 
 interface Profile {
   fname?: string;
@@ -146,79 +142,32 @@ function CurrentCaseContent({
             <CloseIcon />
           </IconButton>
 
-          <div className={style.left}>
-            <h3 className={style.mainHeading}>Case: {profileData?.caseName}</h3>
-            <div className={style.leftContent}>
-              <h4 className={style.sessionMainHeading}>Session Details:</h4>
-
-              <div>
-                {profileData?.slot === undefined ? (
-                  <>
-                    <Container
-                      sx={{
-                        opacity: "0.8",
-                        borderRadius: "4px",
-                        marginTop: "2rem",
-                      }}
-                    >
-                      {" "}
-                      <Image
-                        src={EmptyHere}
-                        alt={"No Slots Booked yet"}
-                        width={150}
-                      />{" "}
-                    </Container>
-                    <Container
-                      sx={{ textAlign: "center", marginTop: "1.5rem" }}
-                    >
-                      <Button
-                        sx={{
-                          backgroundColor: "#fab700!important",
-                          color: "white",
-                          paddingInline: "1rem",
-                        }}
-                        onClick={handleBookSlot}
-                      >
-                        Book Slot
-                      </Button>
-                    </Container>
-                  </>
-                ) : (
-                  <Session slot={profileData?.slot} caseId={id} />
-                )}
-              </div>
-            </div>
-          </div>
-
           <div className={style.seperator} />
 
           <div className={style.right}>
             <div className="mb-4">
               <div className="grid justify-between align-start grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8">
+              <div className="grid justify-between align-start grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8 mb-6">
                 <FormCheckbox
                   options={painOptions}
-                  label="Type"
-                  checkedValues={formData?.painType || []}
+                  label="Type of Event"
+                  checkedValues={formData?.eventType || []}
                   onChange={onChangePainOptions}
                   otherOption={true}
                 />
                 <FormCheckbox
                   options={diurnalOptions}
                   label="Diurnal"
-                  checkedValues={formData?.diurnal || []}
+                  checkedValues={formData?.eventLevel || []}
                   onChange={onChangeDiurnal}
                   otherOption={true}
                 />
-                <FormTextarea
-                  label="When is it bad"
-                  value={formData?.whenBad || ""}
-                  onChange={onChangeWhenBad}
-                />
-                <FormTextarea
-                  label="When is it better"
-                  value={formData?.whenBetter || ""}
-                  onChange={onChangeWhenBetter}
-                />
+              </div>
+              <FormTextarea
+                label="Descripton of Event"
+                value={formData?.description || ""}
+                onChange={onChangeWhenBad}
+              />
               </div>
             </div>
           </div>

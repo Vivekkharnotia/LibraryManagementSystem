@@ -1,5 +1,3 @@
-import { Chart, ChartTypeRegistry } from "chart.js/auto";
-import { _DeepPartialArray } from "chart.js/dist/types/utils";
 import { fbStorage } from "components/general/firebase-config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
@@ -44,41 +42,6 @@ export const uploadFileToFirebaseAndGetUrl = async (file: File | null, path: str
     }
   );
   return { uploadedToUrl, path };
-};
-
-export const chartMaker = (
-  id: string,
-  type: keyof ChartTypeRegistry,
-  data: any,
-  title: string | _DeepPartialArray<string>,
-  label: string
-) => {
-
-  new Chart(document.getElementById(id) as HTMLCanvasElement, {
-    type: type,
-    data: {
-      datasets: [
-        {
-          label: label,
-          data: data[1],
-          backgroundColor: data[2] ? data[2] : null,
-          
-        },
-      ],
-      labels: data[0],
-    },
-    options: {
-      plugins: {
-        title: {
-          font:{
-            size: 20
-          },
-          display: true,
-          text: title,
-        },
-      },
-    },
-  });
 };
 
 export const timeMiner = (time: string) => {

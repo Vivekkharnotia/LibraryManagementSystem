@@ -1,12 +1,9 @@
-import React from "react";
-import AppointmentHeroImage from "./AppointmentHeroImage/AppointmentHeroImage";
-import Appointments from "./Appointments/Appointments";
+import MainContent from "./MainContent";
 
 const AppointmentsPage = () => {
   return (
     <>
-      <AppointmentHeroImage />
-      <Appointments />
+      <MainContent />
     </>
   );
 };
