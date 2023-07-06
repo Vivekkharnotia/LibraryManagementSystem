@@ -30,6 +30,15 @@ export const userNavList: AppNavList[] = [
   },
 ];
 
+export const adminNavList: AppNavList[] = [
+  {
+    id: 3,
+    name: "My Blogs",
+    icon: Book ,
+    link: "/app/myBlogs",
+  },
+]
+
 export const userDrawerList: AppDrawerList[] = []
 
 export const adminDrawerList: AppDrawerList[] = [
